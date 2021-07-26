@@ -3,7 +3,7 @@
     <div class="flex justify-around bg-white">
       <div class="flex">
         <div>
-          <img src="img/huelogo.png" class="max-h-40">
+          <img src="img/huelogo.png" class="max-h-32">
         </div>
         <div class="flex items-center">
           <span class="font-kanit text-xl">PruuDownloads</span>
@@ -19,6 +19,19 @@
         </div>
       </div>
     </div>
+
+    <div class="bg-purple-300 flex justify-center font-kanit">
+      <ul class="flex list-none gap-5">
+        <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">Home</li>
+        <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">PC Games</li>
+        <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">PC Repack</li>
+        <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">Games Online</li>
+        <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">How To Download</li>
+        <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">DMCA</li>
+        <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">About Us</li>
+      </ul>
+    </div>
+
   </div>
 </template>
 
@@ -27,8 +40,3 @@ export default {
   name: 'Navbar',
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
