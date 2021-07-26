@@ -283,7 +283,62 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-4/5 bg-white col-span-1">b</div>
+                <div class="w-4/5 col-span-1">
+                    <div class="my-5">
+                        <span class="font-kanit text-white text-3xl">Trending</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game1.png" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game2.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game3.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <img src="img/game4.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game5.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game6.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game7.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game8.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game9.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+
+                    <div class="flex flex-col items-center">
+                        <img src="img/game10.jpg" class="w-4/5">
+                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    </div>
+                    
+                </div>
             </div>
         </div>
     </div>

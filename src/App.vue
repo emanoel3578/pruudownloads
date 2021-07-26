@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="h-screen w-full bg-gradient-to-b from-black via-purple-900 to-purple-900">
+    <div class="bg-gradient-to-b from-black via-purple-900 to-purple-900">
       <div class="">
         <Navbar/>
       </div>
