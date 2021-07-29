@@ -5,7 +5,7 @@
                 <div class=" col-span-2 grid grid-cols-2">
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game1.png" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game1.png" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -19,7 +19,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game2.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game2.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -33,7 +33,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game3.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game3.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -47,7 +47,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game4.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game4.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -61,7 +61,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game5.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game5.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -75,7 +75,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game6.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game6.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -89,7 +89,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game7.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game7.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -103,7 +103,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game8.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game8.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -117,7 +117,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game9.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game9.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -131,7 +131,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game10.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game10.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -145,7 +145,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game11.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game11.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -159,7 +159,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game12.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game12.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -173,7 +173,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game13.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game13.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -187,7 +187,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game14.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game14.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -201,7 +201,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game15.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game15.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -215,7 +215,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game16.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game16.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -229,7 +229,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game17.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game17.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -243,7 +243,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game18.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game18.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -257,7 +257,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game19.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game19.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
@@ -271,7 +271,7 @@
 
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
-                            <img src="img/game20.jpg" class="w-4/5 mx-auto mx-0">    
+                            <img src="img/game20.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
                             <span class="font-kanit text-white text-2xl">Title title title</span>
