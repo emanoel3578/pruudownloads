@@ -345,8 +345,14 @@
 </template>
 
 <script>
+import { jsonstr } from "../../declare.js"
+
+console.log(jsonstr)
+
 export default {
   name: 'Navbar',
 }
+
+
 </script>
 
