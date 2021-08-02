@@ -8,6 +8,10 @@
       <div>
         <Maingames/>
       </div>
+
+      <div>
+        <Footer/>
+      </div>
     </div>
   </div>
 </template>
@@ -15,12 +19,14 @@
 <script>
 import Navbar from './components/Navbar.vue'
 import Maingames from './components/Maingames.vue'
+import Footer from './components/Footer.vue'
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    Maingames
+    Maingames,
+    Footer,
   }
 }
 </script>

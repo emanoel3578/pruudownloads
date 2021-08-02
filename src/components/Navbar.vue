@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="bg-purple-300 flex justify-center font-kanit">
+    <div class="bg-gray-700 flex justify-center font-kanit">
       <ul class="flex list-none gap-5">
         <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">Home</li>
         <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">PC Games</li>
