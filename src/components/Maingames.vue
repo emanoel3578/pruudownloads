@@ -2,13 +2,13 @@
     <div>
         <div class="mt-10 w-4/5 mx-auto my-0">
             <div class="grid grid-cols-3">
-                <div class=" col-span-2 grid grid-cols-2">
+                <div v-for="item in gameList" :key="item.index" class=" col-span-2 grid grid-cols-2">
                     <div class="flex flex-col justify-center items-center">
                         <div class="">
                             <img src="img/game1.png" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
-                        <div>
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        <div class="text-center">
+                            <span class="font-kanit  text-white text-2xl">{{item[0]}}</span>
                         </div>
                         <div class="flex text-gray-200 font-kanit text-sm">
                             <span>About</span>
@@ -17,12 +17,12 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col justify-center items-center">
+                    <!-- <div class="flex flex-col justify-center items-center">
                         <div class="">
                             <img src="img/game2.jpg" class="w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
                         </div>
                         <div>
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                            <span class="font-kanit text-white text-2xl">{{item}}</span>
                         </div>
                         <div class="flex text-gray-200 font-kanit text-sm">
                             <span>About</span>
@@ -281,7 +281,7 @@
                             <span>x</span>
                             <span>Time</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="w-4/5 col-span-1">
                     <div class="my-5">
@@ -346,11 +346,18 @@
 
 <script>
 import { jsonstr } from "../../declare.js"
-
-console.log(jsonstr)
-
 export default {
   name: 'Navbar',
+  data () {
+      return {
+          gameList:[]
+      }
+  },
+
+  created() {
+      this.gameList = Object.entries(jsonstr)
+      console.log(this.gameList[0][0] + "/" + this.gameList[0][1])  
+  }
 }
 
 
