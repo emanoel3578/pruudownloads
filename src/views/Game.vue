@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <div>
+    <div class="font-kanit">
+        <div class="">
             <div class="flex justify-around bg-white">
                 <div class="flex">
                     <div>
-                        <img src="img/huelogo.png" class="max-h-32">
+                        <img src="../../public/img/huelogo.png" class="max-h-32">
                     </div>
                     <div class="flex items-center">
                         <span class="font-kanit text-xl">PruuDownloads</span>
@@ -15,7 +15,7 @@
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
                             <label for="search" class="">Search for games</label>
-                            <img src="img/lupe.png">
+                            <img src="../../public/img/lupe.png">
                         </div>
                     </div>
                 </div>
@@ -68,31 +68,31 @@
 
                         <div class="text-gray-300 ">
                             <div class="flex">
-                                <p>Release name:</p>
+                                <p class="font-bold">Release name:&nbsp;</p>
+                                <p>INFORMATION FROM API</p>
+                            </div>
+                            <div class="flex mb-5">
+                                <p class="font-bold">Size:&nbsp;</p>
                                 <p>INFORMATION FROM API</p>
                             </div>
                             <div class="flex">
-                                <p>Release name:</p>
+                                <p class="font-bold">Title:&nbsp;</p>
                                 <p>INFORMATION FROM API</p>
                             </div>
                             <div class="flex">
-                                <p>Release name:</p>
+                                <p class="font-bold">Genre:&nbsp;</p>
                                 <p>INFORMATION FROM API</p>
                             </div>
                             <div class="flex">
-                                <p>Release name:</p>
+                                <p class="font-bold">Developer:&nbsp;</p>
                                 <p>INFORMATION FROM API</p>
                             </div>
                             <div class="flex">
-                                <p>Release name:</p>
+                                <p class="font-bold">Publisher:&nbsp;</p>
                                 <p>INFORMATION FROM API</p>
                             </div>
                             <div class="flex">
-                                <p>Release name:</p>
-                                <p>INFORMATION FROM API</p>
-                            </div>
-                            <div class="flex">
-                                <p>Release name:</p>
+                                <p class="font-bold">Release Date:&nbsp;</p>
                                 <p>INFORMATION FROM API</p>
                             </div>
 
@@ -298,52 +298,52 @@
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game1.png" class="w-4/5">
+                        <img src="../../public/img/game1.png" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game2.jpg" class="w-4/5">
+                        <img src="../../public/img/game2.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game3.jpg" class="w-4/5">
+                        <img src="../../public/img/game3.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
                     
                     <div class="flex flex-col items-center">
-                        <img src="img/game4.jpg" class="w-4/5">
+                        <img src="../../public/img/game4.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game5.jpg" class="w-4/5">
+                        <img src="../../public/img/game5.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game6.jpg" class="w-4/5">
+                        <img src="../../public/img/game6.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game7.jpg" class="w-4/5">
+                        <img src="../../public/img/game7.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game8.jpg" class="w-4/5">
+                        <img src="../../public/img/game8.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game9.jpg" class="w-4/5">
+                        <img src="../../public/img/game9.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game10.jpg" class="w-4/5">
+                        <img src="../../public/img/game10.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
                 </div>
@@ -391,6 +391,7 @@ export default {
                 }
             })
         })
+        console.log(currentgame)
         console.log(downloadLink)
     }
 }
