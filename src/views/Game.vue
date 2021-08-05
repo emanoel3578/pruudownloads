@@ -49,7 +49,7 @@
                     <div class="flex flex-col text-white">
                         <div class="flex">
                             <p class="text-3xl">Download&nbsp;</p>
-                            <p class="text-3xl">Name of the game</p>
+                            <p class="text-3xl">{{this.name}}</p>
                         </div>
                         <div class="flex mt-5">
                             <p>about&nbsp;</p>
@@ -69,15 +69,15 @@
                         <div class="text-gray-300 ">
                             <div class="flex">
                                 <p class="font-bold">Release name:&nbsp;</p>
-                                <p>INFORMATION FROM API</p>
+                                <p>{{this.name}}</p>
                             </div>
                             <div class="flex mb-5">
                                 <p class="font-bold">Size:&nbsp;</p>
-                                <p>INFORMATION FROM API</p>
+                                <p>{{this.sizeofgame}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Title:&nbsp;</p>
-                                <p>INFORMATION FROM API</p>
+                                <p>{{this.name}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Genre:&nbsp;</p>
@@ -394,6 +394,8 @@ export default {
                 }
             })
         })
+
+        this.sizeofgame = sizeofgame
         console.log(currentgame)
         console.log(sizeofgame)
         console.log(downloadLinksArr)

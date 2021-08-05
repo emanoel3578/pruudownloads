@@ -45,13 +45,14 @@ while i < 4:
             if "skidrow" not in a["href"]:
                 listLinks.append(a["href"])
 
-
-        #Getting the providers link
-        providerLinks = ""
+        #Getting the size of games
         if "Size" not in sizeGameArrays[2].partition('\n')[0]:
             currentGameSize = "| 0 GB"
         else:
             currentGameSize = "| " + sizeGameArrays[2].partition('\n')[0][6:]
+
+        #Getting the providers link
+        providerLinks = ""
             
 
         for item in listLinks[2:]:
@@ -77,9 +78,3 @@ while i < 4:
 sys.stdout = open("declare.js", "w")
 jsonObjc = json.dumps(linksDict)
 print("export var jsonstr = {}".format(jsonObjc))
-
-
-
-
-
-
