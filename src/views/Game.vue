@@ -375,7 +375,8 @@ export default {
         return {
             gameList:[],
             currentPage:[],
-            currentGameLinks:"",
+            currentGameLinks:[],
+            sizeofgame:"",
         }
     },
 
@@ -383,16 +384,19 @@ export default {
         this.gameList = Object.entries(jsonstr)
         this.currentPage = this.gameList.slice(0,20)
         var currentgame = this.name
-        var downloadLink = this.currentGameLinks
+        var downloadLinksArr = this.currentGameLinks
+        var sizeofgame = this.sizeofgame
         this.gameList.map(function (element) {
             element.map(function (el) {
                 if (el == currentgame) {
-                    downloadLink = element[1]
+                    sizeofgame = element[1].substr(element[1].lastIndexOf('|') + 1)
+                    downloadLinksArr = element[1].split("|")
                 }
             })
         })
         console.log(currentgame)
-        console.log(downloadLink)
+        console.log(sizeofgame)
+        console.log(downloadLinksArr)
     }
 }
 </script>

@@ -6,25 +6,9 @@ from bs4.element import ContentMetaAttributeValue
 import json
 import sys
 
-first_url = "https://www.skidrowreloaded.com"
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36 OPR/77.0.4054.275"
-}
-
-reqfirst = Request(first_url, headers=headers)
-webpagefirst = urlopen(reqfirst).read()
-
-page_soup = soup(webpagefirst, "html.parser")
-#containers = page_soup.findAll("div", {"class":"post"})
-
-lastpageFind = page_soup.findAll("div", {"class":"wp-pagenavi"})
-lastpageValue = lastpageFind[0].span.text
-lastpage = int(lastpageValue[-5:].replace(",",""))
-
 i = 1
 linksDict = {}
-while i < 100:
+while i < 4:
     currentPageUrl = "https://www.skidrowreloaded.com/page/" + str(i) + "/"
     headers1 = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36 OPR/77.0.4054.275"
@@ -38,8 +22,7 @@ while i < 100:
     for container in containers1:
         linkcontainer= container.h2.a["href"]
         
-        currentLinkGame = linkcontainer
-        my_url = currentLinkGame
+        my_url = linkcontainer
         headers2 = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36 OPR/77.0.4054.275"
         }
@@ -47,17 +30,32 @@ while i < 100:
         webpage2 = urlopen(req2).read()
 
         page_soup2 = soup(webpage2, "html.parser")
-        containersLinks = page_soup2.find_all("a", href=True)
+        idTabsVerifier = page_soup2.find("div", {"class" : "wordpress-post-tabs"})
+
+        divid = idTabsVerifier.div["id"].replace("_","-") + "-0"
+        
+        containerTitleandLinks = page_soup2.find("div", {"id" : divid})
+        
+        sizeGameArrays = containerTitleandLinks.findChildren()[9].text.partition('\n')
+        
+        textcontainer = (containerTitleandLinks.findChildren()[2].text).partition('\n')[0][7:]
 
         listLinks = []
-       
-        for link in containersLinks:
-            if "skidrow" not in link["href"]:
-                listLinks.append(link["href"])
+        for a in containerTitleandLinks.find_all("a", href=True):
+            if "skidrow" not in a["href"]:
+                listLinks.append(a["href"])
+
 
         #Getting the providers link
         providerLinks = ""
-        for item in listLinks[2:]: 
+        if "Size" not in sizeGameArrays[2].partition('\n')[0]:
+            currentGameSize = "| 0 GB"
+        else:
+            currentGameSize = "| " + sizeGameArrays[2].partition('\n')[0][6:]
+            
+
+        for item in listLinks[2:]:
+            # print(item)
             if "zippyshare" in item:
                 providerLinks = providerLinks + "|" + item
             elif "mediafire" in item:
@@ -69,10 +67,9 @@ while i < 100:
             elif "magnet" in item:
                 providerLinks = providerLinks + "|" + item
 
-            textcontainer = container.h2.a.text
-            linksDict[textcontainer] = providerLinks[1:]
+            linksDict[textcontainer] = providerLinks[1:] + currentGameSize
 
-        #print(linksDict)
+        # print(linksDict)
     i = i + 1
     print("Page:" + str(i))
 
