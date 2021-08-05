@@ -8,7 +8,7 @@ import sys
 
 i = 1
 linksDict = {}
-while i < 4:
+while i < 10:
     currentPageUrl = "https://www.skidrowreloaded.com/page/" + str(i) + "/"
     headers1 = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36 OPR/77.0.4054.275"
@@ -35,10 +35,34 @@ while i < 4:
         divid = idTabsVerifier.div["id"].replace("_","-") + "-0"
         
         containerTitleandLinks = page_soup2.find("div", {"id" : divid})
+
+        ProductLink = containerTitleandLinks.a["href"]
+        print(ProductLink)
         
         sizeGameArrays = containerTitleandLinks.findChildren()[9].text.partition('\n')
         
         textcontainer = (containerTitleandLinks.findChildren()[2].text).partition('\n')[0][7:]
+
+        #Steam scraping starts here
+        # Inicio do request para a pagina do jogo 
+
+        reqGamepage = Request(ProductLink)
+        webGamepage = urlopen(reqGamepage).read()
+
+        page_soupGame = soup(webGamepage, "html.parser")
+        containerInfoGame = page_soupGame.find_all("div", {"class":"dev_row"})
+        sysRequired = page_soupGame.find("div", {"class" : "game_area_sys_req"}).div.ul.find_all("li")
+
+        developer = (page_soupGame.find("div", {"id":"developers_list"}).text).partition('\n')[2]
+        publisher = containerInfoGame[1].a.text
+        releaseDate = (page_soupGame.find("div", {"class":"date"})).text
+        genre = ((page_soupGame.find("div", {"id":"genresAndManufacturer"})).text).partition('\n')[2].partition('\n')[2].partition('\n')[0]
+        ratings = page_soupGame.find("span", {"class":"game_review_summary"}).text
+        sysRequiredStr = ""
+        for req in sysRequired:
+            sysRequiredStr = sysRequiredStr + "|" + req.text
+
+        print("{} // Developer: {} // Publisher: {} // Release Date: {} // Ratings: {} // SysReq: {}".format(genre, developer,publisher, releaseDate, ratings, sysRequiredStr))
 
         listLinks = []
         for a in containerTitleandLinks.find_all("a", href=True):
@@ -47,9 +71,9 @@ while i < 4:
 
         #Getting the size of games
         if "Size" not in sizeGameArrays[2].partition('\n')[0]:
-            currentGameSize = "| 0 GB"
+            currentGameSize = "|0 GB"
         else:
-            currentGameSize = "| " + sizeGameArrays[2].partition('\n')[0][6:]
+            currentGameSize = "|" + sizeGameArrays[2].partition('\n')[0][6:]
 
         #Getting the providers link
         providerLinks = ""
@@ -68,7 +92,7 @@ while i < 4:
             elif "magnet" in item:
                 providerLinks = providerLinks + "|" + item
 
-            linksDict[textcontainer] = providerLinks[1:] + currentGameSize
+            linksDict[textcontainer] = providerLinks[1:]  + "|" + ProductLink + currentGameSize
 
         # print(linksDict)
     i = i + 1
