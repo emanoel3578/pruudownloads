@@ -39,10 +39,7 @@
                 <div class="flex flex-col w-full">
                     <div class="flex text-white mb-5">
                         <div class="border-2 border-black bg-gray-800 px-3">
-                            <a>category/</a>
-                            <a>category/</a>
-                            <a>category/</a>
-                            <a>category/</a>
+                            <a>{{(this.genre)}}</a>
                         </div>
                     </div>
 
@@ -81,7 +78,7 @@
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Genre:&nbsp;</p>
-                                <p>INFORMATION FROM API</p>
+                                <p>{{this.genre}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Developer:&nbsp;</p>
@@ -93,7 +90,7 @@
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Release Date:&nbsp;</p>
-                                <p>INFORMATION FROM API</p>
+                                <p>{{this.releasedDate}}</p>
                             </div>
 
                             <div class="flex text-xl text-green-500 my-5">
@@ -103,7 +100,7 @@
 
                             <div class="flex flex-col text-xl">
                                 <p class="text-yellow-500">🙋‍♂ After reviewing the game, BUY the game to support the developer 👇</p>
-                                <p class="text-red-500">Steam LINK FROM API </p>
+                                <a :href="this.linkApi" class="text-red-500">{{this.linkApi}}</a>
                             </div>
                         </div>
 
@@ -113,7 +110,7 @@
                             </div>
 
                             <div class="flex justify-center">
-                                <img src="../../public/img/mainimg.png" class="w-3/5">
+                                <img :src="this.screenshot1" class="w-3/5">
                             </div>
                         </div>
 
@@ -138,7 +135,7 @@
                                     About this game
                                 </p>
                                 <p class="text-white text-gray-300">
-                                    DESCRIPTION ABOUT THE GAME COMING FROM API
+                                    {{this.description}}
                                 </p>
                             </div>
 
@@ -285,8 +282,6 @@
                                 </div>
                             </div>
 
-
-                            
                         </div>
 
                     </div>
@@ -376,7 +371,13 @@ export default {
             gameList:[],
             currentPage:[],
             currentGameLinks:[],
-            sizeofgame:"",
+            sizeofgame: "",
+            releaseDate: "",
+            linkApi: "",
+            description: "",
+            screenshot1: "",
+            screenshot2: "",
+            genre: "",
         }
     },
 
@@ -384,6 +385,12 @@ export default {
         this.gameList = Object.entries(jsonstr)
         this.currentPage = this.gameList.slice(0,20)
         var currentgame = this.name
+        var releaseDateArr = this.releaseDate
+        var descriptionArr = this.description
+        var linkApiArr = this.linkApi
+        var screenshot1Arr = this.screenshot1
+        var screenshot2Arr = this.screenshot2
+        var genreArr = this.genre
         var downloadLinksArr = this.currentGameLinks
         var sizeofgame = this.sizeofgame
         this.gameList.map(function (element) {
@@ -391,13 +398,23 @@ export default {
                 if (el == currentgame) {
                     sizeofgame = element[1].substr(element[1].lastIndexOf('|') + 1)
                     downloadLinksArr = element[1].split("|")
+                    releaseDateArr = element[1].split("|")[9].slice(13)
+                    linkApiArr = element[1].split("|")[13]
+                    genreArr = element[1].split("|")[8].slice(6)
+                    descriptionArr = element[1].split("|")[10]
+                    screenshot1Arr = element[1].split("|")[11]
+                    screenshot2Arr = element[1].split("|")[12]
                 }
             })
         })
-
+        this.genre = genreArr
+        this.releasedDate = releaseDateArr
+        this.description = descriptionArr
+        this.linkApi = linkApiArr
+        this.screenshot1 = screenshot1Arr
+        this.screenshot2 = screenshot2Arr
         this.sizeofgame = sizeofgame
-        console.log(currentgame)
-        console.log(sizeofgame)
+        console.log(this.releasedDate)
         console.log(downloadLinksArr)
     }
 }

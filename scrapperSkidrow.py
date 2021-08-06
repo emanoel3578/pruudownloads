@@ -75,7 +75,7 @@ def infoGamesGOG(ProductLink,triesGOG):
 
 i = 1
 linksDict = {}
-while i < 10:
+while i < 5:
     try:
         currentPageUrl = "https://www.skidrowreloaded.com/page/" + str(i) + "/"
         headers1 = {
@@ -110,11 +110,11 @@ while i < 10:
             sysReq = ""
             for li in containerSysReq:
                 sysReq = sysReq + "|" + li.text
-                
+            
             screenshotsLinks = (containerScreenshots[1]["src"] + "|" + containerScreenshots[3]["src"])
 
             ProductLink = containerTitleandLinks.a["href"]
-            
+    
             genreGame = (page_soup2.find("div", {"id" : divid0})).find("p").findNext().text.partition('\n')[-1].partition('\n')[0]
 
             descriptionGame = containerTitleandLinks.p.text
@@ -122,7 +122,7 @@ while i < 10:
             releaseDateGame = (page_soup2.find("div", {"id" : divid0})).find("p").findNext().text.partition('\n')[-1].partition('\n')[-1]
 
             sizeGameArrays = containerTitleandLinks.findChildren()[9].text.partition('\n')
-            
+
             textcontainer = (containerTitleandLinks.findChildren()[2].text).partition('\n')[0][7:]
 
             # #Product info scraping starts here
@@ -164,9 +164,9 @@ while i < 10:
                 elif "magnet" in item:
                     providerLinks = providerLinks + "|" + item
 
-                linksDict[textcontainer] = providerLinks[1:]  + "|" + ProductLink + currentGameSize
+                linksDict[textcontainer] = providerLinks[1:] + sysReq + "|" + genreGame + "|" + releaseDateGame + "|" + descriptionGame + "|" + screenshotsLinks + "|" + ProductLink + currentGameSize
 
-            # print(linksDict)
+            # print(linksDict, end='\n\n')
         i = i + 1
         print("Page:" + str(i))
     except urllib.error.URLError as e:
