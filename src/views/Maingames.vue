@@ -1,13 +1,13 @@
 <template lang="">
     <div>
         <div>
-            <div class="flex justify-around bg-white">
+            <div class="flex justify-around bg-gray-400">
                 <div class="flex">
                     <div>
-                        <img src="img/huelogo.png" class="max-h-32">
+                        <img id="pruulogo" src="img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
                     </div>
                     <div class="flex items-center">
-                        <span class="font-kanit text-xl">PruuDownloads</span>
+                        <span class="font-kanit text-xl text-white ml-2">PruuDownloads</span>
                     </div>
                 </div>
 
@@ -149,7 +149,20 @@ export default {
       this.currentPage = this.gameList.slice(0,20)
   }
 }
-
-
 </script>
+
+<style>
+#pruulogo {
+  position: relative;
+  animation-name: example;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes example {
+  0%   {left:-10px;}
+  50%  {left:60px;}
+  100%  {left:0px;}
+}
+</style>
 

@@ -16,12 +16,15 @@ def infoGamesSteam(ProductLink,triesSteam):
 
             page_soupGame = soup(webGamepage, "html.parser")
             containerInfoGame = page_soupGame.find_all("div", {"class":"dev_row"})
+            containerHeaderimg = page_soupGame.find("div", {"id":"gameHeaderImageCtn"})
             sysRequired = page_soupGame.find("div", {"class" : "game_area_sys_req"}).div.ul.find_all("li")
 
+            imgHeader = containerHeaderimg.img["src"]
             developer = (page_soupGame.find("div", {"id":"developers_list"}).text).partition('\n')[2]
             publisher = containerInfoGame[1].a.text
-            releaseDate = (page_soupGame.find("div", {"class":"date"})).text
-            genre = ((page_soupGame.find("div", {"id":"genresAndManufacturer"})).text).partition('\n')[2].partition('\n')[2].partition('\n')[0]
+            videoLink = page_soupGame.find("div", {"class": "highlight_player_item"})["data-webm-source"]
+            # releaseDate = (page_soupGame.find("div", {"class":"date"})).text
+            # genre = ((page_soupGame.find("div", {"id":"genresAndManufacturer"})).text).partition('\n')[2].partition('\n')[2].partition('\n')[0]
             try:
                 ratings = page_soupGame.find("span", {"class":"game_review_summary"}).text
             except AttributeError:
@@ -30,7 +33,8 @@ def infoGamesSteam(ProductLink,triesSteam):
             for req in sysRequired:
                 sysRequiredStr = sysRequiredStr + "|" + req.text
 
-            # return print("{} // Developer: {} // Publisher: {} // Release Date: {} // Ratings: {} // SysReq: {}".format(genre, developer,publisher, releaseDate, ratings, sysRequiredStr))
+            infoSteam = imgHeader + "$$" + developer + "$$" + publisher + "$$" + ratings + "$$" + videoLink
+            return infoSteam
             # return print("{} // Developer: {} // Publisher: {} // Release Date: {} // Ratings: {} // SysReq: {}".format(genre, developer,publisher, releaseDate, ratings, sysRequiredStr))
         except:
             print("Something went wrong on steam link")
@@ -48,26 +52,20 @@ def infoGamesGOG(ProductLink,triesGOG):
             page_soupGOG = soup(webpageGOG, "html.parser")
             genreGOG = page_soupGOG.find_all("div", {"class":"table--without-border"})
 
-            genreStrGOG = "|Genre:"
-            releaseDateGOG = "00/00/00"
-            developerGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[0].text
-            companyGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[1].text
-            apirul = "https://api.gog.com/v2/games/1455317728?locale=en-US"
+            if len(genreGOG) != 0:
+                developerGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[0].text
+                companyGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[1].text
+                imgHeaderGOG = page_soupGOG.find("img", {"class" : "mobile-slider__image"})["src"]
+                ratingsGOG = "Nothing"
 
-            apiRequest = request.urlopen(apirul).read()
-            apiContent = json.loads(apiRequest)
-            reqstrGOG = ""
+                infoGOG = imgHeaderGOG + "$$" + developerGOG + "$$" + companyGOG + "$$" + ratingsGOG
+                return infoGOG
+            else:
+                return "Empty"
 
-            for el in apiContent["_embedded"]["supportedOperatingSystems"][0]["systemRequirements"][0]["requirements"]:
-                reqstrGOG = reqstrGOG + (el["name"] + el["description"]) + " "
-
-            for genre in genreGOG[-1].div.find_all("a"):
-                genreStrGOG = genreStrGOG + genre.text + "-"
-
-            # return print("{} // Developer: {} // Publisher: {} // Release Date: {} // SysReq: {}".format(genreStrGOG[ :-1], developerGOG,companyGOG, releaseDateGOG, reqstrGOG))
-            # return print("{} // Developer: {} // Publisher: {} // Release Date: {} // SysReq: {}".format(genreStrGOG[ :-1], developerGOG,companyGOG, releaseDateGOG, reqstrGOG))
-        except:
+        except Exception as errorexec:
             print("Something went wrong on GOG link")
+            print(errorexec)
             return False
     else:
         return print("Tried three times but something didn't work on GOG link")
@@ -109,9 +107,9 @@ while i < 5:
 
             sysReq = ""
             for li in containerSysReq:
-                sysReq = sysReq + "|" + li.text
+                sysReq = sysReq + "$$" + li.text
             
-            screenshotsLinks = (containerScreenshots[1]["src"] + "|" + containerScreenshots[3]["src"])
+            screenshotsLinks = (containerScreenshots[1]["src"] + "$$" + containerScreenshots[3]["src"])
 
             ProductLink = containerTitleandLinks.a["href"]
     
@@ -125,17 +123,23 @@ while i < 5:
 
             textcontainer = (containerTitleandLinks.findChildren()[2].text).partition('\n')[0][7:]
 
-            # #Product info scraping starts here
-            # triesGOG = 0
-            # triesSteam = 0
-            # if "gog.com" in ProductLink:
-            #     while infoGamesGOG(ProductLink,triesGOG) == False:
-            #         triesGOG = triesGOG + 1
-            # elif "steam" in ProductLink:
-            #     while infoGamesSteam(ProductLink,triesSteam) == False:
-            #         triesSteam= triesSteam + 1
-            # else:
-            #     print("Not ready yet")
+            #Product info scraping starts here
+            triesGOG = 0
+            triesSteam = 0
+            if "gog.com" in ProductLink:
+                infoDeveloper = infoGamesGOG(ProductLink,triesGOG)
+                while infoGamesGOG(ProductLink,triesGOG) == False:
+                    triesGOG = triesGOG + 1
+                    print(ProductLink)
+            elif "steampowered" in ProductLink:
+                infoDeveloper = infoGamesSteam(ProductLink,triesSteam)
+                while infoGamesSteam(ProductLink,triesSteam) == False:
+                    triesSteam= triesSteam + 1
+                    print(ProductLink)
+            else:
+                print("Not ready yet")
+                infoDeveloper = "Empty"
+                
 
             listLinks = []
             for a in containerTitleandLinks.find_all("a", href=True):
@@ -144,9 +148,9 @@ while i < 5:
 
             #Getting the size of games
             if "Size" not in sizeGameArrays[2].partition('\n')[0]:
-                currentGameSize = "|0 GB"
+                currentGameSize = "0 GB"
             else:
-                currentGameSize = "|" + sizeGameArrays[2].partition('\n')[0][6:]
+                currentGameSize = sizeGameArrays[2].partition('\n')[0][6:]
 
             #Getting the providers link
             providerLinks = ""
@@ -154,17 +158,17 @@ while i < 5:
             for item in listLinks[2:]:
                 # print(item)
                 if "zippyshare" in item:
-                    providerLinks = providerLinks + "|" + item
+                    providerLinks = providerLinks + "$$" + item
                 elif "mediafire" in item:
-                    providerLinks = providerLinks + "|" + item
+                    providerLinks = providerLinks + "$$" + item
                 elif "bowfile" in item:
-                    providerLinks = providerLinks + "|" + item
+                    providerLinks = providerLinks + "$$" + item
                 elif "mega.nz" in item:
-                    providerLinks = providerLinks + "|" + item
+                    providerLinks = providerLinks + "$$" + item
                 elif "magnet" in item:
-                    providerLinks = providerLinks + "|" + item
+                    providerLinks = providerLinks + "$$" + item
 
-                linksDict[textcontainer] = providerLinks[1:] + sysReq + "|" + genreGame + "|" + releaseDateGame + "|" + descriptionGame + "|" + screenshotsLinks + "|" + ProductLink + currentGameSize
+                linksDict[textcontainer] = providerLinks[2:] + "|" + sysReq[2:] + "|" + genreGame + "|" + releaseDateGame + "|" + descriptionGame + "|" + screenshotsLinks + "|" + ProductLink + "|" + infoDeveloper + "|" + currentGameSize
 
             # print(linksDict, end='\n\n')
         i = i + 1

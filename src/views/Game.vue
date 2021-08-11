@@ -39,7 +39,7 @@
                 <div class="flex flex-col w-full">
                     <div class="flex text-white mb-5">
                         <div class="border-2 border-black bg-gray-800 px-3">
-                            <a>{{(this.genre)}}</a>
+                            <a>{{(this.genre).replace(new RegExp(",", "g"), "/")}}</a>
                         </div>
                     </div>
 
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="flex justify-center">
-                        <img src="../../public/img/mainimg.png" class="w-3/5">
+                        <img :src="this.devInfo[0]" class="w-3/5">
                     </div>
 
                     <div class="flex flex-col ">
@@ -82,11 +82,11 @@
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Developer:&nbsp;</p>
-                                <p>INFORMATION FROM API</p>
+                                <p>{{this.devInfo[1]}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Publisher:&nbsp;</p>
-                                <p>INFORMATION FROM API</p>
+                                <p>{{this.devInfo[2]}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Release Date:&nbsp;</p>
@@ -94,8 +94,8 @@
                             </div>
 
                             <div class="flex text-xl text-green-500 my-5">
-                                <p>ALL Reviews:</p>
-                                <p>INFO FROM API</p>
+                                <p>ALL Reviews:&nbsp;</p>
+                                <p>{{this.devInfo[3]}}</p>
                             </div>
 
                             <div class="flex flex-col text-xl">
@@ -110,11 +110,11 @@
                             </div>
 
                             <div class="flex justify-center">
-                                <img :src="this.screenshot1" class="w-3/5">
+                                <img :src="this.screenshots[0]" class="w-3/5">
                             </div>
                         </div>
 
-                        <div class="flex flex-col my-5">
+                        <div v-if="hasTrailer" class="flex flex-col my-5">
                             <div class="flex justify-center mb-2">
                                 <p class="text-white text-3xl">
                                     Trailer
@@ -123,7 +123,7 @@
 
                             <div class="flex justify-center">
                                 <video controls autoplay muted loop>
-                                    <source src="../../public/img/testvideo.webm" type="video/webm">
+                                    <source :src="this.devInfo[4]" type="video/webm">
                                 </video>
                             </div>
                         </div>
@@ -143,24 +143,24 @@
                                 <p class="text-white text-3xl">System requirements</p>
                                 <div class="flex-col">
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">OS:&nbsp;</p>
-                                        <p class="text-gray-300">INFO FROM API</p>
+                                        <p class="text-gray-200 font-bold">OS&nbsp;</p>
+                                        <p class="text-gray-300">{{this.systemReq[0].slice(2)}}</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">Processor:&nbsp;</p>
-                                        <p class="text-gray-300">INFO FROM API</p>
+                                        <p class="text-gray-200 font-bold">Processor&nbsp;</p>
+                                        <p class="text-gray-300">{{this.systemReq[1].slice(9)}}</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">Memory:&nbsp;</p>
-                                        <p class="text-gray-300">INFO FROM API</p>
+                                        <p class="text-gray-200 font-bold">Memory&nbsp;</p>
+                                        <p class="text-gray-300">{{this.systemReq[2].slice(6)}}</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">Graphics:&nbsp;</p>
-                                        <p class="text-gray-300">INFO FROM API</p>
+                                        <p class="text-gray-200 font-bold">Graphics&nbsp;</p>
+                                        <p class="text-gray-300">{{this.systemReq[3].slice(8)}}</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">Storage:&nbsp;</p>
-                                        <p class="text-gray-300">INFO FROM API</p>
+                                        <p class="text-gray-200 font-bold">Storage&nbsp;</p>
+                                        <p class="text-gray-300">{{this.systemReq[5]}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -375,47 +375,90 @@ export default {
             releaseDate: "",
             linkApi: "",
             description: "",
-            screenshot1: "",
-            screenshot2: "",
+            screenshots: "",
             genre: "",
+            systemReq: "",
+            developers:"",
+            devInfo:["Empty","Empty","Empty","Empty"],
+            hasTrailer: false
         }
     },
 
     created() {
+        async function postData(url = '') {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                headers: {
+                'Content-Type': 'application/json',
+                'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
+                'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
+                'origin': 'x-requested-with',
+                },
+                body: "fields *; where game = 107215;" // body data type must match "Content-Type" header
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+            }
+
         this.gameList = Object.entries(jsonstr)
         this.currentPage = this.gameList.slice(0,20)
         var currentgame = this.name
         var releaseDateArr = this.releaseDate
         var descriptionArr = this.description
         var linkApiArr = this.linkApi
-        var screenshot1Arr = this.screenshot1
-        var screenshot2Arr = this.screenshot2
+        var sysReqArr = this.systemReq
+        var screenshotsArr = this.screenshots
         var genreArr = this.genre
         var downloadLinksArr = this.currentGameLinks
         var sizeofgame = this.sizeofgame
+        var developersArr = this.developers
         this.gameList.map(function (element) {
             element.map(function (el) {
                 if (el == currentgame) {
+                    downloadLinksArr = element[1].split("|")[0].split("$$")
+                    sysReqArr = element[1].split("|")[1].split("$$")
                     sizeofgame = element[1].substr(element[1].lastIndexOf('|') + 1)
-                    downloadLinksArr = element[1].split("|")
-                    releaseDateArr = element[1].split("|")[9].slice(13)
-                    linkApiArr = element[1].split("|")[13]
-                    genreArr = element[1].split("|")[8].slice(6)
-                    descriptionArr = element[1].split("|")[10]
-                    screenshot1Arr = element[1].split("|")[11]
-                    screenshot2Arr = element[1].split("|")[12]
+                    releaseDateArr = element[1].split("|")[3].slice(13)
+                    linkApiArr = element[1].split("|")[6]
+                    genreArr = element[1].split("|")[2].slice(6)
+                    descriptionArr = element[1].split("|")[4]
+                    screenshotsArr = element[1].split("|")[5].split("$$")
+                    developersArr = element[1].split("|")[7].split("$$")
+                    console.log(element[1].split("|"))
                 }
             })
         })
+        this.developers = developersArr
+        if(this.developers[0] == "Empty") {
+            postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/screenshots?')
+            .then(responseFromApi => {
+                this.devInfo[0] = responseFromApi[0].url.replace("t_thumb", "t_screenshot_med_2x").replace("//", "https:/")
+                this.devInfo[1] = "TBA"
+                this.devInfo[2] = "TBA"
+                this.devInfo[3] = "TBA"
+                this.devInfo[4] = "TBA"
+                this.hasTrailer = false
+                console.log(this.developers[0])
+            });
+        }else{
+            this.devInfo[0] = this.developers[0]
+            this.devInfo[1] = this.developers[1]
+            this.devInfo[2] = this.developers[2]
+            this.devInfo[3] = this.developers[3]
+            this.devInfo[4] = this.developers[4]
+            this.hasTrailer = true
+        }
+
         this.genre = genreArr
+        this.currentGameLinks = downloadLinksArr
+        this.systemReq = sysReqArr
         this.releasedDate = releaseDateArr
         this.description = descriptionArr
         this.linkApi = linkApiArr
-        this.screenshot1 = screenshot1Arr
-        this.screenshot2 = screenshot2Arr
+        this.screenshots = screenshotsArr
         this.sizeofgame = sizeofgame
-        console.log(this.releasedDate)
-        console.log(downloadLinksArr)
+        console.log(this.developers)
     }
 }
 </script>
