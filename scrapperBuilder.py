@@ -63,16 +63,20 @@ page_soupGame = soup(webGamepage, "html.parser")
 idTabsVerifier = page_soupGame.find("div", {"class" : "wordpress-post-tabs"})
 
 divid0 = idTabsVerifier.div["id"].replace("_","-") + "-0"
+divid3 = idTabsVerifier.div["id"].replace("_","-") + "-3"
 containerTitleandLinks = page_soupGame.find("div", {"id" : divid0})
 
 sizeGameArrays = containerTitleandLinks.findChildren()[9].text.partition('\n')
+
 currentGameSize = "0 GB"
 for item in containerTitleandLinks.select("p"):
     currentp = item
     if "Size:" in item.text:
         currentGameSize = item.text.partition('\n')[-1][:-12]
 
-print(currentGameSize)
+containerYTLink = page_soupGame.find("div", {"id" : divid3}).iframe["src"]
+print(containerYTLink)
+
     
 
 

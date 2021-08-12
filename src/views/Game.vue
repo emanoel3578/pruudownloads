@@ -109,8 +109,14 @@
                                 <p class="text-white text-3xl">Screenshots</p>
                             </div>
 
-                            <div class="flex justify-center">
-                                <img :src="this.screenshots[0]" class="w-3/5">
+                            <div id="cf7" class="flex justify-center">
+                                <img :src="this.screenshots[0]" id="firstIMG" class="opaque">
+                                <img :src="this.screenshots[1]" id="secondIMG">
+                            </div>
+
+                            <div class="flex justify-center gap-4 text-white text-3xl">
+                                <p @click="selectScreenshot" id="firstSelect" class="cursor-pointer">.</p>
+                                <p @click="selectScreenshot" id="secondSelect" class="cursor-pointer">.</p>
                             </div>
                         </div>
 
@@ -121,8 +127,11 @@
                                 </p>
                             </div>
 
-                            <div class="flex justify-center">
-                                <video controls autoplay muted loop>
+                            <div class="player-container flex justify-center">
+
+                                <iframe v-if="hasYTLink" class="w-full" height="345" :src="this.YTLink" ></iframe>
+                                
+                                <video v-else controls autoplay muted loop>
                                     <source :src="this.devInfo[4]" type="video/webm">
                                 </video>
                             </div>
@@ -198,58 +207,58 @@
                                 </div>
 
                                 <div class="flex flex-col text-center justify-center">
-                                    <div class="border-b-2 border-gray-300 pb-4 mb-4">
+                                    <div v-show="mediafireLink" class="border-b-2 border-gray-300 pb-4 mb-4">
                                         <p class="text-blue-300 text-3xl mb-2">
                                             Mediafire:
                                         </p>
                                         <div class="flex justify-center">
                                             <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
                                                 <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                <p class="text-xl text-gray-200">
+                                                <a :href="mediafireDL" class="text-xl text-gray-200">
                                                     Download
-                                                </p>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="border-b-2 border-gray-300 pb-4 mb-4">
+                                    <div v-show="MEGALink" class="border-b-2 border-gray-300 pb-4 mb-4">
                                         <p class="text-red-300 text-3xl mb-2">
                                             MEGA:
                                         </p>
                                         <div class="flex justify-center">
                                             <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
                                                 <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                <p class="text-xl text-gray-200">
+                                                <a :href="megaDL" class="text-xl text-gray-200">
                                                     Download
-                                                </p>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="border-b-2 border-gray-300 pb-4 mb-4">
+                                    <div v-show="BowfileLink" class="border-b-2 border-gray-300 pb-4 mb-4">
                                         <p class="text-purple-400 font-bold text-3xl mb-2">
                                             Bowfile:
                                         </p>
                                         <div class="flex justify-center">
                                             <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
                                                 <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                <p class="text-xl text-gray-200">
+                                                <a :href="bowfileDL" class="text-xl text-gray-200">
                                                     Download
-                                                </p>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="border-b-2 border-gray-300 pb-4 mb-4">
+                                    <div v-show="TorrentLink" class="border-b-2 border-gray-300 pb-4 mb-4">
                                         <p class="text-green-300 text-3xl mb-2">
                                             TORRENT:
                                         </p>
                                         <div class="flex justify-center">
                                             <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
                                                 <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                <p class="text-xl text-gray-200">
+                                                <a :href="torrentDL" class="text-xl text-gray-200">
                                                     Download
-                                                </p>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -338,16 +347,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="flex justify-center mb-2 text-lg text-white">
-                <button  class="mx-3 cursor-pointer"> &#60;&#60; </button>
-                <button  value="firstpage" class="mx-3 cursor-pointer bg-blue-500 rounded-full w-6 h-6" ref="firstpage">1</button>
-                <button  value="secondpage" class="mx-3 cursor-pointer" ref="secondpage">2</button>
-                <button  value="thirdpage" class="mx-3 cursor-pointer" ref="thirdpage">3</button>
-                <button  value="forthpage" class="mx-3 cursor-pointer" ref="forthpage">4</button>
-                <button  value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">5</button>
-                <button  class="mx-3 cursor-pointer"> &#62;&#62; </button>
-            </div>
         </div>
         
         <div class="w-full text-center text-white flex flex-col bg-gray-700">
@@ -359,10 +358,15 @@
 
 <script>
 import { jsonstr } from "../../declare.js"
+//import HLSCore from '@cloudgeek/playcore-hls'
 export default {
     props:["name"],
     data () {
         return {
+            TorrentLink: true,
+            mediafireLink: false,
+            MEGALink: false,
+            BowLink: false,
             gameList:[],
             currentPage:[],
             currentGameLinks:[],
@@ -375,8 +379,29 @@ export default {
             systemReq: "",
             developers:"",
             devInfo:["Empty","Empty","Empty","Empty"],
-            hasTrailer: false
+            hasTrailer: false,
+            hasYTLink: false,
+            YTLink: "",
         }
+    },
+
+    methods: {
+        selectScreenshot(event) {
+            var element = document.getElementById("firstIMG")
+            var secondElement = document.getElementById("secondIMG")
+
+            if (event.srcElement.id == "firstSelect"){
+                element.classList.remove("opaque")
+                secondElement.classList.remove("opaque")
+                element.classList.add("opaque")
+            }else {
+                console.log("here")
+                element.classList.remove("opaque")
+                secondElement.classList.remove("opaque")
+                secondElement.classList.add("opaque")
+            }
+        }
+
     },
 
     created() {
@@ -408,6 +433,7 @@ export default {
         var downloadLinksArr = this.currentGameLinks
         var sizeofgame = this.sizeofgame
         var developersArr = this.developers
+        var YTLinkArr = this.YTLink
         this.gameList.map(function (element) {
             element.map(function (el) {
                 if (el == currentgame) {
@@ -420,7 +446,8 @@ export default {
                     descriptionArr = element[1].split("|")[4]
                     screenshotsArr = element[1].split("|")[5].split("$$")
                     developersArr = element[1].split("|")[7].split("$$")
-                    console.log((element[1].split("|")))
+                    YTLinkArr = element[1].split("|")[8]
+                    //console.log((downloadLinksArr[0].split("$$")))
                 }
             })
         })
@@ -445,6 +472,46 @@ export default {
             this.hasTrailer = true
         }
 
+        if (this.devInfo[4] == undefined) {
+            this.hasYTLink = true
+        }else {
+            this.hasYTLink = false
+        }
+
+        var mediafireDL = ""
+        var bowfileDL = ""
+        var megaDL = ""
+        var torrentDL = ""
+        var mediafireLink = false
+        var BowfileLink = false
+        var MEGALink = false
+        var TorrentLink = false
+        downloadLinksArr.map(function (element) {
+            console.log(element)
+            if (element.includes("mediafire")) {
+                mediafireLink = true
+                mediafireDL = element
+            }else if (element.includes("bowfile")) {
+                BowfileLink = true
+                bowfileDL = element
+            }else if (element.includes("MEGA")) {
+                MEGALink = true
+                megaDL = element
+            }else if (element.includes("zippy")) {
+                TorrentLink = true
+                torrentDL = element
+            }
+        })
+
+        this.mediafireDL = mediafireDL
+        this.bowfileDL = bowfileDL
+        this.megaDL = megaDL
+        this.torrentDL = torrentDL
+        this.MEGALink = MEGALink
+        this.TorrentLink = TorrentLink
+        this.BowfileLink =  BowfileLink
+        this.mediafireLink = mediafireLink
+        this.YTLink = YTLinkArr
         this.genre = genreArr
         this.currentGameLinks = downloadLinksArr
         this.systemReq = sysReqArr
@@ -453,7 +520,36 @@ export default {
         this.linkApi = linkApiArr
         this.screenshots = screenshotsArr
         this.sizeofgame = sizeofgame
-        //console.log(this.developers)
+        
     }
 }
 </script>
+
+<style>
+
+#cf7 {
+  position:relative;
+  height:281px;
+  width:450px;
+  margin:0 auto 10px;
+}
+#cf7 img {
+  position:absolute;
+  left:0;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+  opacity:0;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+
+#cf7 img.opaque {
+  opacity:1;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=1);
+}
+
+
+</style>

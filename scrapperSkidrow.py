@@ -127,6 +127,7 @@ while i < 5:
 
             divid0 = idTabsVerifier.div["id"].replace("_","-") + "-0"
             divid2 = idTabsVerifier.div["id"].replace("_","-") + "-2"
+            divid3 = idTabsVerifier.div["id"].replace("_","-") + "-3"
             
             containerTitleandLinks = page_soup2.find("div", {"id" : divid0})
             containerScreenshots = (page_soup2.find("div", {"id" : divid2})).find_all("img")
@@ -150,6 +151,8 @@ while i < 5:
             sizeGameArrays = containerTitleandLinks.findChildren()[9].text.partition('\n')
 
             textcontainer = (containerTitleandLinks.findChildren()[2].text).partition('\n')[0][7:]
+            
+            YTLink = page_soup2.find("div", {"id" : divid3}).iframe["src"]
 
             #Product info scraping starts here
             triesSteam = 0
@@ -185,7 +188,6 @@ while i < 5:
             for item in containerTitleandLinks.select("p"):
                 if "Size:" in item.text:
                     currentGameSize = item.text.partition('\n')[-1][:-12]
-                    print(currentGameSize)
 
             #Getting the providers link
             providerLinks = ""
@@ -203,7 +205,7 @@ while i < 5:
                 elif "magnet" in item:
                     providerLinks = providerLinks + "$$" + item
 
-                linksDict[textcontainer] = providerLinks[2:] + "|" + sysReq[2:] + "|" + genreGame + "|" + releaseDateGame + "|" + descriptionGame + "|" + screenshotsLinks + "|" + ProductLink + "|" + infoDeveloper + "|" + currentGameSize
+                linksDict[textcontainer] = providerLinks[2:] + "|" + sysReq[2:] + "|" + genreGame + "|" + releaseDateGame + "|" + descriptionGame + "|" + screenshotsLinks + "|" + ProductLink + "|" + infoDeveloper + "|" + YTLink + "|" + currentGameSize
 
             # print(linksDict, end='\n\n')
         i = i + 1
