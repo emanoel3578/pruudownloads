@@ -1,7 +1,7 @@
 <template>
     <div class="font-kanit">
         <div class="">
-            <div class="flex justify-around bg-white">
+            <div class="flex justify-around bg-white" id="top">
                 <div class="flex">
                     <div>
                         <img src="../../public/img/huelogo.png" class="max-h-32">
@@ -70,7 +70,7 @@
                             </div>
                             <div class="flex mb-5">
                                 <p class="font-bold">Size:&nbsp;</p>
-                                <p>{{this.sizeofgame}}</p>
+                                <p>{{this.sizeofgame.slice(5)}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Title:&nbsp;</p>
@@ -143,23 +143,18 @@
                                 <p class="text-white text-3xl">System requirements</p>
                                 <div class="flex-col">
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">OS&nbsp;</p>
-                                        <p class="text-gray-300">{{this.systemReq[0].slice(2)}}</p>
+                                        <p class="text-gray-300">{{this.systemReq[0]}}</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">Processor&nbsp;</p>
-                                        <p class="text-gray-300">{{this.systemReq[1].slice(9)}}</p>
+                                        <p class="text-gray-300">{{this.systemReq[1]}}</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">Memory&nbsp;</p>
-                                        <p class="text-gray-300">{{this.systemReq[2].slice(6)}}</p>
+                                        <p class="text-gray-300">{{this.systemReq[2]}}</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">Graphics&nbsp;</p>
-                                        <p class="text-gray-300">{{this.systemReq[3].slice(8)}}</p>
+                                        <p class="text-gray-300">{{this.systemReq[3]}}</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="text-gray-200 font-bold">Storage&nbsp;</p>
                                         <p class="text-gray-300">{{this.systemReq[5]}}</p>
                                     </div>
                                 </div>
@@ -398,7 +393,7 @@ export default {
                 },
                 body: "fields *; where game = 107215;" // body data type must match "Content-Type" header
             });
-            return response.json(); // parses JSON response into native JavaScript objects
+                return response.json(); // parses JSON response into native JavaScript objects
             }
 
         this.gameList = Object.entries(jsonstr)
@@ -425,7 +420,7 @@ export default {
                     descriptionArr = element[1].split("|")[4]
                     screenshotsArr = element[1].split("|")[5].split("$$")
                     developersArr = element[1].split("|")[7].split("$$")
-                    console.log(element[1].split("|"))
+                    console.log((element[1].split("|")))
                 }
             })
         })
@@ -458,7 +453,7 @@ export default {
         this.linkApi = linkApiArr
         this.screenshots = screenshotsArr
         this.sizeofgame = sizeofgame
-        console.log(this.developers)
+        //console.log(this.developers)
     }
 }
 </script>

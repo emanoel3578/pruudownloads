@@ -50,26 +50,36 @@ import json
 
 # print("{} // Developer: {} // Publisher: {} // Release Date: {} // SysReq: {}".format(genreStrGOG[:-1], developerGOG,companyGOG, releaseDateGOG, reqstrGOG))
 
-# Steam test Scrapping 
-testUrl = "https://store.steampowered.com/app/1076620/Svoboda_1945_Liberation/"
-reqGamepage = Request(testUrl)
+# Steam test Scrapping
+
+testUrl = "https://www.skidrowreloaded.com/art-of-rally-kenya-codex/"
+headers2 = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36 OPR/77.0.4054.275"
+            }
+reqGamepage = Request(testUrl, headers=headers2)
 webGamepage = urlopen(reqGamepage).read()
 
 page_soupGame = soup(webGamepage, "html.parser")
-containerInfoGame = page_soupGame.find_all("div", {"class":"dev_row"})
-sysRequired = page_soupGame.find("div", {"class" : "game_area_sys_req"}).div.ul.find_all("li")
+idTabsVerifier = page_soupGame.find("div", {"class" : "wordpress-post-tabs"})
 
-developer = (page_soupGame.find("div", {"id":"developers_list"}).text).partition('\n')[2]
-publisher = containerInfoGame[1].a.text
-releaseDate = (page_soupGame.find("div", {"class":"date"})).text
-genre = ((page_soupGame.find("div", {"id":"genresAndManufacturer"})).text).partition('\n')[2].partition('\n')[2].partition('\n')[0]
-ratings = page_soupGame.find("span", {"class":"game_review_summary"}).text
-sysRequiredStr = ""
-for req in sysRequired:
-    sysRequiredStr = sysRequiredStr + "|" + req.text
+divid0 = idTabsVerifier.div["id"].replace("_","-") + "-0"
+containerTitleandLinks = page_soupGame.find("div", {"id" : divid0})
 
-videoLink = page_soupGame.find("div", {"class": "highlight_player_item"})["data-webm-source"]
-print(videoLink)
+sizeGameArrays = containerTitleandLinks.findChildren()[9].text.partition('\n')
+currentGameSize = "0 GB"
+for item in containerTitleandLinks.select("p"):
+    currentp = item
+    if "Size:" in item.text:
+        currentGameSize = item.text.partition('\n')[-1][:-12]
+
+print(currentGameSize)
+    
+
+
+
+
+
+
 
 
     

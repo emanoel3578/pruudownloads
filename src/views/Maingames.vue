@@ -1,7 +1,7 @@
 <template lang="">
     <div>
         <div>
-            <div class="flex justify-around bg-gray-400">
+            <div class="flex justify-around bg-gray-400" id="top">
                 <div class="flex">
                     <div>
                         <img id="pruulogo" src="img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
@@ -39,14 +39,14 @@
                 <div class="grid grid-cols-2">
                     <div v-for="item in currentPage" :key="item.index" class="">
                         <div class="flex flex-col justify-center items-center my-7">
-                            <div class="">
-                                <router-link :to="'/game/'+ item[0]">
-                                    <img src="img/game1.png" class="cursor-pointer w-4/5 mx-auto mx-0 border-2 border-yellow-300">    
+                            <div class="border-4 border-red-600">
+                                <router-link :to="'/game/'+ item[0] + '#top' ">
+                                    <img :src="item[1]" class="cursor-pointer max-h-44 mx-auto mx-0">    
                                 </router-link>
                             </div>
                             <div class="text-center">
                                 <router-link to="/game">
-                                    <span class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</span>
+                                    <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
                                 </router-link>
                             </div>
                             <div class="flex text-gray-200 font-kanit text-sm">
@@ -139,14 +139,55 @@ export default {
   name: 'Navbar',
   data () {
       return {
-          gameList:[],
-          currentPage:[]
+        gameList:[],
+        currentPage:[],
+        currentGameLinks:[],
+        sizeofgame: "",
+        releaseDate: "",
+        linkApi: "",
+        description: "",
+        screenshots: "",
+        genre: "",
+        systemReq: "",
+        developers:"",
+        devInfo:["Empty","Empty","Empty","Empty"],
+        hasTrailer: false
       }
   },
 
   created() {
-      this.gameList = Object.entries(jsonstr)
-      this.currentPage = this.gameList.slice(0,20)
+      async function postData(url = '') {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                headers: {
+                'Content-Type': 'application/json',
+                'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
+                'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
+                'origin': 'x-requested-with',
+                },
+                body: "fields *; where game = 107215;" // body data type must match "Content-Type" header
+            });
+                return response.json(); // parses JSON response into native JavaScript objects
+            }
+
+        this.gameList = Object.entries(jsonstr)
+        this.currentPage = this.gameList.slice(0,20)
+        var developersArr = this.developers
+        this.developers = developersArr
+        this.currentPage.map(function (element) {
+            var developersArr = element[1].split("|")[7].split("$$")
+            if(developersArr == "Empty") {
+                postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/screenshots?')
+                .then(responseFromApi => {
+                    element[1] = responseFromApi[0].url.replace("t_thumb", "t_screenshot_med_2x").replace("//", "https:/")
+                });
+            }else {
+                element[1] = developersArr
+            }
+            //console.log((element[1].split("|")).length)
+        })
   }
 }
 </script>

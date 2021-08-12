@@ -17,7 +17,7 @@ def infoGamesSteam(ProductLink,triesSteam):
             page_soupGame = soup(webGamepage, "html.parser")
             containerInfoGame = page_soupGame.find_all("div", {"class":"dev_row"})
             containerHeaderimg = page_soupGame.find("div", {"id":"gameHeaderImageCtn"})
-            sysRequired = page_soupGame.find("div", {"class" : "game_area_sys_req"}).div.ul.find_all("li")
+            # sysRequired = page_soupGame.find("div", {"class" : "game_area_sys_req"}).div.ul.find_all("li")
 
             imgHeader = containerHeaderimg.img["src"]
             developer = (page_soupGame.find("div", {"id":"developers_list"}).text).partition('\n')[2]
@@ -29,9 +29,12 @@ def infoGamesSteam(ProductLink,triesSteam):
                 ratings = page_soupGame.find("span", {"class":"game_review_summary"}).text
             except AttributeError:
                 ratings = (((page_soupGame.find("div", {"class":"summary"}).text).partition('\n')[2]).replace("\t", ""))
-            sysRequiredStr = ""
-            for req in sysRequired:
-                sysRequiredStr = sysRequiredStr + "|" + req.text
+            # sysRequiredStr = ""
+            # for req in sysRequired:
+            #     treatedReq = req.text.replace("|", "")
+            #     sysRequiredStr = sysRequiredStr + "|" + treatedReq
+            # if "Roguebook" in ProductLink:
+            #     print(sysRequiredStr)
 
             infoSteam = imgHeader + "$$" + developer + "$$" + publisher + "$$" + ratings + "$$" + videoLink
             return infoSteam
@@ -41,6 +44,30 @@ def infoGamesSteam(ProductLink,triesSteam):
             return False
     else:
         return print("Tried three times but something didn't work on Steam link")
+
+
+def infoGamesEpic(ProductLink,triesEpic):
+    if triesEpic < 3:
+        try:
+            reqGamepage = Request(ProductLink)
+            webGamepage = urlopen(reqGamepage).read()
+
+            page_soupGame = soup(webGamepage, "html.parser")
+            containerDev = page_soupGame.select("div[class*='PDPSidebarMetadata__value']")
+            containerImg = page_soupGame.select("div[class*='Image__pictureWrapper']")
+
+            imgHeader = containerImg[1].div.img["src"]
+            developer = containerDev[0].span.text
+            publisher = containerDev[1].span.text
+
+            infoEpic = imgHeader + "$$" + developer + "$$" + publisher
+            return infoEpic
+
+        except:
+            print("Something went wrong on Epic link")
+            return False
+    else:
+        return print("Tried three times but something didn't work on Epic link")
 
 
 def infoGamesGOG(ProductLink,triesGOG):
@@ -107,7 +134,8 @@ while i < 5:
 
             sysReq = ""
             for li in containerSysReq:
-                sysReq = sysReq + "$$" + li.text
+                treatedReq = li.text.replace("|", "")
+                sysReq = sysReq + "$$" + treatedReq
             
             screenshotsLinks = (containerScreenshots[1]["src"] + "$$" + containerScreenshots[3]["src"])
 
@@ -124,17 +152,23 @@ while i < 5:
             textcontainer = (containerTitleandLinks.findChildren()[2].text).partition('\n')[0][7:]
 
             #Product info scraping starts here
-            triesGOG = 0
             triesSteam = 0
+            triesGOG = 0
+            triesEpic = 0
             if "gog.com" in ProductLink:
                 infoDeveloper = infoGamesGOG(ProductLink,triesGOG)
-                while infoGamesGOG(ProductLink,triesGOG) == False:
+                while infoDeveloper == False:
                     triesGOG = triesGOG + 1
                     print(ProductLink)
             elif "steampowered" in ProductLink:
                 infoDeveloper = infoGamesSteam(ProductLink,triesSteam)
-                while infoGamesSteam(ProductLink,triesSteam) == False:
+                while infoDeveloper == False:
                     triesSteam= triesSteam + 1
+                    print(ProductLink)
+            elif "epicgames" in ProductLink:
+                infoDeveloper = infoGamesEpic(ProductLink,triesEpic)
+                while infoDeveloper == False:
+                    triesEpic= triesEpic + 1
                     print(ProductLink)
             else:
                 print("Not ready yet")
@@ -147,10 +181,11 @@ while i < 5:
                     listLinks.append(a["href"])
 
             #Getting the size of games
-            if "Size" not in sizeGameArrays[2].partition('\n')[0]:
-                currentGameSize = "0 GB"
-            else:
-                currentGameSize = sizeGameArrays[2].partition('\n')[0][6:]
+            currentGameSize = "0 GB"
+            for item in containerTitleandLinks.select("p"):
+                if "Size:" in item.text:
+                    currentGameSize = item.text.partition('\n')[-1][:-12]
+                    print(currentGameSize)
 
             #Getting the providers link
             providerLinks = ""
