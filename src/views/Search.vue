@@ -4,7 +4,7 @@
             <div class="flex justify-around bg-gray-400" id="top">
                 <div class="flex">
                     <div>
-                        <img id="pruulogo" src="img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
+                        <img id="pruulogo" src="/img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
                     </div>
                     <div class="flex items-center">
                         <span class="font-kanit text-xl text-white ml-2">PruuDownloads</span>
@@ -14,8 +14,9 @@
                 <div class="flex">
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
-                            <label for="search" class="">Search for games</label>
-                            <img src="img/lupe.png">
+                            <label @click="searchbar = !searchbar" for="search" class="cursor-pointer ">Search for games</label>
+                            <input v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
+                            <img @click="sendSearch" src="/img/lupe.png">
                         </div>
                     </div>
                 </div>
@@ -60,7 +61,7 @@
         <div class="mt-10 w-3/5 mx-auto my-0">
             <div class="flex">
                 <div class="grid grid-cols-2">
-                    <div v-for="item in currentPage" :key="item.index" class="">
+                    <div v-for="item in queryArray" :key="item.index" class="">
                         <div class="flex flex-col justify-center items-center my-7">
                             <div class="border-4 border-red-600">
                                 <router-link :to="'/game/'+ item[0] + '#top' ">
@@ -87,58 +88,71 @@
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game1.png" class="w-4/5">
+                        <img src="/img/game1.png" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game2.jpg" class="w-4/5">
+                        <img src="/img/game2.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game3.jpg" class="w-4/5">
+                        <img src="/img/game3.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
                     
                     <div class="flex flex-col items-center">
-                        <img src="img/game4.jpg" class="w-4/5">
+                        <img src="/img/game4.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game5.jpg" class="w-4/5">
+                        <img src="/img/game5.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game6.jpg" class="w-4/5">
+                        <img src="/img/game6.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game7.jpg" class="w-4/5">
+                        <img src="/img/game7.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game8.jpg" class="w-4/5">
+                        <img src="/img/game8.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game9.jpg" class="w-4/5">
+                        <img src="/img/game9.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game10.jpg" class="w-4/5">
+                        <img src="/img/game10.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
                 </div>
             </div>
 
+            
             <div class="flex justify-center mb-2 text-lg text-white">
+                <button  class="mx-3 cursor-pointer"> &#60;&#60; </button>
+                <button  value="firstpage" class="mx-3 cursor-pointer bg-blue-500 rounded-full w-6 h-6" ref="firstpage">1</button>
+                <!-- <button  value="secondpage" class="mx-3 cursor-pointer" ref="secondpage">2</button>
+                <button  value="thirdpage" class="mx-3 cursor-pointer" ref="thirdpage">3</button>
+                <button  value="forthpage" class="mx-3 cursor-pointer" ref="forthpage">4</button>
+                <button  value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">5</button> -->
+                <button  class="mx-3 cursor-pointer"> &#62;&#62; </button>
+            </div>
+
+
+
+            <!-- <div class="flex justify-center mb-2 text-lg text-white">
                 <button @click="previousPage" class="mx-3 cursor-pointer"> &#60;&#60; </button>
 
                 <router-link @click='ChangePage' id="firstPage" class="otherPages" ref="firstpage"  :to="'/page/' + this.pageValues[0]"> {{this.pageValues[0]}} </router-link>
@@ -150,7 +164,7 @@
                 <button  @click="ChangePage" value="lastpage" class="otherPages" ref="lastpage">299</button>
                 
                 <button @click="nextPage" class="mx-3 cursor-pointer"> &#62;&#62; </button>
-            </div>
+            </div> -->
         </div>
         
         <div class="w-full text-center text-white flex flex-col bg-gray-700">
@@ -185,6 +199,9 @@ export default {
     props:["query"],
     data () {
         return {
+            searchbar: true,
+            searchQuery: this.query.substring(1),
+            queryArray: [],
             clickedPage:"",
             gameList:[],
             currentPage:[],
@@ -251,75 +268,85 @@ export default {
             }
 
         },
+
+
+        sendSearch () {
+          if (this.searchQuery != "" && this.searchQuery != undefined) {
+              window.location.href = "http://localhost:8080/search/s=" + this.searchQuery;
+          }else {
+              console.log("Bad Search")
+              console.log(this.searchQuery)
+          }
+      },
     },
 
     created() {
         console.log("Called created")
+        var query = this.query.substring(1)
+        var queryArray = this.queryArray
         
         this.gameList = Object.entries(jsonstr)
-        var endSlice = parseInt(this.numberPage) * 20
-        var startSlice = endSlice - 20
-        this.currentPage = this.gameList.slice(startSlice,endSlice)
+        this.currentPage = this.gameList.slice(0,20)
         this.currentPage.map(function (element) {
-            var developersArr = element[1].split("|")[7].split("$$")
-            if(developersArr[0] == "Empty") {
-                var searchString = 'search ' + `"${element[0]}"` + '; fields id;'
-                postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games?', searchString)
-                .then(responseFromApi => {
-                    var idSearchedGame = 'fields *;' + 'where game = ' + `${responseFromApi[0].id}` + ';'
-                    postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
-                    .then(screenshotApi => {
-                        element[1] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
-                        console.log(screenshotApi)
-                    })
-                });
-            }else {
-                element[1] = developersArr[0]
+            if ((element[0]).toLocaleLowerCase().includes((query).toLocaleLowerCase()) || (element[1]).toLocaleLowerCase().includes((query).toLocaleLowerCase())) {
+                queryArray.push(element)
+                var developersArr = element[1].split("|")[7].split("$$")
+                if(developersArr[0] == "Empty") {
+                    var searchString = 'search ' + `"${element[0]}"` + '; fields id;'
+                    postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games?', searchString)
+                    .then(responseFromApi => {
+                        var idSearchedGame = 'fields *;' + 'where game = ' + `${responseFromApi[0].id}` + ';'
+                        postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
+                        .then(screenshotApi => {
+                            element[1] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
+                            console.log(screenshotApi)
+                        })
+                    });
+                }else {
+                    element[1] = developersArr[0]
+                }
             }
-            //console.log((element[1].split("|")).length)
         })
-
-        
     },
 
 
     mounted() {
-        console.log(this.query)
-        if (parseInt(this.numberPage) > 5) {
-            var numberOfLoops = Math.floor(parseInt(this.numberPage) / 5)
+        //console.log(this.query)
+        // if (parseInt(this.numberPage) > 5) {
+        //     var numberOfLoops = Math.floor(parseInt(this.numberPage) / 5)
             
-            let i = 0
-            while (i < numberOfLoops) {
-                this.pageValues[0] = this.pageValues[0] + 5
-                this.pageValues[1] = this.pageValues[1] + 5
-                this.pageValues[2] = this.pageValues[2] + 5
-                this.pageValues[3] = this.pageValues[3] + 5
-                this.pageValues[4] = this.pageValues[4] + 5
-                i++
-            }
-        }
+        //     let i = 0
+        //     while (i < numberOfLoops) {
+        //         this.pageValues[0] = this.pageValues[0] + 5
+        //         this.pageValues[1] = this.pageValues[1] + 5
+        //         this.pageValues[2] = this.pageValues[2] + 5
+        //         this.pageValues[3] = this.pageValues[3] + 5
+        //         this.pageValues[4] = this.pageValues[4] + 5
+        //         i++
+        //     }
+        // }
 
-        var firstPage = document.getElementById("firstPage").innerHTML
-        var secondPage = document.getElementById("secondPage").innerHTML
-        var thirdPage = document.getElementById("thirdPage").innerHTML
-        var forthPage = document.getElementById("forthPage").innerHTML
-        var fifthPage = document.getElementById("fifthPage").innerHTML
+        // var firstPage = document.getElementById("firstPage").innerHTML
+        // var secondPage = document.getElementById("secondPage").innerHTML
+        // var thirdPage = document.getElementById("thirdPage").innerHTML
+        // var forthPage = document.getElementById("forthPage").innerHTML
+        // var fifthPage = document.getElementById("fifthPage").innerHTML
 
-        if (this.numberPage == firstPage) {
-            document.getElementById("firstPage").classList.toggle("currentPage")
-        }
-        if (this.numberPage == secondPage) {
-            document.getElementById("secondPage").classList.toggle("currentPage")
-        }
-        if (this.numberPage == thirdPage) {
-            document.getElementById("thirdPage").classList.toggle("currentPage")
-        }
-        if (this.numberPage == forthPage) {
-            document.getElementById("forthPage").classList.toggle("currentPage")
-        }
-        if (this.numberPage == fifthPage) {
-            document.getElementById("fifthPage").classList.toggle("currentPage")
-        }
+        // if (this.numberPage == firstPage) {
+        //     document.getElementById("firstPage").classList.toggle("currentPage")
+        // }
+        // if (this.numberPage == secondPage) {
+        //     document.getElementById("secondPage").classList.toggle("currentPage")
+        // }
+        // if (this.numberPage == thirdPage) {
+        //     document.getElementById("thirdPage").classList.toggle("currentPage")
+        // }
+        // if (this.numberPage == forthPage) {
+        //     document.getElementById("forthPage").classList.toggle("currentPage")
+        // }
+        // if (this.numberPage == fifthPage) {
+        //     document.getElementById("fifthPage").classList.toggle("currentPage")
+        // }
     },
 
     updated() {
