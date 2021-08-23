@@ -14,8 +14,9 @@
                 <div class="flex">
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
-                            <label for="search" class="">Search for games</label>
-                            <img src="img/lupe.png">
+                            <label @click="searchbar = !searchbar" for="search" class="cursor-pointer ">Search for games</label>
+                            <input v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
+                            <img @click="sendSearch" src="img/lupe.png">
                         </div>
                     </div>
                 </div>
@@ -184,6 +185,8 @@ export default {
   name: 'Navbar',
   data () {
       return {
+        searchbar: false,
+        searchQuery: "",
         clickedPage:"",
         gameList:[],
         currentPage:[],
@@ -212,6 +215,15 @@ export default {
 
       previousPage () {
 
+      },
+
+      sendSearch () {
+          if (this.searchQuery != "" && this.searchQuery != undefined) {
+              window.location.href = "http://localhost:8080/search/s=" + this.searchQuery;
+          }else {
+              console.log("Bad Search")
+              console.log(this.searchQuery)
+          }
       },
   },
 

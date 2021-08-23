@@ -35,8 +35,8 @@ const routes = [
     props: true,
   },
   {
-    path: "/search:query",
-    name: "search",
+    path: "/search/s:query",
+    name: "Search",
     component: Search,
     props: true,
   },

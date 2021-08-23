@@ -182,7 +182,7 @@ const response = await fetch(url, {
 
 export default {
     name: 'Search',
-    props:["searchQuery"],
+    props:["query"],
     data () {
         return {
             clickedPage:"",
@@ -255,6 +255,7 @@ export default {
 
     created() {
         console.log("Called created")
+        
         this.gameList = Object.entries(jsonstr)
         var endSlice = parseInt(this.numberPage) * 20
         var startSlice = endSlice - 20
@@ -283,7 +284,7 @@ export default {
 
 
     mounted() {
-        
+        console.log(this.query)
         if (parseInt(this.numberPage) > 5) {
             var numberOfLoops = Math.floor(parseInt(this.numberPage) / 5)
             
