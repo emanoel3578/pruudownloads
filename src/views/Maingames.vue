@@ -23,18 +23,41 @@
 
             <div class="bg-gray-700 flex justify-center font-kanit">
                 <ul class="flex list-none gap-5">
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">Home</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">PC Games</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">PC Repack</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">Games Online</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">How To Download</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">DMCA</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">About Us</li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/home'">
+                            <a>Home</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/pc-repack'">
+                            <a>PC Repack</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/gamesonline'">
+                            <a>Games online</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/howtodownload'">
+                            <a>How to Download</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/dmca'">
+                            <a>DMCA</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/aboutus'">
+                            <a>About Us</a>
+                        </router-link>
+                    </li>
                 </ul>
             </div>
         </div>
 
-        <div class="mt-10 w-4/5 mx-auto my-0">
+        <div class="mt-10 w-3/5 mx-auto my-0">
             <div class="flex">
                 <div class="grid grid-cols-2">
                     <div v-for="item in currentPage" :key="item.index" class="">
@@ -116,12 +139,16 @@
             </div>
 
             <div class="flex justify-center mb-2 text-lg text-white">
-                <button  class="mx-3 cursor-pointer"> &#60;&#60; </button>
-                <button  value="firstpage" class="mx-3 cursor-pointer bg-blue-500 rounded-full w-6 h-6" ref="firstpage">1</button>
-                <button  value="secondpage" class="mx-3 cursor-pointer" ref="secondpage">2</button>
-                <button  value="thirdpage" class="mx-3 cursor-pointer" ref="thirdpage">3</button>
-                <button  value="forthpage" class="mx-3 cursor-pointer" ref="forthpage">4</button>
-                <button  value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">5</button>
+                <router-link :to="'/page/' + clickedPage">
+                    <button  class="mx-3 cursor-pointer"> &#60;&#60; </button>
+                    <button  @click="ChangePage" value="firstpage" class="mx-3 cursor-pointer bg-blue-500 rounded-full w-6 h-6" ref="firstpage">1</button>
+                    <button  @click="ChangePage" value="secondpage" class="mx-3 cursor-pointer" ref="secondpage">2</button>
+                    <button  @click="ChangePage" value="thirdpage" class="mx-3 cursor-pointer" ref="thirdpage">3</button>
+                    <button  @click="ChangePage" value="forthpage" class="mx-3 cursor-pointer" ref="forthpage">4</button>
+                    <button  @click="ChangePage" value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">5</button>
+                </router-link>
+                <span    value="fifthpage" class="mx-3" ref="fifthpage">...</span>
+                <button  @click="ChangePage" value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">299</button>
                 <button  class="mx-3 cursor-pointer"> &#62;&#62; </button>
             </div>
         </div>
@@ -135,10 +162,29 @@
 
 <script>
 import { jsonstr } from "../../declare.js"
+
+async function postData(url = '', fields =' ') {
+// Default options are marked with *
+const response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    headers: {
+    'Content-Type': 'application/json',
+    'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
+    'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
+    'origin': 'x-requested-with',
+    },
+    body: fields // body data type must match "Content-Type" header
+});
+    return response.json(); // parses JSON response into native JavaScript objects
+}
+
+
 export default {
   name: 'Navbar',
   data () {
       return {
+        clickedPage:"",
         gameList:[],
         currentPage:[],
         currentGameLinks:[],
@@ -155,38 +201,36 @@ export default {
       }
   },
 
-  created() {
-      async function postData(url = '') {
-            // Default options are marked with *
-            const response = await fetch(url, {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                'Content-Type': 'application/json',
-                'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
-                'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
-                'origin': 'x-requested-with',
-                },
-                body: "fields *; where game = 107215;" // body data type must match "Content-Type" header
-            });
-                return response.json(); // parses JSON response into native JavaScript objects
-            }
+  methods:{
+      ChangePage (event) {
+        this.clickedPage = event.srcElement.innerText
+      },
 
+      nextPage () {
+
+      },
+
+      previousPage () {
+
+      },
+  },
+
+  created() {
         this.gameList = Object.entries(jsonstr)
         this.currentPage = this.gameList.slice(0,20)
         var developersArr = this.developers
         this.developers = developersArr
         this.currentPage.map(function (element) {
             var developersArr = element[1].split("|")[7].split("$$")
-            if(developersArr == "Empty") {
+            if(developersArr[0] == "Empty") {
                 postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/screenshots?')
                 .then(responseFromApi => {
                     element[1] = responseFromApi[0].url.replace("t_thumb", "t_screenshot_med_2x").replace("//", "https:/")
                 });
             }else {
-                element[1] = developersArr
+                element[1] = developersArr[0]
+                
             }
-            //console.log((element[1].split("|")).length)
         })
   }
 }

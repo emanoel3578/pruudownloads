@@ -23,13 +23,36 @@
 
             <div class="bg-gray-700 flex justify-center font-kanit">
                 <ul class="flex list-none gap-5">
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">Home</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">PC Games</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">PC Repack</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">Games Online</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">How To Download</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">DMCA</li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">About Us</li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/home'">
+                            <a>Home</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/pc-repack'">
+                            <a>PC Repack</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/gamesonline'">
+                            <a>Games online</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/howtodownload'">
+                            <a>How to Download</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/dmca'">
+                            <a>DMCA</a>
+                        </router-link>
+                    </li>
+                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                        <router-link :to="'/aboutus'">
+                            <a>About Us</a>
+                        </router-link>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -55,7 +78,7 @@
                     </div>
 
                     <div class="flex justify-center">
-                        <img :src="this.devInfo[0]" class="w-3/5">
+                        <img :src="this.devInfo[0]" class="w-3/5 max-h-auto">
                     </div>
 
                     <div class="flex flex-col ">
@@ -79,6 +102,10 @@
                             <div class="flex">
                                 <p class="font-bold">Genre:&nbsp;</p>
                                 <p>{{this.genre}}</p>
+                            </div>
+                            <div class="flex">
+                                <p class="font-bold">Gamemode:&nbsp;</p>
+                                <p>{{this.gamemode}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Developer:&nbsp;</p>
@@ -347,6 +374,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         
         <div class="w-full text-center text-white flex flex-col bg-gray-700">
@@ -358,7 +386,7 @@
 
 <script>
 import { jsonstr } from "../../declare.js"
-//import HLSCore from '@cloudgeek/playcore-hls'
+
 export default {
     props:["name"],
     data () {
@@ -377,6 +405,7 @@ export default {
             screenshots: "",
             genre: "",
             systemReq: "",
+            gamemode: "Singleplayer",
             developers:"",
             devInfo:["Empty","Empty","Empty","Empty"],
             hasTrailer: false,
@@ -405,21 +434,21 @@ export default {
     },
 
     created() {
-        async function postData(url = '') {
-            // Default options are marked with *
-            const response = await fetch(url, {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                headers: {
-                'Content-Type': 'application/json',
-                'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
-                'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
-                'origin': 'x-requested-with',
-                },
-                body: "fields *; where game = 107215;" // body data type must match "Content-Type" header
-            });
-                return response.json(); // parses JSON response into native JavaScript objects
-            }
+        async function postData(url = '', fields =' ') {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+            'Content-Type': 'application/json',
+            'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
+            'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
+            'origin': 'x-requested-with',
+            },
+            body: fields // body data type must match "Content-Type" header
+        });
+            return response.json(); // parses JSON response into native JavaScript objects
+        }
 
         this.gameList = Object.entries(jsonstr)
         this.currentPage = this.gameList.slice(0,20)
@@ -447,21 +476,31 @@ export default {
                     screenshotsArr = element[1].split("|")[5].split("$$")
                     developersArr = element[1].split("|")[7].split("$$")
                     YTLinkArr = element[1].split("|")[8]
-                    //console.log((downloadLinksArr[0].split("$$")))
+                    console.log(developersArr)
                 }
             })
         })
+
         this.developers = developersArr
+
         if(this.developers[0] == "Empty") {
-            postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/screenshots?')
+            var searchString = 'search ' + `"${this.name}"` + '; fields id;'
+            postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games?', searchString)
             .then(responseFromApi => {
-                this.devInfo[0] = responseFromApi[0].url.replace("t_thumb", "t_screenshot_med_2x").replace("//", "https:/")
+                var idSearchedGame = 'fields *;' + 'where game = ' + `${responseFromApi[0].id}` + ';'
+                postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
+                    .then(screenshotApi => {
+                        this.devInfo[0] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
+                        console.log(screenshotApi)
+                    })
+                
                 this.devInfo[1] = "TBA"
                 this.devInfo[2] = "TBA"
                 this.devInfo[3] = "TBA"
                 this.devInfo[4] = "TBA"
+                this.devInfo[5] = "TBA"
                 this.hasTrailer = false
-                console.log(this.developers[0])
+                //console.log(this.developers[0])
             });
         }else{
             this.devInfo[0] = this.developers[0]
@@ -469,10 +508,19 @@ export default {
             this.devInfo[2] = this.developers[2]
             this.devInfo[3] = this.developers[3]
             this.devInfo[4] = this.developers[4]
+            this.devInfo[5] = this.developers[5]
             this.hasTrailer = true
+            //console.log((this.devInfo))
         }
 
-        if (this.devInfo[4] == undefined) {
+
+        for (var i= 0; i< this.devInfo.length; i++) {
+            if (this.devInfo[i] == "Online") {
+                this.gamemode = "Online"
+            }
+        }
+
+        if (!(this.devInfo[4].includes("steam"))) {
             this.hasYTLink = true
         }else {
             this.hasYTLink = false
@@ -487,7 +535,7 @@ export default {
         var MEGALink = false
         var TorrentLink = false
         downloadLinksArr.map(function (element) {
-            console.log(element)
+            //console.log(element)
             if (element.includes("mediafire")) {
                 mediafireLink = true
                 mediafireDL = element

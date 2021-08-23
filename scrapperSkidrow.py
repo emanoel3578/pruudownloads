@@ -22,9 +22,15 @@ def infoGamesSteam(ProductLink,triesSteam):
             imgHeader = containerHeaderimg.img["src"]
             developer = (page_soupGame.find("div", {"id":"developers_list"}).text).partition('\n')[2]
             publisher = containerInfoGame[1].a.text
-            videoLink = page_soupGame.find("div", {"class": "highlight_player_item"})["data-webm-source"]
-            # releaseDate = (page_soupGame.find("div", {"class":"date"})).text
-            # genre = ((page_soupGame.find("div", {"id":"genresAndManufacturer"})).text).partition('\n')[2].partition('\n')[2].partition('\n')[0]
+            try:
+                videoLink = page_soupGame.find("div", {"class": "highlight_player_item"})["data-webm-source"]
+            except:
+                videoLink="Empty"
+            containerGamemode = page_soupGame.find("div", {"id":"category_block"}).find_all("a")
+            gamemode = "Singleplayer"
+            for item in containerGamemode:
+                if "Online" in item.text:
+                    gamemode = "Online"
             try:
                 ratings = page_soupGame.find("span", {"class":"game_review_summary"}).text
             except AttributeError:
@@ -36,14 +42,14 @@ def infoGamesSteam(ProductLink,triesSteam):
             # if "Roguebook" in ProductLink:
             #     print(sysRequiredStr)
 
-            infoSteam = imgHeader + "$$" + developer + "$$" + publisher + "$$" + ratings + "$$" + videoLink
+            infoSteam = imgHeader + "$$" + developer + "$$" + publisher + "$$" + ratings + "$$" + videoLink + "$$" + gamemode
             return infoSteam
             # return print("{} // Developer: {} // Publisher: {} // Release Date: {} // Ratings: {} // SysReq: {}".format(genre, developer,publisher, releaseDate, ratings, sysRequiredStr))
         except:
-            print("Something went wrong on steam link")
+            print("Something went wrong on steam link" + ProductLink)
             return False
     else:
-        return print("Tried three times but something didn't work on Steam link")
+        print("Tried three times but something didn't work on Steam link")
 
 
 def infoGamesEpic(ProductLink,triesEpic):
@@ -55,19 +61,60 @@ def infoGamesEpic(ProductLink,triesEpic):
             page_soupGame = soup(webGamepage, "html.parser")
             containerDev = page_soupGame.select("div[class*='PDPSidebarMetadata__value']")
             containerImg = page_soupGame.select("div[class*='Image__pictureWrapper']")
+            containerGamemode = page_soupGame.select("a[class*='LinkableTag__link']")
+            for item in containerGamemode:
+                if "Multi" or "Co-op" in item.text:
+                    gamemode = "Online"
+                else:
+                    gamemode = "Singleplayer"
 
             imgHeader = containerImg[1].div.img["src"]
             developer = containerDev[0].span.text
             publisher = containerDev[1].span.text
 
-            infoEpic = imgHeader + "$$" + developer + "$$" + publisher
+            infoEpic = imgHeader + "$$" + developer + "$$" + publisher + "$$" + gamemode
             return infoEpic
 
         except:
-            print("Something went wrong on Epic link")
+            print("Something went wrong on Epic link" + ProductLink)
             return False
     else:
-        return print("Tried three times but something didn't work on Epic link")
+        print("Tried three times but something didn't work on Epic link")
+        crashedPageEpic = "Empty"
+        return crashedPageEpic
+
+
+def infoGamesMicrosoft(ProductLink,triesMicrosoft):
+    if triesMicrosoft < 3:
+        try:
+            reqGamepage = Request(ProductLink)
+            webGamepage = urlopen(reqGamepage).read()
+
+            page_soupGame = soup(webGamepage, "html.parser")
+            containerImgHeader = page_soupGame.find("div", {"class":"c-video-player"})
+            containerGamemode = page_soupGame.find("div", {"class" : "module-capabilities"}).find_all("a")
+            convertedJson = json.loads(containerImgHeader["data-player-data"])
+
+            developer = page_soupGame.find("div", {"class" : "buybox-metadata"}).text.strip()
+            publisher = page_soupGame.find("div", {"class" : "buybox-metadata"}).text.strip()
+
+            gamemode = "Singleplayer"
+            for item in containerGamemode:
+                if "Online" in item.text:
+                    gamemode = "Online"
+
+            imgHeaderMicrosoft = convertedJson["metadata"]["posterframeUrl"].replace("//", "https://")
+
+            infoMicrosoft = imgHeaderMicrosoft + "$$" + developer + "$$" + publisher + "$$" + gamemode
+            return infoMicrosoft
+
+        except:
+            print("Something went wrong on Microsoft link" + ProductLink)
+            return False
+    else:
+        print("Tried three times but something didn't work on Microsoft link")
+        crashedPageMicrosoft = "Empty"
+        return crashedPageMicrosoft
 
 
 def infoGamesGOG(ProductLink,triesGOG):
@@ -83,24 +130,32 @@ def infoGamesGOG(ProductLink,triesGOG):
                 developerGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[0].text
                 companyGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[1].text
                 imgHeaderGOG = page_soupGOG.find("img", {"class" : "mobile-slider__image"})["src"]
+                containerGamemode = page_soupGOG.find_all("a", {"class":"details__feature"})
+                for item in containerGamemode:
+                    if "Multi" in  item.text:
+                        gamemode = "Online"
+                    else:
+                        gamemode = "Singleplayer"
                 ratingsGOG = "Nothing"
 
-                infoGOG = imgHeaderGOG + "$$" + developerGOG + "$$" + companyGOG + "$$" + ratingsGOG
+                infoGOG = imgHeaderGOG + "$$" + developerGOG + "$$" + companyGOG + "$$" + ratingsGOG + "$$" + gamemode
                 return infoGOG
             else:
                 return "Empty"
 
         except Exception as errorexec:
-            print("Something went wrong on GOG link")
+            print("Something went wrong on GOG link" + ProductLink)
             print(errorexec)
             return False
     else:
-        return print("Tried three times but something didn't work on GOG link")
-
+        print("Tried three times but something didn't work on GOG link")
+        crashedPageGog = "Empty"
+        return crashedPageGog
+        
 
 i = 1
 linksDict = {}
-while i < 5:
+while i < 200:
     try:
         currentPageUrl = "https://www.skidrowreloaded.com/page/" + str(i) + "/"
         headers1 = {
@@ -131,12 +186,19 @@ while i < 5:
             
             containerTitleandLinks = page_soup2.find("div", {"id" : divid0})
             containerScreenshots = (page_soup2.find("div", {"id" : divid2})).find_all("img")
-            containerSysReq = (page_soup2.find("ul", {"class" : "bb_ul"})).find_all("li")
+            containerSysReq = (page_soup2.find("ul", {"class" : "bb_ul"}))
 
             sysReq = ""
-            for li in containerSysReq:
-                treatedReq = li.text.replace("|", "")
+            if containerSysReq != None:
+                containerSysReq = containerSysReq.find_all("li")
+                for li in containerSysReq:
+                    treatedReq = li.text.replace("|", "")
                 sysReq = sysReq + "$$" + treatedReq
+            else :
+                containerSysReq = page_soup2.find_all("div", {"class" : "game_area_sys_req_leftCol"})[-1].find_all("p")[1].text.replace('\n', "$$")
+                sysReq = containerSysReq
+                print(my_url)
+
             
             screenshotsLinks = (containerScreenshots[1]["src"] + "$$" + containerScreenshots[3]["src"])
 
@@ -158,22 +220,31 @@ while i < 5:
             triesSteam = 0
             triesGOG = 0
             triesEpic = 0
+            triesMicrosoft = 0
             if "gog.com" in ProductLink:
                 infoDeveloper = infoGamesGOG(ProductLink,triesGOG)
-                while infoDeveloper == False:
+                while infoGamesGOG(ProductLink,triesGOG) == False:
                     triesGOG = triesGOG + 1
-                    print(ProductLink)
+                # print(ProductLink)
             elif "steampowered" in ProductLink:
                 infoDeveloper = infoGamesSteam(ProductLink,triesSteam)
-                while infoDeveloper == False:
+                while infoGamesSteam(ProductLink,triesSteam) == False:
                     triesSteam= triesSteam + 1
-                    print(ProductLink)
+                if (infoDeveloper == False and triesSteam == 3):
+                    infoDeveloper = "Empty"
+                # print(ProductLink)
             elif "epicgames" in ProductLink:
                 infoDeveloper = infoGamesEpic(ProductLink,triesEpic)
-                while infoDeveloper == False:
+                while infoGamesEpic(ProductLink,triesEpic) == False:
                     triesEpic= triesEpic + 1
-                    print(ProductLink)
+                # print(ProductLink)
+            elif "microsoft" in ProductLink:
+                infoDeveloper = infoGamesMicrosoft(ProductLink,triesMicrosoft)
+                while infoGamesMicrosoft(ProductLink,triesMicrosoft) == False:
+                    triesMicrosoft= triesMicrosoft + 1
+                # print(ProductLink)
             else:
+                print(ProductLink)
                 print("Not ready yet")
                 infoDeveloper = "Empty"
                 
