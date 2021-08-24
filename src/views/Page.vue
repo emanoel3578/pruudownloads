@@ -4,7 +4,7 @@
             <div class="flex justify-around bg-gray-400" id="top">
                 <div class="flex">
                     <div>
-                        <img id="pruulogo" src="img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
+                        <img id="pruulogo" src="/img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
                     </div>
                     <div class="flex items-center">
                         <span class="font-kanit text-xl text-white ml-2">PruuDownloads</span>
@@ -15,7 +15,7 @@
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
                             <label for="search" class="">Search for games</label>
-                            <img src="img/lupe.png">
+                            <img src="/img/lupe.png">
                         </div>
                     </div>
                 </div>
@@ -62,9 +62,9 @@
                 <div class="grid grid-cols-2">
                     <div v-for="item in currentPage" :key="item.index" class="">
                         <div class="flex flex-col justify-center items-center my-7">
-                            <div class="border-4 border-red-600">
+                            <div class="border-4 border-red-600 mx-2">
                                 <router-link :to="'/game/'+ item[0] + '#top' ">
-                                    <img :src="item[1]" class="cursor-pointer max-h-44 mx-auto mx-0">    
+                                    <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
                                 </router-link>
                             </div>
                             <div class="text-center">
@@ -87,52 +87,52 @@
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game1.png" class="w-4/5">
+                        <img src="/img/game1.png" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game2.jpg" class="w-4/5">
+                        <img src="/img/game2.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game3.jpg" class="w-4/5">
+                        <img src="/img/game3.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
                     
                     <div class="flex flex-col items-center">
-                        <img src="img/game4.jpg" class="w-4/5">
+                        <img src="/img/game4.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game5.jpg" class="w-4/5">
+                        <img src="/img/game5.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game6.jpg" class="w-4/5">
+                        <img src="/img/game6.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game7.jpg" class="w-4/5">
+                        <img src="/img/game7.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game8.jpg" class="w-4/5">
+                        <img src="/img/game8.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game9.jpg" class="w-4/5">
+                        <img src="/img/game9.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <img src="img/game10.jpg" class="w-4/5">
+                        <img src="/img/game10.jpg" class="w-4/5">
                         <span class="font-kanit text-white text-2xl">Title title title</span>
                     </div>
                 </div>
@@ -185,6 +185,7 @@ export default {
     props:["numberPage"],
     data () {
         return {
+            counter:0,
             clickedPage:"",
             gameList:[],
             currentPage:[],
@@ -192,7 +193,7 @@ export default {
             sizeofgame: "",
             releaseDate: "",
             linkApi: "",
-            description: "",
+            description: "",    
             screenshots: "",
             genre: "",
             systemReq: "",
@@ -296,6 +297,8 @@ export default {
                 this.pageValues[4] = this.pageValues[4] + 5
                 i++
             }
+        }else {
+            console.log("Here 2")
         }
 
         var firstPage = document.getElementById("firstPage").innerHTML
@@ -323,20 +326,6 @@ export default {
 
     updated() {
         this.$nextTick(function() {
-
-            if (parseInt(this.numberPage) > 5) {
-                var numberOfLoops = Math.floor(parseInt(this.numberPage) / 5)
-                
-                let i = 0
-                while (i < numberOfLoops) {
-                    this.pageValues[0] = this.pageValues[0] + 5
-                    this.pageValues[1] = this.pageValues[1] + 5
-                    this.pageValues[2] = this.pageValues[2] + 5
-                    this.pageValues[3] = this.pageValues[3] + 5
-                    this.pageValues[4] = this.pageValues[4] + 5
-                    i++
-                }
-            }
 
             var firstPage = document.getElementById("firstPage").innerHTML
             var secondPage = document.getElementById("secondPage").innerHTML
