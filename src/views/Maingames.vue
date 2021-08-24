@@ -14,8 +14,9 @@
                 <div class="flex">
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
-                            <label for="search" class="">Search for games</label>
-                            <img src="img/lupe.png">
+                            <label @click="searchbar = !searchbar" for="search" class="cursor-pointer ">Search for games</label>
+                            <input v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
+                            <img @click="sendSearch" v-show="searchbar" src="img/lupe.png">
                         </div>
                     </div>
                 </div>
@@ -60,22 +61,38 @@
         <div class="mt-10 w-3/5 mx-auto my-0">
             <div class="flex">
                 <div class="grid grid-cols-2">
+
                     <div v-for="item in currentPage" :key="item.index" class="">
-                        <div class="flex flex-col justify-center items-center my-7">
-                            <div class="border-4 border-red-600">
-                                <router-link :to="'/game/'+ item[0] + '#top' ">
-                                    <img :src="item[1]" class="cursor-pointer max-h-44 mx-auto mx-0">    
-                                </router-link>
+                        
+                        <div v-if="loadMainCards">
+                            <div class="border border-purple-300 shadow rounded-md p-4 w-full mb-10 mx-auto">
+                                <div class="animate-pulse flex flex-col space-y-5 justify-center h-full w-full relative">
+                                    <div class="mx-auto my-0 bg-purple-400 h-4/5 w-full absolute"></div>
+                                    <img :src="item[1]" class="p-5">
+                                    <div class="flex-1 space-y-4 py-1">
+                                        <div class="h-4 w-full bg-purple-400 rounded mx-auto my-0"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <router-link to="/game">
-                                    <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
-                                </router-link>
-                            </div>
-                            <div class="flex text-gray-200 font-kanit text-sm">
-                                <span>About</span>
-                                <span>x</span>
-                                <span>Time</span>
+                        </div>
+
+                        <div v-else>
+                            <div class="flex flex-col justify-center items-center my-7">
+                                <div class="border-4 border-red-600 mx-2">
+                                    <router-link :to="'/game/'+ item[0] + '#top' ">
+                                        <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
+                                    </router-link>
+                                </div>
+                                <div class="text-center">
+                                    <router-link to="/game">
+                                        <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
+                                    </router-link>
+                                </div>
+                                <div class="flex text-gray-200 font-kanit text-sm">
+                                    <span>About</span>
+                                    <span>x</span>
+                                    <span>Time</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,56 +103,101 @@
                         <span class="font-kanit text-white text-3xl">Trending</span>
                     </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game1.png" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    <div v-if="loadSideCards">
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game2.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                    <div v-else>
+                        <div class="flex flex-col items-center">
+                            <img src="img/game2.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game3.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-                    
-                    <div class="flex flex-col items-center">
-                        <img src="img/game4.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center">
+                            <img src="img/game3.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
+                        
+                        <div class="flex flex-col items-center">
+                            <img src="img/game4.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game5.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center">
+                            <img src="img/game5.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game6.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center">
+                            <img src="img/game6.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game7.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center">
+                            <img src="img/game7.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game8.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center">
+                            <img src="img/game8.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game9.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center">
+                            <img src="img/game9.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="img/game10.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                        <div class="flex flex-col items-center">
+                            <img src="img/game10.jpg" class="w-4/5">
+                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        </div>
                     </div>
-                </div>
+                </div> 
             </div>
 
             <div class="flex justify-center mb-2 text-lg text-white">
@@ -184,6 +246,10 @@ export default {
   name: 'Navbar',
   data () {
       return {
+        loadSideCards: true,
+        loadMainCards: true,
+        searchbar: false,
+        searchQuery: "",
         clickedPage:"",
         gameList:[],
         currentPage:[],
@@ -213,9 +279,27 @@ export default {
       previousPage () {
 
       },
+
+      sendSearch () {
+          if (this.searchQuery != "" && this.searchQuery != undefined) {
+              window.location.href = "http://localhost:8080/search/s=" + this.searchQuery;
+          }else {
+              console.log("Bad Search")
+              console.log(this.searchQuery)
+          }
+      },
   },
 
   created() {
+
+        setTimeout(() => {
+            this.loadSideCards = false
+        }, 2000);
+
+        setTimeout(() => {
+            this.loadMainCards = false
+        }, 1500);
+
         this.gameList = Object.entries(jsonstr)
         this.currentPage = this.gameList.slice(0,20)
         var developersArr = this.developers

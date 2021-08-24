@@ -3,6 +3,7 @@ import Maingames from "@/views/Maingames.vue";
 import Game from "@/views/Game.vue";
 import Aboutus from "@/views/Aboutus.vue";
 import DMCA from '@/views/DMCA.vue'
+import Search from '@/views/Search.vue'
 import Page from '@/views/Page.vue'
 
 const routes = [
@@ -31,6 +32,12 @@ const routes = [
     path: "/page/:numberPage",
     name: "Page",
     component: Page,
+    props: true,
+  },
+  {
+    path: "/search/s:query",
+    name: "Search",
+    component: Search,
     props: true,
   },
   {
