@@ -58,7 +58,7 @@
         </div>
 
         <div class="mt-10 w-3/5 mx-auto my-0">
-            <div class="flex">
+            <div class="flex gap-6">
                 <div class="grid grid-cols-2">
                     <div v-for="item in currentPage" :key="item.index" class="">
                         <div v-if="loadMainCards">
@@ -149,49 +149,39 @@
                     </div>
 
                     <div v-else>
-                        <div class="flex flex-col items-center">
-                            <img src="img/game2.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/NM%20Hired%20Gun#top">
+                                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1222370/header.jpg?t=1624899675" class="">
+                            </a>
+                            <span class="mx-auto my-0 font-kanit text-white text-2xl">NM Hired Gun</span>
                         </div>
 
-                        <div class="flex flex-col items-center">
-                            <img src="img/game3.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Aliens%20Fireteam%20Elite">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1549970/header.jpg?t=1629799811" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Aliens Fireteam Elite</span>
+                        </div>
+
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/NM%20Hired%20Gun#top">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1484900/header.jpg?t=1629812252" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Hoa</span>
                         </div>
                         
-                        <div class="flex flex-col items-center">
-                            <img src="img/game4.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Absolute%20Territory#top">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1130880/header.jpg?t=1620641596" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Absolute Territory</span>
                         </div>
 
-                        <div class="flex flex-col items-center">
-                            <img src="img/game5.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
-                        </div>
-
-                        <div class="flex flex-col items-center">
-                            <img src="img/game6.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
-                        </div>
-
-                        <div class="flex flex-col items-center">
-                            <img src="img/game7.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
-                        </div>
-
-                        <div class="flex flex-col items-center">
-                            <img src="img/game8.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
-                        </div>
-
-                        <div class="flex flex-col items-center">
-                            <img src="img/game9.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
-                        </div>
-
-                        <div class="flex flex-col items-center">
-                            <img src="img/game10.jpg" class="w-4/5">
-                            <span class="font-kanit text-white text-2xl">Title title title</span>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Drift%20King">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1469690/header.jpg?t=1629713717" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Drift King</span>
                         </div>
                     </div>
                 </div>
