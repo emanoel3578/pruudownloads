@@ -73,38 +73,36 @@ page_soupGOG = soup(webpageGOG, "html.parser")
 genreGOG = page_soupGOG.find_all("div", {"class":"table--without-border"})
 
 if len(genreGOG) != 0:
-    # developerGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[0].text
-    # companyGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[1].text
+    developerGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[0].text
+    companyGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[1].text
     imgHeaderGOG = page_soupGOG.find("img", {"class" : "mobile-slider__image"})["src"]
     containerGamemode = page_soupGOG.find_all("a", {"class":"details__feature"})
-    for item in containerGamemode:
-        if "Multi" in  item.text:
-            gamemode = "Online"
-        else:
-            gamemode = "Singleplayer"
-    ratingsGOG = "Nothing"
+for item in containerGamemode:
+    if "Multi" in  item.text:
+        gamemode = "Online"
+    else:
+        gamemode = "Singleplayer"
+ratingsGOG = "Nothing"
 
-    print(genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div)
-    # infoGOG = imgHeaderGOG + "$$" + developerGOG + "$$" + companyGOG + "$$" + ratingsGOG + "$$" + gamemode
-    # print(infoGOG)
-else:
-    print("Empty")
-
+# infoGOG = imgHeaderGOG + "$$" + developerGOG + "$$" + companyGOG + "$$" + ratingsGOG + "$$" + gamemode
+print(developerGOG)
 
 # Epic Scaping
 
-# reqGamepage = Request("https://www.epicgames.com/store/en-US/p/nba-2k21")
+# reqGamepage = Request("https://www.epicgames.com/store/en-US/p/red-dead-redemption-2")
 # webGamepage = urlopen(reqGamepage).read()
 
 # page_soupGame = soup(webGamepage, "html.parser")
-# containerDev = page_soupGame.select("div[class*='PDPSidebarMetadata__value']")
-# containerImg = page_soupGame.select("div[class*='Image__pictureWrapper']")
-# containerGamemode = page_soupGame.select("a[class*='LinkableTag__link']")
+# containerDev = page_soupGame.find_all("div", {"data-component":"PDPSidebarMetadataBase"})
+# containerImg = page_soupGame.find_all("div", {"data-component":"PDPSidebarLogo"})
+# containerGamemode = page_soupGame.find_all("div", {"data-component":"AboutMetadataLayout"})[-1].find("ul")
 # for item in containerGamemode:
-#     if "Multi" or "Co-op" in item.text:
-#         gamemode = "Online"
-#     else:
+#     if "Single Player" == item.text:
 #         gamemode = "Singleplayer"
+#     else:
+#         gamemode = "Online"
+
+# print(gamemode)
 
 
 # Skidrow test Scrapping

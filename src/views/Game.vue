@@ -14,8 +14,9 @@
                 <div class="flex">
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
-                            <label for="search" class="">Search for games</label>
-                            <img src="../../public/img/lupe.png">
+                            <label @click="searchbar = !searchbar" for="search" class="cursor-pointer ">Search for games</label>
+                            <input v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
+                            <img @click="sendSearch" v-show="searchbar" src="/img/lupe.png">
                         </div>
                     </div>
                 </div>
@@ -136,14 +137,14 @@
                                 <p class="text-white text-3xl">Screenshots</p>
                             </div>
 
-                            <div id="cf7" class="flex justify-center">
+                            <div id="cf7" class="flex justify-center items-center">
                                 <img :src="this.screenshots[0]" id="firstIMG" class="opaque">
                                 <img :src="this.screenshots[1]" id="secondIMG">
                             </div>
 
                             <div class="flex justify-center gap-4 text-white text-3xl">
-                                <p @click="selectScreenshot" id="firstSelect" class="cursor-pointer">.</p>
-                                <p @click="selectScreenshot" id="secondSelect" class="cursor-pointer">.</p>
+                                <img @click="selectScreenshot" id="firstSelect" class="cursor-pointer transform rotate-180" src="/img/arrow.png">
+                                <img @click="selectScreenshot" id="secondSelect" class="cursor-pointer" src="/img/arrow.png">
                             </div>
                         </div>
 
@@ -304,14 +305,6 @@
                             </div>
 
                             <!--SECTION for comments -->
-                            <div>
-                                <div>
-                                    <p class="text-white text-3xl">Comments</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-300 text-xl">In construction</p>
-                                </div>
-                            </div>
 
                         </div>
 
@@ -357,7 +350,6 @@
                                 </a>
                             <span class="font-kanit text-white text-2xl">Drift King</span>
                         </div>
-
                 </div>
             </div>
 
@@ -378,6 +370,8 @@ export default {
     props:["name"],
     data () {
         return {
+            searchbar: false,
+            searchQuery: "",
             TorrentLink: true,
             mediafireLink: false,
             MEGALink: false,

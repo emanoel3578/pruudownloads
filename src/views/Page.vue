@@ -14,8 +14,9 @@
                 <div class="flex">
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
-                            <label for="search" class="">Search for games</label>
-                            <img src="/img/lupe.png">
+                            <label @click="searchbar = !searchbar" for="search" class="cursor-pointer ">Search for games</label>
+                            <input v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
+                            <img @click="sendSearch" v-show="searchbar" src="/img/lupe.png">
                         </div>
                     </div>
                 </div>
@@ -234,6 +235,8 @@ export default {
     props:["numberPage"],
     data () {
         return {
+            searchbar: false,
+            searchQuery: "",
             loadSideCards: true,
             loadMainCards: true,
             counter:0,
@@ -251,7 +254,7 @@ export default {
             developers:"",
             devInfo:["Empty","Empty","Empty","Empty"],
             hasTrailer: false,
-            pageValues: [1,2,3,4,5]
+            pageValues: []
         }
     },
 
@@ -285,15 +288,16 @@ export default {
         },
 
         nextPage () {
-            this.pageValues[0] = this.pageValues[0] + 5
-            this.pageValues[1] = this.pageValues[1] + 5
-            this.pageValues[2] = this.pageValues[2] + 5
-            this.pageValues[3] = this.pageValues[3] + 5
-            this.pageValues[4] = this.pageValues[4] + 5
+            if (this.gameList.length / 20 > 100) {
+                this.pageValues[0] = this.pageValues[0] + 5
+                this.pageValues[1] = this.pageValues[1] + 5
+                this.pageValues[2] = this.pageValues[2] + 5
+                this.pageValues[3] = this.pageValues[3] + 5
+                this.pageValues[4] = this.pageValues[4] + 5
+            }
         },
 
         previousPage () {
-
             if(this.pageValues[0] > 1) {
                 this.pageValues[0] = this.pageValues[0] - 5
                 this.pageValues[1] = this.pageValues[1] - 5
@@ -339,7 +343,11 @@ export default {
             //console.log((element[1].split("|")).length)
         })
 
-        
+        var numberofPages =  Math.ceil(this.gameList.length / 20)
+
+        for (var i = 0; i < numberofPages; i++) {
+            this.pageValues.push(i+1)
+        }
     },
 
 

@@ -63,28 +63,50 @@
         </div>
 
         <div class="mt-5 w-3/5 mx-auto my-0">
-            <div class="flex">
+            <div class="flex gap-6">
+                <div class="">
+                    <div class="grid grid-cols-2" v-if="hasResults">
+                        <div v-for="item in queryArray" :key="item.index" class="">
+                            <div v-if="loadMainCards">
+                                <div class="border border-purple-300 shadow rounded-md p-4 w-full mb-10 mx-auto">
+                                    <div class="animate-pulse flex flex-col space-y-5 justify-center h-full w-full relative">
+                                        <div class="mx-auto my-0 bg-purple-400 h-4/5 w-full absolute"></div>
+                                        <img :src="item[1]" class="p-5">
+                                        <div class="flex-1 space-y-4 py-1">
+                                            <div class="h-4 w-full bg-purple-400 rounded mx-auto my-0"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <div class="grid grid-cols-2">
-                    <div v-for="item in queryArray" :key="item.index" class="">
-                        <div class="flex flex-col justify-center items-center my-7">
-                            <div class="border-4 border-red-600">
-                                <router-link :to="'/game/'+ item[0] + '#top' ">
-                                    <img :src="item[1]" class="cursor-pointer max-h-44 mx-auto mx-0">    
-                                </router-link>
-                            </div>
-                            <div class="text-center">
-                                <router-link to="/game">
-                                    <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
-                                </router-link>
-                            </div>
-                            <div class="flex text-gray-200 font-kanit text-sm">
-                                <span>About</span>
-                                <span>x</span>
-                                <span>Time</span>
+                            <div v-else>
+                                <div class="flex flex-col justify-center items-center my-7">
+                                    <div class="border-4 border-red-600 mx-2">
+                                        <router-link :to="'/game/'+ item[0] + '#top' ">
+                                            <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
+                                        </router-link>
+                                    </div>
+                                    <div class="text-center">
+                                        <router-link to="/game">
+                                            <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
+                                        </router-link>
+                                    </div>
+                                    <div class="flex text-gray-200 font-kanit text-sm">
+                                        <span>About</span>
+                                        <span>x</span>
+                                        <span>Time</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <div v-else>
+                        <div class="w-full">
+                            <p class="mt-12 text-white font-kanit text-3xl w-full">No results for the searched Game 😭</p>
+                        </div>
+                    </div>
+                    
                 </div>
 
                 <div class="w-2/5">
@@ -189,6 +211,9 @@ export default {
     props:["query"],
     data () {
         return {
+            hasResults: false,
+            loadSideCards: true,
+            loadMainCards: true,
             pageSelected:"",
             searchbar: true,
             searchQuery: this.query.substring(1),
@@ -279,6 +304,15 @@ export default {
 
     created() {
         console.log("Called created")
+
+        setTimeout(() => {
+            this.loadSideCards = false
+        }, 2000);
+
+        setTimeout(() => {
+            this.loadMainCards = false
+        }, 1500);
+
         var query = this.query.substring(1)
         var queryArrayTotal = this.queryArrayTotal
         
@@ -310,13 +344,20 @@ export default {
             this.pageValues.push(i+1)
         }
 
-        console.log(this.pageValues)
+        if(this.queryArrayTotal.length > 0) {
+            this.hasResults = true
+        }else{
+            this.hasResults = false
+        }
+
         this.queryArray = queryArrayTotal.slice(0,20)
     },
 
 
     mounted() {
-        document.getElementById("firstPage").classList.add("currentPage")
+        if (document.getElementById("firstPage").innerHTML != "") {
+            document.getElementById("firstPage").classList.add("currentPage")
+        }
     },
 
     updated() {

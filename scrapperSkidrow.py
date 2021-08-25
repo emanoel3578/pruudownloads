@@ -35,12 +35,6 @@ def infoGamesSteam(ProductLink,triesSteam):
                 ratings = page_soupGame.find("span", {"class":"game_review_summary"}).text
             except AttributeError:
                 ratings = (((page_soupGame.find("div", {"class":"summary"}).text).partition('\n')[2]).replace("\t", ""))
-            # sysRequiredStr = ""
-            # for req in sysRequired:
-            #     treatedReq = req.text.replace("|", "")
-            #     sysRequiredStr = sysRequiredStr + "|" + treatedReq
-            # if "Roguebook" in ProductLink:
-            #     print(sysRequiredStr)
 
             infoSteam = imgHeader + "$$" + developer + "$$" + publisher + "$$" + ratings + "$$" + videoLink + "$$" + gamemode
             return infoSteam
@@ -59,14 +53,14 @@ def infoGamesEpic(ProductLink,triesEpic):
             webGamepage = urlopen(reqGamepage).read()
 
             page_soupGame = soup(webGamepage, "html.parser")
-            containerDev = page_soupGame.select("div[class*='PDPSidebarMetadata__value']")
-            containerImg = page_soupGame.select("div[class*='Image__pictureWrapper']")
-            containerGamemode = page_soupGame.select("a[class*='LinkableTag__link']")
+            containerDev = page_soupGame.find_all("div", {"data-component":"PDPSidebarMetadataBase"})
+            containerImg = page_soupGame.find_all("div", {"data-component":"PDPSidebarLogo"})
+            containerGamemode = page_soupGame.find_all("div", {"data-component":"AboutMetadataLayout"})[-1].find("ul")
             for item in containerGamemode:
-                if "Multi" or "Co-op" in item.text:
-                    gamemode = "Online"
-                else:
+                if "Single Player" == item.text:
                     gamemode = "Singleplayer"
+                else:
+                    gamemode = "Online"
 
             imgHeader = containerImg[1].div.img["src"]
             developer = containerDev[0].span.text
@@ -75,8 +69,8 @@ def infoGamesEpic(ProductLink,triesEpic):
             infoEpic = imgHeader + "$$" + developer + "$$" + publisher + "$$" + gamemode
             return infoEpic
 
-        except:
-            print("Something went wrong on Epic link" + ProductLink)
+        except Exception as e:
+            print("Something went wrong on Epic link" + " " + ProductLink + " " + e)
             return False
     else:
         print("Tried three times but something didn't work on Epic link")
@@ -127,8 +121,8 @@ def infoGamesGOG(ProductLink,triesGOG):
             genreGOG = page_soupGOG.find_all("div", {"class":"table--without-border"})
 
             if len(genreGOG) != 0:
-                developerGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[0].text
-                companyGOG = genreGOG[-1].find_all("div", {"class" : "details__rating"})[2].div.findNext().find_all("a")[1].text
+                developerGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[0].text
+                companyGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[1].text
                 imgHeaderGOG = page_soupGOG.find("img", {"class" : "mobile-slider__image"})["src"]
                 containerGamemode = page_soupGOG.find_all("a", {"class":"details__feature"})
                 for item in containerGamemode:
@@ -155,7 +149,7 @@ def infoGamesGOG(ProductLink,triesGOG):
 
 i = 1
 linksDict = {}
-while i < 5:
+while i < 200:
     try:
         currentPageUrl = "https://www.skidrowreloaded.com/page/" + str(i) + "/"
         headers1 = {
@@ -195,10 +189,12 @@ while i < 5:
                     treatedReq = li.text.replace("|", "")
                 sysReq = sysReq + "$$" + treatedReq
             else :
-                containerSysReq = page_soup2.find_all("div", {"class" : "game_area_sys_req_leftCol"})[-1].find_all("p")[1].text.replace('\n', "$$")
-                sysReq = containerSysReq
-                print(my_url)
-
+                try:
+                    containerSysReq = page_soup2.find_all("div", {"class" : "game_area_sys_req_leftCol"})[-1].find_all("p")[1].text.replace('\n', "$$")
+                    sysReq = containerSysReq
+                    print("Something off with Requirements" + my_url)
+                except:
+                    containerSysReq = "No requirements"
             
             screenshotsLinks = (containerScreenshots[1]["src"] + "$$" + containerScreenshots[3]["src"])
 
