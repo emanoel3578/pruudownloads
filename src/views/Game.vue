@@ -323,55 +323,41 @@
                         <span class="font-kanit text-white text-3xl">Trending</span>
                     </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game1.png" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                    <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/NM%20Hired%20Gun#top">
+                                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1222370/header.jpg?t=1624899675" class="">
+                            </a>
+                            <span class="mx-auto my-0 font-kanit text-white text-2xl">NM Hired Gun</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game2.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Aliens%20Fireteam%20Elite">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1549970/header.jpg?t=1629799811" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Aliens Fireteam Elite</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game3.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-                    
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game4.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/NM%20Hired%20Gun#top">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1484900/header.jpg?t=1629812252" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Hoa</span>
+                        </div>
+                        
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Absolute%20Territory#top">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1130880/header.jpg?t=1620641596" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Absolute Territory</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game5.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Drift%20King">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1469690/header.jpg?t=1629713717" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Drift King</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game6.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game7.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game8.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game9.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <img src="../../public/img/game10.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
                 </div>
             </div>
 
@@ -386,6 +372,7 @@
 
 <script>
 import { jsonstr } from "../../declare.js"
+// import { jsonstrUpdated } from "../../json.js"
 
 export default {
     props:["name"],
@@ -395,6 +382,7 @@ export default {
             mediafireLink: false,
             MEGALink: false,
             BowLink: false,
+            gameClicked: "",
             gameList:[],
             currentPage:[],
             currentGameLinks:[],
@@ -429,9 +417,37 @@ export default {
                 secondElement.classList.remove("opaque")
                 secondElement.classList.add("opaque")
             }
-        }
+        },
 
+        downloadFunc: function(content, fileName, contentType) {
+            var a = document.createElement("a");
+            var file = new Blob([content], {type: contentType});
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+        },
     },
+
+    // mounted() {
+    //     var currentgame = this.name
+    //     var element1Changed = this.gameList.map(function (element) {
+    //         element.map(function (el) {
+    //             if (el == currentgame) {
+    //                 console.log(element[1])
+    //                 var updatedGameClicks = element[1].split("|")
+    //                 updatedGameClicks[9] = String(parseInt(updatedGameClicks[9]) + 1)
+    //                 element[1] = updatedGameClicks.join("|")
+    //             }
+    //         })
+    //         return element
+    //     })
+        
+    //     console.log(jsonstrUpdated)
+
+    //     // var newElement = JSON.stringify(element1Changed)
+    //     var jsonData = "export var jsonstrUpdated = " +  JSON.stringify(element1Changed)
+    //     this.downloadFunc(jsonData, 'json.js', 'text/plain')
+    // },
 
     created() {
         async function postData(url = '', fields =' ') {
@@ -462,6 +478,7 @@ export default {
         var downloadLinksArr = this.currentGameLinks
         var sizeofgame = this.sizeofgame
         var developersArr = this.developers
+        var gameClicked = this.gameClicked
         var YTLinkArr = this.YTLink
         this.gameList.map(function (element) {
             element.map(function (el) {
@@ -475,8 +492,8 @@ export default {
                     descriptionArr = element[1].split("|")[4]
                     screenshotsArr = element[1].split("|")[5].split("$$")
                     developersArr = element[1].split("|")[7].split("$$")
+                    gameClicked = element[1].split("|")[9]
                     YTLinkArr = element[1].split("|")[8]
-                    console.log(developersArr)
                 }
             })
         })
@@ -566,8 +583,11 @@ export default {
         this.releasedDate = releaseDateArr
         this.description = descriptionArr
         this.linkApi = linkApiArr
+        this.gameClicked = parseInt(gameClicked) + 1
         this.screenshots = screenshotsArr
         this.sizeofgame = sizeofgame
+
+        //console.log(this.gameClicked)
         
     }
 }

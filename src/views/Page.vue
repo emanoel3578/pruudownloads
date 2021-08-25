@@ -58,24 +58,38 @@
         </div>
 
         <div class="mt-10 w-3/5 mx-auto my-0">
-            <div class="flex">
+            <div class="flex gap-6">
                 <div class="grid grid-cols-2">
                     <div v-for="item in currentPage" :key="item.index" class="">
-                        <div class="flex flex-col justify-center items-center my-7">
-                            <div class="border-4 border-red-600 mx-2">
-                                <router-link :to="'/game/'+ item[0] + '#top' ">
-                                    <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
-                                </router-link>
+                        <div v-if="loadMainCards">
+                            <div class="border border-purple-300 shadow rounded-md p-4 w-full mb-10 mx-auto">
+                                <div class="animate-pulse flex flex-col space-y-5 justify-center h-full w-full relative">
+                                    <div class="mx-auto my-0 bg-purple-400 h-4/5 w-full absolute"></div>
+                                    <img :src="item[1]" class="p-5">
+                                    <div class="flex-1 space-y-4 py-1">
+                                        <div class="h-4 w-full bg-purple-400 rounded mx-auto my-0"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <router-link to="/game">
-                                    <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
-                                </router-link>
-                            </div>
-                            <div class="flex text-gray-200 font-kanit text-sm">
-                                <span>About</span>
-                                <span>x</span>
-                                <span>Time</span>
+                        </div>
+
+                        <div v-else>
+                            <div class="flex flex-col justify-center items-center my-7">
+                                <div class="border-4 border-red-600 mx-2">
+                                    <router-link :to="'/game/'+ item[0] + '#top' ">
+                                        <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
+                                    </router-link>
+                                </div>
+                                <div class="text-center">
+                                    <router-link to="/game">
+                                        <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
+                                    </router-link>
+                                </div>
+                                <div class="flex text-gray-200 font-kanit text-sm">
+                                    <span>About</span>
+                                    <span>x</span>
+                                    <span>Time</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,54 +100,89 @@
                         <span class="font-kanit text-white text-3xl">Trending</span>
                     </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game1.png" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                    <div v-if="loadSideCards">
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-blue-300 shadow rounded-md p-4 max-w-sm w-4/5 mb-10 mx-auto">
+                            <div class="animate-pulse flex flex-col space-y-5 justify-center">
+                                <div class="mx-auto my-0 bg-blue-400 h-20 w-20"></div>
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-blue-400 rounded mx-auto my-0 w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game2.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                    <div v-else>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/NM%20Hired%20Gun#top">
+                                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1222370/header.jpg?t=1624899675" class="">
+                            </a>
+                            <span class="mx-auto my-0 font-kanit text-white text-2xl">NM Hired Gun</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game3.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-                    
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game4.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Aliens%20Fireteam%20Elite">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1549970/header.jpg?t=1629799811" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Aliens Fireteam Elite</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game5.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/NM%20Hired%20Gun#top">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1484900/header.jpg?t=1629812252" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Hoa</span>
+                        </div>
+                        
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Absolute%20Territory#top">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1130880/header.jpg?t=1620641596" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Absolute Territory</span>
+                        </div>
 
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game6.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game7.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game8.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game9.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
-                    </div>
-
-                    <div class="flex flex-col items-center">
-                        <img src="/img/game10.jpg" class="w-4/5">
-                        <span class="font-kanit text-white text-2xl">Title title title</span>
+                        <div class="flex flex-col items-center mb-5">
+                            <a class="w-4/5" href="http://localhost:8080/game/Drift%20King">
+                                    <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1469690/header.jpg?t=1629713717" class="">
+                                </a>
+                            <span class="font-kanit text-white text-2xl">Drift King</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,6 +234,8 @@ export default {
     props:["numberPage"],
     data () {
         return {
+            loadSideCards: true,
+            loadMainCards: true,
             counter:0,
             clickedPage:"",
             gameList:[],
@@ -255,6 +306,15 @@ export default {
     },
 
     created() {
+
+        setTimeout(() => {
+            this.loadSideCards = false
+        }, 2000);
+
+        setTimeout(() => {
+            this.loadMainCards = false
+        }, 1500);
+
         console.log("Called created")
         this.gameList = Object.entries(jsonstr)
         var endSlice = parseInt(this.numberPage) * 20

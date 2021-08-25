@@ -155,7 +155,7 @@ def infoGamesGOG(ProductLink,triesGOG):
 
 i = 1
 linksDict = {}
-while i < 200:
+while i < 5:
     try:
         currentPageUrl = "https://www.skidrowreloaded.com/page/" + str(i) + "/"
         headers1 = {
@@ -262,6 +262,7 @@ while i < 200:
 
             #Getting the providers link
             providerLinks = ""
+
 
             for item in listLinks[2:]:
                 # print(item)
