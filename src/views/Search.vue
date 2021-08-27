@@ -80,7 +80,8 @@
                             </div>
 
                             <div v-else>
-                                <div class="flex flex-col justify-center items-center my-7">
+                                <div class="flex flex-col justify-center items-center my-7 relative">
+                                    <img :id=" item[0].replace(/ /g,'') " src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
                                     <div class="border-4 border-red-600 mx-2">
                                         <router-link :to="'/game/'+ item[0] + '#top' ">
                                             <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
@@ -361,11 +362,25 @@ export default {
     },
 
     updated() {
+        this.gameList = Object.entries(jsonstr)
+        var gameChecker = this.gameList.slice(0,20)
+        
+        gameChecker.map(function (element) {
+            var onlineChecker = element[1].split("|")[7].split("$$")
+            
+            if(onlineChecker[onlineChecker.length - 1] == "Online") {
+                document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
+            }
+        })
     },
 }
 </script>
 
 <style>
+
+.showMP {
+    display: block;
+}
 
 .currentPage{
     margin-right: 0.75em;

@@ -77,21 +77,17 @@
                         </div>
 
                         <div v-else>
-                            <div class="flex flex-col justify-center items-center my-7">
+                            <div class="flex flex-col justify-center items-center my-7 relative">
+                                <img :id=" item[0].replace(/ /g,'') " src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
                                 <div class="border-4 border-red-600 mx-2">
                                     <router-link :to="'/game/'+ item[0] + '#top' ">
                                         <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
                                     </router-link>
                                 </div>
-                                <div class="text-center">
+                                <div class="text-center mt-2">
                                     <router-link to="/game">
                                         <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
                                     </router-link>
-                                </div>
-                                <div class="flex text-gray-200 font-kanit text-sm">
-                                    <span>About</span>
-                                    <span>x</span>
-                                    <span>Time</span>
                                 </div>
                             </div>
                         </div>
@@ -191,17 +187,16 @@
             </div>
 
             <div class="flex justify-center mb-2 text-lg text-white">
-                <router-link :to="'/page/' + clickedPage">
-                    <button  class="mx-3 cursor-pointer"> &#60;&#60; </button>
-                    <button  @click="ChangePage" value="firstpage" class="mx-3 cursor-pointer bg-blue-500 rounded-full w-6 h-6" ref="firstpage">1</button>
-                    <button  @click="ChangePage" value="secondpage" class="mx-3 cursor-pointer" ref="secondpage">2</button>
-                    <button  @click="ChangePage" value="thirdpage" class="mx-3 cursor-pointer" ref="thirdpage">3</button>
-                    <button  @click="ChangePage" value="forthpage" class="mx-3 cursor-pointer" ref="forthpage">4</button>
-                    <button  @click="ChangePage" value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">5</button>
-                </router-link>
+                <button @click="previousPage" class="mx-3 cursor-pointer"> &#60;&#60; </button>
+                <a  @click="ChangePage" value="firstpage" class="mx-3 cursor-pointer bg-blue-500 rounded-full w-6 h-6" ref="firstpage">{{this.pageValues[0]}}</a>
+                <a  @click="ChangePage" value="secondpage" class="mx-3 cursor-pointer" ref="secondpage">{{this.pageValues[1]}}</a>
+                <a  @click="ChangePage" value="thirdpage" class="mx-3 cursor-pointer" ref="thirdpage">{{this.pageValues[2]}}</a>
+                <a  @click="ChangePage" value="forthpage" class="mx-3 cursor-pointer" ref="forthpage">{{this.pageValues[3]}}</a>
+                <a  @click="ChangePage" value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">{{this.pageValues[4]}}</a>
+                
                 <span    value="fifthpage" class="mx-3" ref="fifthpage">...</span>
-                <button  @click="ChangePage" value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">299</button>
-                <button  class="mx-3 cursor-pointer"> &#62;&#62; </button>
+                <button  @click="ChangePage" id="lastPage" class="mx-3 cursor-pointer">{{this.lastPage}}</button>
+                <button @click="nextPage" class="mx-3 cursor-pointer"> &#62;&#62; </button>
             </div>
         </div>
         
@@ -238,6 +233,7 @@ export default {
       return {
         loadSideCards: true,
         loadMainCards: true,
+        lastPage: "",
         searchbar: false,
         searchQuery: "",
         clickedPage:"",
@@ -253,21 +249,36 @@ export default {
         systemReq: "",
         developers:"",
         devInfo:["Empty","Empty","Empty","Empty"],
-        hasTrailer: false
+        hasTrailer: false,
+        pageValues: []
       }
   },
 
   methods:{
       ChangePage (event) {
         this.clickedPage = event.srcElement.innerText
+        window.location.href = "http://localhost:8080/page/" + this.clickedPage
       },
 
       nextPage () {
-
+          var gameList = Object.entries(jsonstr)
+            if (Math.floor(gameList.length / 20) > 5) {
+                this.pageValues[0] = this.pageValues[0] + 5
+                this.pageValues[1] = this.pageValues[1] + 5
+                this.pageValues[2] = this.pageValues[2] + 5
+                this.pageValues[3] = this.pageValues[3] + 5
+                this.pageValues[4] = this.pageValues[4] + 5
+            }
       },
 
       previousPage () {
-
+          if(this.pageValues[0] > 1) {
+                this.pageValues[0] = this.pageValues[0] - 5
+                this.pageValues[1] = this.pageValues[1] - 5
+                this.pageValues[2] = this.pageValues[2] - 5
+                this.pageValues[3] = this.pageValues[3] - 5
+                this.pageValues[4] = this.pageValues[4] - 5
+            }
       },
 
       sendSearch () {
@@ -280,8 +291,20 @@ export default {
       },
   },
 
-  created() {
+  updated() {
+        this.gameList = Object.entries(jsonstr)
+        var gameChecker = this.gameList.slice(0,20)
+        
+        gameChecker.map(function (element) {
+            var onlineChecker = element[1].split("|")[7].split("$$")
+            
+            if(onlineChecker[onlineChecker.length - 1] == "Online") {
+                document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
+            }
+        })
+  },
 
+  created() {
         setTimeout(() => {
             this.loadSideCards = false
         }, 2000);
@@ -291,6 +314,7 @@ export default {
         }, 1500);
 
         this.gameList = Object.entries(jsonstr)
+        this.lastPage = Math.floor(this.gameList.length / 20) + 1
         this.currentPage = this.gameList.slice(0,20)
         var developersArr = this.developers
         this.developers = developersArr
@@ -303,14 +327,24 @@ export default {
                 });
             }else {
                 element[1] = developersArr[0]
-                
             }
         })
+
+        var numberofPages =  Math.ceil(this.gameList.length / 20)
+
+        for (var i = 0; i < numberofPages; i++) {
+            this.pageValues.push(i+1)
+        }
   }
 }
 </script>
 
 <style>
+
+.showMP {
+    display: block;
+}
+
 #pruulogo {
   position: relative;
   animation-name: example;
@@ -323,5 +357,6 @@ export default {
   50%  {left:60px;}
   100%  {left:0px;}
 }
+
 </style>
 

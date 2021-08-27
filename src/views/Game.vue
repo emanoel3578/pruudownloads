@@ -1,13 +1,13 @@
 <template>
     <div class="font-kanit">
         <div class="">
-            <div class="flex justify-around bg-white" id="top">
+            <div class="flex justify-around bg-gray-400" id="top">
                 <div class="flex">
                     <div>
-                        <img src="../../public/img/huelogo.png" class="max-h-32">
+                        <img id="pruulogo" src="/img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
                     </div>
                     <div class="flex items-center">
-                        <span class="font-kanit text-xl">PruuDownloads</span>
+                        <span class="font-kanit text-xl text-white ml-2">PruuDownloads</span>
                     </div>
                 </div>
 
@@ -235,6 +235,13 @@
                                 </div>
 
                                 <div class="flex flex-col text-center justify-center">
+
+                                    <div v-show="uploading" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                        <p class="text-blue-300 text-3xl mb-2">
+                                            Uploading files...
+                                        </p>
+                                    </div>
+
                                     <div v-show="mediafireLink" class="border-b-2 border-gray-300 pb-4 mb-4">
                                         <p class="text-blue-300 text-3xl mb-2">
                                             Mediafire:
@@ -370,6 +377,7 @@ export default {
     props:["name"],
     data () {
         return {
+            uploading: false,
             searchbar: false,
             searchQuery: "",
             TorrentLink: true,
@@ -581,7 +589,11 @@ export default {
         this.screenshots = screenshotsArr
         this.sizeofgame = sizeofgame
 
-        //console.log(this.gameClicked)
+        if (this.currentGameLinks[0] == "" ) {
+            this.uploading = true
+        }
+
+        console.log(this.currentGameLinks)
         
     }
 }

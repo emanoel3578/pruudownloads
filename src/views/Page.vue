@@ -62,7 +62,7 @@
             <div class="flex gap-6">
                 <div class="grid grid-cols-2">
                     <div v-for="item in currentPage" :key="item.index" class="">
-                        <div v-if="loadMainCards">
+                        <div v-show="loadBackupCards">
                             <div class="border border-purple-300 shadow rounded-md p-4 w-full mb-10 mx-auto">
                                 <div class="animate-pulse flex flex-col space-y-5 justify-center h-full w-full relative">
                                     <div class="mx-auto my-0 bg-purple-400 h-4/5 w-full absolute"></div>
@@ -74,8 +74,9 @@
                             </div>
                         </div>
 
-                        <div v-else>
-                            <div class="flex flex-col justify-center items-center my-7">
+                        <div v-show="loadMainCards">
+                            <div class="flex flex-col justify-center items-center my-7 relative">
+                                <img :id=" item[0].replace(/ /g,'') " src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
                                 <div class="border-4 border-red-600 mx-2">
                                     <router-link :to="'/game/'+ item[0] + '#top' ">
                                         <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
@@ -191,13 +192,13 @@
             <div class="flex justify-center mb-2 text-lg text-white">
                 <button @click="previousPage" class="mx-3 cursor-pointer"> &#60;&#60; </button>
 
-                <router-link @click='ChangePage' id="firstPage" class="otherPages" ref="firstpage"  :to="'/page/' + this.pageValues[0]"> {{this.pageValues[0]}} </router-link>
+                <router-link id="firstPage" class="otherPages" ref="firstpage"  :to="'/page/' + this.pageValues[0]"> {{this.pageValues[0]}} </router-link>
                 <router-link @click="ChangePage" id="secondPage" class="otherPages" ref="secondpage" :to="'/page/' + this.pageValues[1]">{{this.pageValues[1]}}</router-link>
                 <router-link @click="ChangePage" id="thirdPage" class="otherPages" ref="thirdpage" :to="'/page/' + this.pageValues[2]">{{this.pageValues[2]}}</router-link>
                 <router-link @click="ChangePage" id="forthPage" class="otherPages" ref="forthpage" :to="'/page/' + this.pageValues[3]">{{this.pageValues[3]}}</router-link>
                 <router-link @click="ChangePage" id="fifthPage" class="otherPages" ref="fifthpage" :to="'/page/' + this.pageValues[4]">{{this.pageValues[4]}}</router-link>
                 <span    value="" class="mx-3" ref="">...</span>
-                <button  @click="ChangePage" value="lastpage" class="otherPages" ref="lastpage">299</button>
+                <a :href="'http://localhost:8080/page/' + this.lastPage" id="lastPage" value="lastpage" class="otherPages" >{{this.lastPage}}</a>
                 
                 <button @click="nextPage" class="mx-3 cursor-pointer"> &#62;&#62; </button>
             </div>
@@ -237,8 +238,10 @@ export default {
         return {
             searchbar: false,
             searchQuery: "",
+            lastPage: "",
+            loadBackupCards: true,
+            loadMainCards: false,
             loadSideCards: true,
-            loadMainCards: true,
             counter:0,
             clickedPage:"",
             gameList:[],
@@ -285,10 +288,30 @@ export default {
                 }
                 //console.log((element[1].split("|")).length)
             })
+
+            setTimeout(() => {
+                this.gameList = Object.entries(jsonstr)
+                var endSlice = parseInt(this.clickedPage) * 20
+                var startSlice = endSlice - 20
+                var currentPage = this.gameList.slice(startSlice,endSlice)
+                currentPage.map(function (el) {
+                    var onlineChecker = el[1].split("|")[7].split("$$")
+                    document.getElementById(el[0].replace(/ /g, "")).classList.remove("showMP")
+                    if(onlineChecker[onlineChecker.length - 1] == "Online") {
+                        try {
+                            document.getElementById(el[0].replace(/ /g, "")).classList.add("showMP")
+                        }catch(error) {
+                            console.log(error)
+                        }
+                    }
+                })
+            }, 1000);
+            //console.log(console.log(document.getElementById("Ascent")))
         },
 
         nextPage () {
-            if (this.gameList.length / 20 > 100) {
+            var gameList = Object.entries(jsonstr)
+            if (gameList.length / 20 > 100) {
                 this.pageValues[0] = this.pageValues[0] + 5
                 this.pageValues[1] = this.pageValues[1] + 5
                 this.pageValues[2] = this.pageValues[2] + 5
@@ -310,17 +333,19 @@ export default {
     },
 
     created() {
-
+        
         setTimeout(() => {
             this.loadSideCards = false
         }, 2000);
 
         setTimeout(() => {
-            this.loadMainCards = false
-        }, 1500);
+            this.loadBackupCards = false
+            this.loadMainCards = true
+        }, 2000);
 
         console.log("Called created")
         this.gameList = Object.entries(jsonstr)
+        this.lastPage = Math.floor(this.gameList.length / 20) + 1
         var endSlice = parseInt(this.numberPage) * 20
         var startSlice = endSlice - 20
         this.currentPage = this.gameList.slice(startSlice,endSlice)
@@ -348,11 +373,33 @@ export default {
         for (var i = 0; i < numberofPages; i++) {
             this.pageValues.push(i+1)
         }
+
+        if (!this.pageValues.includes(parseInt(this.numberPage))) {
+            window.location.href = "http://localhost:8080/home"
+        }
     },
 
 
     mounted() {
-        
+        //console.log(document.getElementById("Ascent"))
+        var gameList = Object.entries(jsonstr)
+        var endSlice = parseInt(this.numberPage) * 20
+        var startSlice = endSlice - 20
+        var gameChecker = gameList.slice(startSlice,endSlice)
+        //console.log(gameChecker)
+        gameChecker.map(function (element) {
+            var onlineChecker = element[1].split("|")[7].split("$$")
+            //console.log(document.getElementById(element[0].replace(/ /g, "")))
+            if(onlineChecker[onlineChecker.length - 1] == "Online") {
+                try {
+                    document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP") 
+                }catch(error) {
+                    console.log(error)
+                }
+            }
+        })
+
+
         if (parseInt(this.numberPage) > 5) {
             var numberOfLoops = Math.floor(parseInt(this.numberPage) / 5)
             
@@ -416,12 +463,35 @@ export default {
             if (this.numberPage == fifthPage) {
                 document.getElementById("fifthPage").classList.toggle("currentPage")
             }
-            })
+
+            // var gameList = Object.entries(jsonstr)
+            // var endSlice = parseInt(this.numberPage) * 20
+            // var startSlice = endSlice - 20
+            // var gameChecker = gameList.slice(startSlice,endSlice)
+            // //console.log(gameChecker)
+            // gameChecker.map(function (element) {
+            //     var onlineChecker = element[1].split("|")[7].split("$$")
+            //     //console.log(document.getElementById(element[0].replace(/ /g, "")))
+            //     if(onlineChecker[onlineChecker.length - 1] == "Online") {
+            //         try {
+            //             if(document.getElementById(element[0].replace(/ /g, "")) != null) {
+            //                 document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
+            //             }
+            //         }catch(error) {
+            //             console.log(error)
+            //         }
+            //     }
+            // })
+        })
     },
 }
 </script>
 
 <style>
+
+.showMP {
+    display: block;
+}
 
 .currentPage{
     margin-right: 0.75em;
