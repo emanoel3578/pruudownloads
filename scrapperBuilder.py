@@ -31,7 +31,7 @@ import json
 
 # Steam Scraping
 
-# reqGOG = Request("https://store.steampowered.com/app/1257640/Dreamscaper_Prologue__Supporters_Edition/")
+# reqGOG = Request("https://store.steampowered.com/app/1160220/Paradise_Killer/")
 # webpage = urlopen(reqGOG).read()
 
 # page_soupGame = soup(webpage, "html.parser")
@@ -55,52 +55,57 @@ import json
 #     ratings = page_soupGame.find("span", {"class":"game_review_summary"}).text
 # except AttributeError:
 #     ratings = (((page_soupGame.find("div", {"class":"summary"}).text).partition('\n')[2]).replace("\t", ""))
-# sysRequiredStr = ""
-# for req in sysRequired:
-#     treatedReq = req.text.replace("|", "")
-#     sysRequiredStr = sysRequiredStr + "|" + treatedReq
-# if "Roguebook" in ProductLink:
-#     print(sysRequiredStr)
 
 # infoSteam = imgHeader + "$$" + developer + "$$" + publisher + "$$" + ratings + "$$" + videoLink + "$$" + gamemode
+# print(infoSteam)
 
 
 # GOG Scraping
-reqGOG = Request("https://www.gog.com/game/out_of_line")
-webpageGOG = urlopen(reqGOG).read()
+# reqGOG = Request("https://www.gog.com/game/out_of_line")
+# webpageGOG = urlopen(reqGOG).read()
 
-page_soupGOG = soup(webpageGOG, "html.parser")
-genreGOG = page_soupGOG.find_all("div", {"class":"table--without-border"})
+# page_soupGOG = soup(webpageGOG, "html.parser")
+# genreGOG = page_soupGOG.find_all("div", {"class":"table--without-border"})
 
-if len(genreGOG) != 0:
-    developerGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[0].text
-    companyGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[1].text
-    imgHeaderGOG = page_soupGOG.find("img", {"class" : "mobile-slider__image"})["src"]
-    containerGamemode = page_soupGOG.find_all("a", {"class":"details__feature"})
-for item in containerGamemode:
-    if "Multi" in  item.text:
-        gamemode = "Online"
-    else:
-        gamemode = "Singleplayer"
-ratingsGOG = "Nothing"
+# if len(genreGOG) != 0:
+#     developerGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[0].text
+#     companyGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[1].text
+#     imgHeaderGOG = page_soupGOG.find("img", {"class" : "mobile-slider__image"})["src"]
+#     containerGamemode = page_soupGOG.find_all("a", {"class":"details__feature"})
+# for item in containerGamemode:
+#     if "Multi" in  item.text:
+#         gamemode = "Online"
+#     else:
+#         gamemode = "Singleplayer"
+# ratingsGOG = "Nothing"
 
 # infoGOG = imgHeaderGOG + "$$" + developerGOG + "$$" + companyGOG + "$$" + ratingsGOG + "$$" + gamemode
-print(developerGOG)
+# print(developerGOG)
 
 # Epic Scaping
 
-# reqGamepage = Request("https://www.epicgames.com/store/en-US/p/red-dead-redemption-2")
+# reqGamepage = Request("https://www.epicgames.com/store/en-US/product/assassins-creed-valhalla/home")
 # webGamepage = urlopen(reqGamepage).read()
 
 # page_soupGame = soup(webGamepage, "html.parser")
 # containerDev = page_soupGame.find_all("div", {"data-component":"PDPSidebarMetadataBase"})
 # containerImg = page_soupGame.find_all("div", {"data-component":"PDPSidebarLogo"})
-# containerGamemode = page_soupGame.find_all("div", {"data-component":"AboutMetadataLayout"})[-1].find("ul")
-# for item in containerGamemode:
-#     if "Single Player" == item.text:
-#         gamemode = "Singleplayer"
-#     else:
-#         gamemode = "Online"
+# containerGamemode = page_soupGame.find_all("div", {"data-component":"AboutMetadataLayout"})[-1]
+# GamemodeUL = containerGamemode.find("ul")
+# if GamemodeUL == None:
+#     gamemode = "Singleplayer"
+# else:
+#     for item in GamemodeUL:
+#         if "Single Player" == item.text:
+#             gamemode = "Singleplayer"
+#         else:
+#             gamemode = "Online"
+
+# imgHeader = containerImg[1].div.img["src"]
+# developer = containerDev[0].span.text
+# publisher = containerDev[1].span.text
+
+# infoEpic = imgHeader + "$$" + developer + "$$" + publisher + "$$" + gamemode
 
 # print(gamemode)
 
@@ -134,7 +139,7 @@ print(developerGOG)
 # containerSysReq = page_soupGame.find_all("div", {"class" : "game_area_sys_req_leftCol"})[-1].find_all("p")[1].text
 # print(containerSysReq.replace('\n', "$$"))
 
-# ProductLink = "https://store.steampowered.com/app/1693190/Evdeki_Lanet/"
+# ProductLink = "https://store.steampowered.com/app/1070860/Serin_Fate/"
 
 
 # def infoGamesSteam(ProductLink,triesSteam):

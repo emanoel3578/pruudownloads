@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="bg-gray-700 flex justify-center font-kanit">
+            <div class="z-20 bg-gray-700 flex justify-center font-kanit">
                 <ul class="flex list-none gap-5">
                     <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
                         <router-link :to="'/home'">
@@ -39,10 +39,33 @@
                             <a>Games online</a>
                         </router-link>
                     </li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                    <li @mouseover ="categoriesHover = true" @mouseleave ="categoriesHover = false" class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2 relative">
                         <router-link :to="'/howtodownload'">
-                            <a>How to Download</a>
+                            <a class="">Categories</a>
                         </router-link>
+                        <div v-show="categoriesHover" class="border-2 border-black font-kanit cursor-default flex absolute z-10 text-white bg-purple-500 gap-5 rounded-lg">
+                            <ul class="m-3 ">
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Singleplayer</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Multiplayer</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Indie</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Action</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Adventure</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Casual</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Simulation</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">RPG</li>
+                            </ul>
+
+                            <ul class="m-3">
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">2D</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Atmospheric</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Puzzle</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Strategy</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Rich Story</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Pixel</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Fantasy</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Colorful</li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
                         <router-link :to="'/dmca'">
@@ -231,6 +254,7 @@ export default {
   name: 'Navbar',
   data () {
       return {
+        categoriesHover: false,
         loadSideCards: true,
         loadMainCards: true,
         lastPage: "",

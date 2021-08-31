@@ -190,21 +190,21 @@
 <script>
 import { jsonstr } from "../../declare.js"
 
-async function postData(url = '', fields =' ') {
-// Default options are marked with *
-const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    headers: {
-    'Content-Type': 'application/json',
-    'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
-    'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
-    'origin': 'x-requested-with',
-    },
-    body: fields // body data type must match "Content-Type" header
-});
-    return response.json(); // parses JSON response into native JavaScript objects
-}
+// async function postData(url = '', fields =' ') {
+// // Default options are marked with *
+// const response = await fetch(url, {
+//     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//     mode: 'cors', // no-cors, *cors, same-origin
+//     headers: {
+//     'Content-Type': 'application/json',
+//     'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
+//     'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
+//     'origin': 'x-requested-with',
+//     },
+//     body: fields // body data type must match "Content-Type" header
+// });
+//     return response.json(); // parses JSON response into native JavaScript objects
+// }
 
 
 export default {
@@ -319,20 +319,20 @@ export default {
         
         this.gameList = Object.entries(jsonstr)
         this.gameList.map(function (element) {
-            if ((element[0]).toLocaleLowerCase().includes(("query").toLocaleLowerCase()) || (element[1]).toLocaleLowerCase().includes((query).toLocaleLowerCase())) {
+            if ((element[0]).toLocaleLowerCase().includes((query).toLocaleLowerCase()) || (element[1]).toLocaleLowerCase().includes((query).toLocaleLowerCase())) {
                 queryArrayTotal.push(element)
                 var developersArr = element[1].split("|")[7].split("$$")
                 if(developersArr[0] == "Empty") {
-                    var searchString = 'search ' + `"${element[0]}"` + '; fields id;'
-                    postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games?', searchString)
-                    .then(responseFromApi => {
-                        var idSearchedGame = 'fields *;' + 'where game = ' + `${responseFromApi[0].id}` + ';'
-                        postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
-                        .then(screenshotApi => {
-                            element[1] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
-                            console.log(screenshotApi)
-                        })
-                    });
+                    // var searchString = 'search ' + `"${element[0]}"` + '; fields id;'
+                    // postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games?', searchString)
+                    // .then(responseFromApi => {
+                    //     var idSearchedGame = 'fields *;' + 'where game = ' + `${responseFromApi[0].id}` + ';'
+                    //     postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
+                    //     .then(screenshotApi => {
+                    //         element[1] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
+                    //         console.log(screenshotApi)
+                    //     })
+                    // });
                 }else {
                     element[1] = developersArr[0]
                 }
@@ -361,18 +361,7 @@ export default {
         }
     },
 
-    updated() {
-        this.gameList = Object.entries(jsonstr)
-        var gameChecker = this.gameList.slice(0,20)
-        
-        gameChecker.map(function (element) {
-            var onlineChecker = element[1].split("|")[7].split("$$")
-            
-            if(onlineChecker[onlineChecker.length - 1] == "Online") {
-                document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
-            }
-        })
-    },
+    updated() {},
 }
 </script>
 
