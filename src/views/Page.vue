@@ -15,7 +15,7 @@
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
                             <label @click="searchbar = !searchbar" for="search" class="cursor-pointer ">Search for games</label>
-                            <input v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
+                            <input v-on:keyup.enter="sendSearch" v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
                             <img @click="sendSearch" v-show="searchbar" src="/img/lupe.png">
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <a>Games online</a>
                         </router-link>
                     </li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
+                    <li @mouseover ="categoriesHover = true" @mouseleave ="categoriesHover = false" class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2 relative">
                         <div class="">
                             <a class="">Categories</a>
                         </div>

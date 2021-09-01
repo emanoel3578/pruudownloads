@@ -15,7 +15,7 @@
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
                             <label @click="searchbar = !searchbar" for="search" class="cursor-pointer ">Search for games</label>
-                            <input v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
+                            <input v-on:keyup.enter="sendSearch" v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
                             <img @click="sendSearch" src="/img/lupe.png">
                         </div>
                     </div>
@@ -39,10 +39,32 @@
                             <a>Games online</a>
                         </router-link>
                     </li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
-                        <router-link :to="'/howtodownload'">
-                            <a>How to Download</a>
-                        </router-link>
+                    <li @mouseover ="categoriesHover = true" @mouseleave ="categoriesHover = false" class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2 relative">
+                        <div class="">
+                            <a class="">Categories</a>
+                        </div>
+                        <div v-show="categoriesHover" class="z-10 border-2 border-black font-kanit cursor-default flex absolute text-white bg-purple-500 gap-5 rounded-lg">
+                            <ul class="m-3 ">
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Singleplayer">Singleplayer</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Multiplayer">Multiplayer</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Indie">Indie</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Action">Action</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Adventure">Adventure</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Casual">Casual</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Simulation">Simulation</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=RPG">RPG</a></li>
+                            </ul>
+
+                            <ul class="m-3">
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=2D">2D</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Atmospheric">Atmospheric</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Puzzle">Puzzle</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Strategy">Strategy</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Pixel">Pixel</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Fantasy">Fantasy</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Colorful">Colorful</a></li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
                         <router-link :to="'/dmca'">
@@ -67,7 +89,7 @@
                 <div class="">
                     <div class="grid grid-cols-2" v-if="hasResults">
                         <div v-for="item in queryArray" :key="item.index" class="">
-                            <div v-if="loadMainCards">
+                            <div v-show="loadMainCards">
                                 <div class="border border-purple-300 shadow rounded-md p-4 w-full mb-10 mx-auto">
                                     <div class="animate-pulse flex flex-col space-y-5 justify-center h-full w-full relative">
                                         <div class="mx-auto my-0 bg-purple-400 h-4/5 w-full absolute"></div>
@@ -79,7 +101,7 @@
                                 </div>
                             </div>
 
-                            <div v-else>
+                            <div v-show="unLoadMaincards">
                                 <div class="flex flex-col justify-center items-center my-7 relative">
                                     <img :id=" item[0].replace(/ /g,'') " src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
                                     <div class="border-4 border-red-600 mx-2">
@@ -196,9 +218,11 @@ export default {
     props:["query"],
     data () {
         return {
+            categoriesHover: false,
             hasResults: false,
             loadSideCards: true,
             loadMainCards: true,
+            unLoadMaincards: false,
             pageSelected:"",
             searchbar: true,
             searchQuery: this.query.substring(1),
@@ -225,14 +249,27 @@ export default {
     methods:{
         ChangePage (event) {
             this.loadMainCards = true
+            this.unLoadMaincards = false 
+
             setTimeout(() => {
                this.loadMainCards = false 
+               this.unLoadMaincards = true 
             }, 2000);
             
             this.clickedPage = event.srcElement.innerText
             var endSlice = parseInt(this.clickedPage) * 20
             var startSlice = endSlice - 20
             this.queryArray = this.queryArrayTotal.slice(startSlice,endSlice)
+
+            setTimeout(() => {
+                var currentSearch = this.queryArrayTotal.slice(startSlice,endSlice)
+                currentSearch.map(function (element) {
+                    var onlineChecker = element[2].split("|")[7].split("$$")
+                    if(onlineChecker[onlineChecker.length - 1] == "Online") {
+                        document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
+                    }
+                })
+            }, 2500);
 
             if (event.srcElement.id == "firstPage") {
                 document.getElementById("firstPage").classList.add("currentPage")
@@ -304,6 +341,15 @@ export default {
       },
     },
 
+    mounted() {
+        this.queryArrayTotal.slice(0,20).map(function (element) {
+            var onlineChecker = element[2].split("|")[7].split("$$")
+            if(onlineChecker[onlineChecker.length - 1] == "Online") {
+                document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
+            }
+        })
+    },
+
     created() {
         console.log("Called created")
 
@@ -313,15 +359,19 @@ export default {
 
         setTimeout(() => {
             this.loadMainCards = false
+            this.unLoadMaincards = true
         }, 1500);
 
         var query = this.query.substring(1)
         var queryArrayTotal = this.queryArrayTotal
         
         this.gameList = Object.entries(jsonstr)
+        var counter = 0
         this.gameList.map(function (element) {
             if ((element[0]).toLocaleLowerCase().includes((query).toLocaleLowerCase()) || (element[1]).toLocaleLowerCase().includes((query).toLocaleLowerCase())) {
                 queryArrayTotal.push(element)
+                queryArrayTotal[counter].push(element[1])
+                counter++
                 var developersArr = element[1].split("|")[7].split("$$")
                 if(developersArr[0] == "Empty") {
                     // var searchString = 'search ' + `"${element[0]}"` + '; fields id;'
@@ -361,7 +411,6 @@ export default {
         var thirdPage = document.getElementById("thirdPage").innerHTML
         var forthPage = document.getElementById("forthPage").innerHTML
         var fifthPage = document.getElementById("fifthPage").innerHTML
-        console.log(firstPage == this.clickedPage)
 
         if (this.clickedPage == firstPage) {
             document.getElementById("firstPage").classList.toggle("currentPage")

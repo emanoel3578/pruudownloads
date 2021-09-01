@@ -15,7 +15,7 @@
                     <div class="flex items-center">
                         <div class="flex items-center gap-2 rounded-full py-3 px-6 p-2 md:text-xl font-kanit text-white border-3 border-gray-100 bg-gradient-to-r hover:from-blue-500 hover:to-purple-400 hover:text-white cursor-pointer shadow-lg">
                             <label @click="searchbar = !searchbar" for="search" class="cursor-pointer ">Search for games</label>
-                            <input v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
+                            <input v-on:keyup.enter="sendSearch" v-model="searchQuery" v-show="searchbar" class="text-black" size="25">
                             <img @click="sendSearch" v-show="searchbar" src="img/lupe.png">
                         </div>
                     </div>
@@ -99,11 +99,11 @@
                         </div>
 
                         <div v-show="unLoadMainCards">
-                            <div class="flex flex-col justify-center items-center my-7 relative">
+                            <div class="flex flex-col justify-center items-center my-7 relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                                 <img :id=" item[0].replace(/ /g,'') " src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
-                                <div class="border-4 border-red-600 mx-2">
+                                <div class="border-4 border-red-600 mx-2 hover:border-blue-500">
                                     <router-link :to="'/game/'+ item[0] + '#top' ">
-                                        <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
+                                        <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0 ">    
                                     </router-link>
                                 </div>
                                 <div class="text-center mt-2">
