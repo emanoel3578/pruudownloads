@@ -353,6 +353,16 @@ export default {
             }
 
         },
+
+        sendSearch () {
+          if (this.searchQuery != "" && this.searchQuery != undefined) {
+              window.location.href = "http://localhost:8080/search/s=" + this.searchQuery;
+          }else {
+              console.log("Bad Search")
+              console.log(this.searchQuery)
+          }
+      },
+      
     },
 
     created() {

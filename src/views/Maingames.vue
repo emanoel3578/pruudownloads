@@ -86,7 +86,7 @@
 
                     <div v-for="item in currentPage" :key="item.index" class="">
                         
-                        <div v-if="loadMainCards">
+                        <div v-show="loadMainCards">
                             <div class="border border-purple-300 shadow rounded-md p-4 w-full mb-10 mx-auto">
                                 <div class="animate-pulse flex flex-col space-y-5 justify-center h-full w-full relative">
                                     <div class="mx-auto my-0 bg-purple-400 h-4/5 w-full absolute"></div>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
 
-                        <div v-else>
+                        <div v-show="unLoadMainCards">
                             <div class="flex flex-col justify-center items-center my-7 relative">
                                 <img :id=" item[0].replace(/ /g,'') " src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
                                 <div class="border-4 border-red-600 mx-2">
@@ -256,6 +256,7 @@ export default {
         categoriesHover: false,
         loadSideCards: true,
         loadMainCards: true,
+        unLoadMainCards: false,
         lastPage: "",
         searchbar: false,
         searchQuery: "",
@@ -340,6 +341,7 @@ export default {
 
         setTimeout(() => {
             this.loadMainCards = false
+            this.unLoadMainCards = true
         }, 1500);
 
         this.gameList = Object.entries(jsonstr)
