@@ -6,6 +6,68 @@ from bs4.element import ContentMetaAttributeValue
 import json
 
 
+# GAME 3RB Scarping
+
+# Scrapping da pagina de procura, pegando o primeiro item da procura...
+srcString= "Gunfire Reborn"
+treatedString = srcString.replace(" ", "+")
+my_url = "https://www.game3rb.com/?s=" + str(treatedString)
+
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36'
+}
+
+req = Request(my_url, headers=headers)
+webpage = urlopen(req).read()
+
+page_soup = soup(webpage, "html.parser")
+gameLink = page_soup.find("h3", {"class":"entry-title"}).a["href"]
+onlineName = page_soup.find("h3", {"class":"entry-title"}).a.text
+
+if "OnLine" in onlineName:
+    # Já dentro da pagina do jogo, Pegando os links do redirecionador
+    reqCurrentGame = Request(gameLink, headers=headers)
+    webPageCurrentGame = urlopen(reqCurrentGame).read()
+
+    page_soupGame = soup(webPageCurrentGame, "html.parser")
+    sourceDownloadLink = page_soupGame.find_all("a", {"id":"download-link"})
+
+    fullGameLink = sourceDownloadLink[0]["href"]
+    SteamFix = sourceDownloadLink[1]["href"]
+
+    # Scraping dos links para download dentro da pagina do Redirecionador
+
+    # Full Game links
+    reqFullGame = Request(fullGameLink, headers=headers)
+    webFullGame = urlopen(reqFullGame).read()
+
+    page_soupFullGame = soup(webFullGame, "html.parser")
+    fullgameDLink = page_soupFullGame.find_all("li")
+
+    # Links para o fullgame
+    linksForFullGame = []
+    for item in fullgameDLink:
+        linksForFullGame.append(item.a["href"])
+
+    print(linksForFullGame, end="\n")
+
+    # Steam fix links
+    reqSteamfix = Request(SteamFix, headers=headers)
+    webSteamfix = urlopen(reqSteamfix).read()
+
+    page_soupSteamFix = soup(webSteamfix, "html.parser")
+    SteamfixDLink = page_soupSteamFix.find_all("li")
+
+    # links para o steamfix
+    linksForSteamfix = []
+    for item in SteamfixDLink:
+        linksForSteamfix.append(item.a["href"])
+
+    print(linksForSteamfix, end="\n")
+
+
+
+
 # Microsoft Scraping
 
 # reqGOG = Request("https://www.microsoft.com/en-us/p/minecraft-dungeons/9n8nj74fztg9?activetab=pivot:overviewtab")

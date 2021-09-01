@@ -102,9 +102,9 @@
                             </div>
 
                             <div v-show="unLoadMaincards">
-                                <div class="flex flex-col justify-center items-center my-7 relative">
+                                <div class="flex flex-col justify-center items-center my-7 relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                                     <img :id=" item[0].replace(/ /g,'') " src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
-                                    <div class="border-4 border-red-600 mx-2">
+                                    <div class="border-4 border-red-600 mx-2 hover:border-blue-500">
                                         <router-link :to="'/game/'+ item[0] + '#top' ">
                                             <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0">    
                                         </router-link>
