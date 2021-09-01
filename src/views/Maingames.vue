@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="z-20 bg-gray-700 flex justify-center font-kanit">
+            <div class="bg-gray-700 flex justify-center font-kanit">
                 <ul class="flex list-none gap-5">
                     <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
                         <router-link :to="'/home'">
@@ -40,30 +40,29 @@
                         </router-link>
                     </li>
                     <li @mouseover ="categoriesHover = true" @mouseleave ="categoriesHover = false" class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2 relative">
-                        <router-link :to="'/howtodownload'">
+                        <div class="">
                             <a class="">Categories</a>
-                        </router-link>
-                        <div v-show="categoriesHover" class="border-2 border-black font-kanit cursor-default flex absolute z-10 text-white bg-purple-500 gap-5 rounded-lg">
+                        </div>
+                        <div v-show="categoriesHover" class="z-10 border-2 border-black font-kanit cursor-default flex absolute text-white bg-purple-500 gap-5 rounded-lg">
                             <ul class="m-3 ">
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Singleplayer</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Multiplayer</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Indie</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Action</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Adventure</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Casual</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Simulation</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">RPG</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Singleplayer">Singleplayer</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Multiplayer">Multiplayer</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Indie">Indie</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Action">Action</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Adventure">Adventure</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Casual">Casual</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Simulation">Simulation</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=RPG">RPG</a></li>
                             </ul>
 
                             <ul class="m-3">
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">2D</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Atmospheric</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Puzzle</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Strategy</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Rich Story</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Pixel</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Fantasy</li>
-                                <li class="cursor-pointer mb-1 mx-2 hover:text-black">Colorful</li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=2D">2D</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Atmospheric">Atmospheric</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Puzzle">Puzzle</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Strategy">Strategy</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Pixel">Pixel</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Fantasy">Fantasy</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Colorful">Colorful</a></li>
                             </ul>
                         </div>
                     </li>
@@ -108,7 +107,7 @@
                                     </router-link>
                                 </div>
                                 <div class="text-center mt-2">
-                                    <router-link to="/game">
+                                    <router-link :to="'/game/' +  item[0]">
                                         <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
                                     </router-link>
                                 </div>
@@ -211,13 +210,13 @@
 
             <div class="flex justify-center mb-2 text-lg text-white">
                 <button @click="previousPage" class="mx-3 cursor-pointer"> &#60;&#60; </button>
-                <a  @click="ChangePage" value="firstpage" class="mx-3 cursor-pointer bg-blue-500 rounded-full w-6 h-6" ref="firstpage">{{this.pageValues[0]}}</a>
-                <a  @click="ChangePage" value="secondpage" class="mx-3 cursor-pointer" ref="secondpage">{{this.pageValues[1]}}</a>
-                <a  @click="ChangePage" value="thirdpage" class="mx-3 cursor-pointer" ref="thirdpage">{{this.pageValues[2]}}</a>
-                <a  @click="ChangePage" value="forthpage" class="mx-3 cursor-pointer" ref="forthpage">{{this.pageValues[3]}}</a>
-                <a  @click="ChangePage" value="fifthpage" class="mx-3 cursor-pointer" ref="fifthpage">{{this.pageValues[4]}}</a>
+                <a id="firstPage"  @click="ChangePage" value="firstpage" class="otherPages currentPage" ref="firstpage">{{this.pageValues[0]}}</a>
+                <a id="secondPage" @click="ChangePage" value="secondpage" class="otherPages" ref="secondpage">{{this.pageValues[1]}}</a>
+                <a id="thirdPage" @click="ChangePage" value="thirdpage" class="otherPages" ref="thirdpage">{{this.pageValues[2]}}</a>
+                <a id="forthPage" @click="ChangePage" value="forthpage" class="otherPages" ref="forthpage">{{this.pageValues[3]}}</a>
+                <a id="fifthPage" @click="ChangePage" value="fifthpage" class="otherPages" ref="fifthpage">{{this.pageValues[4]}}</a>
                 
-                <span    value="fifthpage" class="mx-3" ref="fifthpage">...</span>
+                <span value="fifthpage" class="mx-3" ref="fifthpage">...</span>
                 <button  @click="ChangePage" id="lastPage" class="mx-3 cursor-pointer">{{this.lastPage}}</button>
                 <button @click="nextPage" class="mx-3 cursor-pointer"> &#62;&#62; </button>
             </div>
@@ -286,7 +285,7 @@ export default {
 
       nextPage () {
           var gameList = Object.entries(jsonstr)
-            if (Math.floor(gameList.length / 20) > 5) {
+            if (gameList.length / 20 > 5 && Math.floor(gameList.length/20) + 1 > parseInt(document.getElementById("fifthPage").innerHTML)) {
                 this.pageValues[0] = this.pageValues[0] + 5
                 this.pageValues[1] = this.pageValues[1] + 5
                 this.pageValues[2] = this.pageValues[2] + 5
@@ -326,6 +325,12 @@ export default {
                 document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
             }
         })
+
+        if(document.getElementById("firstPage").innerHTML == "1") {
+            document.getElementById("firstPage").classList.toggle("currentPage")
+        }else {
+            document.getElementById("firstPage").classList.remove("currentPage")
+        }
   },
 
   created() {
@@ -367,6 +372,23 @@ export default {
 
 .showMP {
     display: block;
+}
+
+.currentPage{
+    margin-right: 0.75em;
+    margin-left: 0.75em;
+    text-align: center;
+    cursor: pointer;
+    background-color: #3B82F6;
+    border-radius: 25px;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.otherPages {
+    margin-right: 0.75em;
+    margin-left: 0.75em;
+    cursor: pointer;
 }
 
 #pruulogo {

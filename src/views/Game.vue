@@ -496,6 +496,7 @@ export default {
                     developersArr = element[1].split("|")[7].split("$$")
                     gameClicked = element[1].split("|")[9]
                     YTLinkArr = element[1].split("|")[8]
+                    console.log(YTLinkArr);
                 }
             })
         })
@@ -519,7 +520,6 @@ export default {
                 this.devInfo[4] = "TBA"
                 this.devInfo[5] = "TBA"
                 this.hasTrailer = false
-                //console.log(this.developers[0])
             });
         }else{
             this.devInfo[0] = this.developers[0]
@@ -529,7 +529,7 @@ export default {
             this.devInfo[4] = this.developers[4]
             this.devInfo[5] = this.developers[5]
             this.hasTrailer = true
-            //console.log((this.devInfo))
+            console.log((this.devInfo))
         }
 
 
@@ -538,12 +538,18 @@ export default {
                 this.gamemode = "Online"
             }
         }
-
-        if (!(this.devInfo[4].includes("steam"))) {
+        
+        if (this.devInfo[4] == undefined) {
+            this.devInfo[4] == "Empty"
             this.hasYTLink = true
         }else {
-            this.hasYTLink = false
+            if (!(this.devInfo[4].includes("steam"))) {
+                this.hasYTLink = true
+            }else {
+                this.hasYTLink = false
+            }
         }
+
 
         var mediafireDL = ""
         var bowfileDL = ""

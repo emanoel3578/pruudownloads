@@ -40,9 +40,31 @@
                         </router-link>
                     </li>
                     <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
-                        <router-link :to="'/howtodownload'">
-                            <a>How to Download</a>
-                        </router-link>
+                        <div class="">
+                            <a class="">Categories</a>
+                        </div>
+                        <div v-show="categoriesHover" class="z-10 border-2 border-black font-kanit cursor-default flex absolute text-white bg-purple-500 gap-5 rounded-lg">
+                            <ul class="m-3 ">
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Singleplayer">Singleplayer</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Multiplayer">Multiplayer</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Indie">Indie</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Action">Action</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Adventure">Adventure</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Casual">Casual</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Simulation">Simulation</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=RPG">RPG</a></li>
+                            </ul>
+
+                            <ul class="m-3">
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=2D">2D</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Atmospheric">Atmospheric</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Puzzle">Puzzle</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Strategy">Strategy</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Pixel">Pixel</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Fantasy">Fantasy</a></li>
+                                <li class="cursor-pointer mb-1 mx-2 hover:text-black"><a href="http://localhost:8080/search/s=Colorful">Colorful</a></li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
                         <router-link :to="'/dmca'">
@@ -192,12 +214,12 @@
             <div class="flex justify-center mb-2 text-lg text-white">
                 <button @click="previousPage" class="mx-3 cursor-pointer"> &#60;&#60; </button>
 
-                <router-link id="firstPage" class="otherPages" ref="firstpage"  :to="'/page/' + this.pageValues[0]"> {{this.pageValues[0]}} </router-link>
-                <router-link @click="ChangePage" id="secondPage" class="otherPages" ref="secondpage" :to="'/page/' + this.pageValues[1]">{{this.pageValues[1]}}</router-link>
-                <router-link @click="ChangePage" id="thirdPage" class="otherPages" ref="thirdpage" :to="'/page/' + this.pageValues[2]">{{this.pageValues[2]}}</router-link>
-                <router-link @click="ChangePage" id="forthPage" class="otherPages" ref="forthpage" :to="'/page/' + this.pageValues[3]">{{this.pageValues[3]}}</router-link>
-                <router-link @click="ChangePage" id="fifthPage" class="otherPages" ref="fifthpage" :to="'/page/' + this.pageValues[4]">{{this.pageValues[4]}}</router-link>
-                <span    value="" class="mx-3" ref="">...</span>
+                <a id="firstPage" class="otherPages" ref="firstpage"  :href="'http://localhost:8080/page/' + this.pageValues[0]"> {{this.pageValues[0]}} </a>
+                <a id="secondPage" class="otherPages" ref="secondpage" :href="'http://localhost:8080/page/' + this.pageValues[1]">{{this.pageValues[1]}}</a>
+                <a id="thirdPage" class="otherPages" ref="thirdpage" :href="'http://localhost:8080/page/' + this.pageValues[2]">{{this.pageValues[2]}}</a>
+                <a id="forthPage" class="otherPages" ref="forthpage" :href="'http://localhost:8080/page/' + this.pageValues[3]">{{this.pageValues[3]}}</a>
+                <a id="fifthPage" class="otherPages" ref="fifthpage" :href="'http://localhost:8080/page/' + this.pageValues[4]">{{this.pageValues[4]}}</a>
+                <span value="" class="mx-3" ref="">...</span>
                 <a :href="'http://localhost:8080/page/' + this.lastPage" id="lastPage" value="lastpage" class="otherPages" >{{this.lastPage}}</a>
                 
                 <button @click="nextPage" class="mx-3 cursor-pointer"> &#62;&#62; </button>
@@ -236,6 +258,7 @@ export default {
     props:["numberPage"],
     data () {
         return {
+            categoriesHover: false,
             searchbar: false,
             searchQuery: "",
             lastPage: "",
@@ -311,7 +334,7 @@ export default {
 
         nextPage () {
             var gameList = Object.entries(jsonstr)
-            if (gameList.length / 20 > 100) {
+            if (gameList.length / 20 > 5 && Math.floor(gameList.length/20) + 1 > parseInt(document.getElementById("fifthPage").innerHTML)) {
                 this.pageValues[0] = this.pageValues[0] + 5
                 this.pageValues[1] = this.pageValues[1] + 5
                 this.pageValues[2] = this.pageValues[2] + 5
@@ -333,7 +356,7 @@ export default {
     },
 
     created() {
-        
+        console.log(this.numberPage)
         setTimeout(() => {
             this.loadSideCards = false
         }, 2000);
@@ -349,6 +372,10 @@ export default {
         var endSlice = parseInt(this.numberPage) * 20
         var startSlice = endSlice - 20
         this.currentPage = this.gameList.slice(startSlice,endSlice)
+        if(this.currentPage.length <= 0){
+            window.location.href = "http://localhost:8080/home/"
+        }
+
         this.currentPage.map(function (element) {
             var developersArr = element[1].split("|")[7].split("$$")
             if(developersArr[0] == "Empty") {
@@ -441,7 +468,6 @@ export default {
 
     updated() {
         this.$nextTick(function() {
-
             var firstPage = document.getElementById("firstPage").innerHTML
             var secondPage = document.getElementById("secondPage").innerHTML
             var thirdPage = document.getElementById("thirdPage").innerHTML
@@ -450,38 +476,30 @@ export default {
 
             if (this.numberPage == firstPage) {
                 document.getElementById("firstPage").classList.toggle("currentPage")
+            }else {
+                document.getElementById("firstPage").classList.remove("currentPage")
             }
             if (this.numberPage == secondPage) {
                 document.getElementById("secondPage").classList.toggle("currentPage")
+            }else {
+                document.getElementById("secondPage").classList.remove("currentPage")
             }
             if (this.numberPage == thirdPage) {
                 document.getElementById("thirdPage").classList.toggle("currentPage")
+            }else {
+                document.getElementById("thirdPage").classList.remove("currentPage")
             }
             if (this.numberPage == forthPage) {
                 document.getElementById("forthPage").classList.toggle("currentPage")
+            }else {
+                document.getElementById("forthPage").classList.remove("currentPage")
             }
             if (this.numberPage == fifthPage) {
                 document.getElementById("fifthPage").classList.toggle("currentPage")
+            }else{
+                document.getElementById("fifthPage").classList.remove("currentPage")
             }
-
-            // var gameList = Object.entries(jsonstr)
-            // var endSlice = parseInt(this.numberPage) * 20
-            // var startSlice = endSlice - 20
-            // var gameChecker = gameList.slice(startSlice,endSlice)
-            // //console.log(gameChecker)
-            // gameChecker.map(function (element) {
-            //     var onlineChecker = element[1].split("|")[7].split("$$")
-            //     //console.log(document.getElementById(element[0].replace(/ /g, "")))
-            //     if(onlineChecker[onlineChecker.length - 1] == "Online") {
-            //         try {
-            //             if(document.getElementById(element[0].replace(/ /g, "")) != null) {
-            //                 document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
-            //             }
-            //         }catch(error) {
-            //             console.log(error)
-            //         }
-            //     }
-            // })
+            
         })
     },
 }

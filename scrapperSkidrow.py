@@ -73,8 +73,8 @@ def infoGamesEpic(ProductLink,triesEpic):
                         gamemode = "Online"
 
             imgHeader = containerImg[1].div.img["src"]
-            developer = containerDev[0].span.text
-            publisher = containerDev[1].span.text
+            developer = containerDev[0].span.find_next().text
+            publisher = containerDev[1].span.find_next().text
 
             infoEpic = imgHeader + "$$" + developer + "$$" + publisher + "$$" + gamemode
             return infoEpic
@@ -159,7 +159,7 @@ def infoGamesGOG(ProductLink,triesGOG):
 
 
 with open('dict.json', 'r') as fp:
-    loadedDict = json.load(fp)       
+    loadedDict = json.load(fp)
 
 
 # runFullDB = True

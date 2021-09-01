@@ -162,22 +162,6 @@
                 <button  @click="ChangePage"  id="fifthPage" value="fifthpage" class="otherPages" ref="fifthpage">{{this.pageValues[4]}}</button>
                 <button @click="nextPage"  class="mx-3 cursor-pointer"> &#62;&#62; </button>
             </div>
-
-
-
-            <!-- <div class="flex justify-center mb-2 text-lg text-white">
-                <button @click="previousPage" class="mx-3 cursor-pointer"> &#60;&#60; </button>
-
-                <router-link @click='ChangePage' id="firstPage" class="otherPages" ref="firstpage"  :to="'/page/' + this.pageValues[0]"> {{this.pageValues[0]}} </router-link>
-                <router-link @click="ChangePage" id="secondPage" class="otherPages" ref="secondpage" :to="'/page/' + this.pageValues[1]">{{this.pageValues[1]}}</router-link>
-                <router-link @click="ChangePage" id="thirdPage" class="otherPages" ref="thirdpage" :to="'/page/' + this.pageValues[2]">{{this.pageValues[2]}}</router-link>
-                <router-link @click="ChangePage" id="forthPage" class="otherPages" ref="forthpage" :to="'/page/' + this.pageValues[3]">{{this.pageValues[3]}}</router-link>
-                <router-link @click="ChangePage" id="fifthPage" class="otherPages" ref="fifthpage" :to="'/page/' + this.pageValues[4]">{{this.pageValues[4]}}</router-link>
-                <span    value="" class="mx-3" ref="">...</span>
-                <button  @click="ChangePage" value="lastpage" class="otherPages" ref="lastpage">299</button>
-                
-                <button @click="nextPage" class="mx-3 cursor-pointer"> &#62;&#62; </button>
-            </div> -->
         </div>
         
         <div class="w-full text-center text-white flex flex-col bg-gray-700">
@@ -220,7 +204,7 @@ export default {
             searchQuery: this.query.substring(1),
             queryArray: [],
             queryArrayTotal: [],
-            clickedPage:"",
+            clickedPage:"1",
             gameList:[],
             currentPage:[],
             currentGameLinks:[],
@@ -240,40 +224,45 @@ export default {
 
     methods:{
         ChangePage (event) {
+            this.loadMainCards = true
+            setTimeout(() => {
+               this.loadMainCards = false 
+            }, 2000);
+            
             this.clickedPage = event.srcElement.innerText
             var endSlice = parseInt(this.clickedPage) * 20
             var startSlice = endSlice - 20
             this.queryArray = this.queryArrayTotal.slice(startSlice,endSlice)
 
-            if (this.clickedPage == "1") {
+            if (event.srcElement.id == "firstPage") {
                 document.getElementById("firstPage").classList.add("currentPage")
                 document.getElementById("secondPage").classList.remove("currentPage")
                 document.getElementById("thirdPage").classList.remove("currentPage")
                 document.getElementById("forthPage").classList.remove("currentPage")
                 document.getElementById("fifthPage").classList.remove("currentPage")
             }
-            if (this.clickedPage == "2") {
+            if (event.srcElement.id == "secondPage") {
                 document.getElementById("firstPage").classList.remove("currentPage")
                 document.getElementById("secondPage").classList.add("currentPage")
                 document.getElementById("thirdPage").classList.remove("currentPage")
                 document.getElementById("forthPage").classList.remove("currentPage")
                 document.getElementById("fifthPage").classList.remove("currentPage")
             }
-            if (this.clickedPage == "3") {
+            if (event.srcElement.id == "thirdPage") {
                 document.getElementById("firstPage").classList.remove("currentPage")
                 document.getElementById("secondPage").classList.remove("currentPage")
                 document.getElementById("thirdPage").classList.add("currentPage")
                 document.getElementById("forthPage").classList.remove("currentPage")
                 document.getElementById("fifthPage").classList.remove("currentPage")
             }
-            if (this.clickedPage == "4") {
+            if (event.srcElement.id == "forthPage") {
                 document.getElementById("firstPage").classList.remove("currentPage")
                 document.getElementById("secondPage").classList.remove("currentPage")
                 document.getElementById("thirdPage").classList.remove("currentPage")
                 document.getElementById("forthPage").classList.add("currentPage")
                 document.getElementById("fifthPage").classList.remove("currentPage")
             }
-            if (this.clickedPage == "5") {
+            if (event.srcElement.id == "fifthPage") {
                 document.getElementById("firstPage").classList.remove("currentPage")
                 document.getElementById("secondPage").classList.remove("currentPage")
                 document.getElementById("thirdPage").classList.remove("currentPage")
@@ -283,13 +272,25 @@ export default {
         },
 
 
-        // Possivel bug no futuro pq não estou com paciencia para adicionar paginas em uma search acima de 100 items 
+        
         nextPage () {
-            
+            if (this.queryArrayTotal.length / 20 > 5 && Math.floor(this.queryArrayTotal.length/20) + 1 > parseInt(document.getElementById("fifthPage").innerHTML)) {
+                this.pageValues[0] = this.pageValues[0] + 5
+                this.pageValues[1] = this.pageValues[1] + 5
+                this.pageValues[2] = this.pageValues[2] + 5
+                this.pageValues[3] = this.pageValues[3] + 5
+                this.pageValues[4] = this.pageValues[4] + 5
+            }
         },
 
         previousPage () {
-
+            if(this.pageValues[0] > 1) {
+                this.pageValues[0] = this.pageValues[0] - 5
+                this.pageValues[1] = this.pageValues[1] - 5
+                this.pageValues[2] = this.pageValues[2] - 5
+                this.pageValues[3] = this.pageValues[3] - 5
+                this.pageValues[4] = this.pageValues[4] - 5
+            }
         },
 
 
@@ -354,14 +355,40 @@ export default {
         this.queryArray = queryArrayTotal.slice(0,20)
     },
 
+    updated() {
+        var firstPage = document.getElementById("firstPage").innerHTML
+        var secondPage = document.getElementById("secondPage").innerHTML
+        var thirdPage = document.getElementById("thirdPage").innerHTML
+        var forthPage = document.getElementById("forthPage").innerHTML
+        var fifthPage = document.getElementById("fifthPage").innerHTML
+        console.log(firstPage == this.clickedPage)
 
-    mounted() {
-        if (document.getElementById("firstPage").innerHTML != "") {
-            document.getElementById("firstPage").classList.add("currentPage")
+        if (this.clickedPage == firstPage) {
+            document.getElementById("firstPage").classList.toggle("currentPage")
+        }else {
+            document.getElementById("firstPage").classList.remove("currentPage")
+        }
+        if (this.clickedPage == secondPage) {
+            document.getElementById("secondPage").classList.toggle("currentPage")
+        }else {
+            document.getElementById("secondPage").classList.remove("currentPage")
+        }
+        if (this.clickedPage == thirdPage) {
+            document.getElementById("thirdPage").classList.toggle("currentPage")
+        }else {
+            document.getElementById("thirdPage").classList.remove("currentPage")
+        }
+        if (this.clickedPage == forthPage) {
+            document.getElementById("forthPage").classList.toggle("currentPage")
+        }else {
+            document.getElementById("forthPage").classList.remove("currentPage")
+        }
+        if (this.clickedPage == fifthPage) {
+            document.getElementById("fifthPage").classList.toggle("currentPage")
+        }else{
+            document.getElementById("fifthPage").classList.remove("currentPage")
         }
     },
-
-    updated() {},
 }
 </script>
 
