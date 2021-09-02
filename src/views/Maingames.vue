@@ -1,13 +1,13 @@
 <template lang="">
     <div>
         <div>
-            <div class="flex justify-around bg-gray-400" id="top">
+            <div class="flex justify-around bg-white animate-area" id="top">
                 <div class="flex">
                     <div>
                         <img id="pruulogo" src="img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
                     </div>
                     <div class="flex items-center">
-                        <span class="font-kanit text-xl text-white ml-2">PruuDownloads</span>
+                        <span class="font-kanit text-xl text-black ml-2">PruuDownloads</span>
                     </div>
                 </div>
 
@@ -371,6 +371,23 @@ export default {
 </script>
 
 <style>
+
+@keyframes animatedBackground {
+  from {
+    background-position: 0 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+.animate-area {
+  background-image: url("../../public/img/hue.png");
+  background-position: center;
+  background-size: 200px 50px;
+  background-repeat: repeat;
+  animation: animatedBackground 10s linear infinite alternate;
+}
+
 
 .showMP {
     display: block;
