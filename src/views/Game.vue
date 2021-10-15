@@ -264,61 +264,148 @@
                                         </p>
                                     </div>
 
-                                    <div v-show="mediafireLink" class="border-b-2 border-gray-300 pb-4 mb-4">
-                                        <p class="text-blue-300 text-3xl mb-2">
-                                            Mediafire:
-                                        </p>
-                                        <div class="flex justify-center">
-                                            <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
-                                                <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                <a :href="mediafireDL" class="text-xl text-gray-200">
-                                                    Download
-                                                </a>
+                                    <div v-if="isOnline">
+                                        <div class="border-b-2 border-gray-300 pb-4 mb-4">
+                                            <p class="text-green-300 text-3xl mb-2">
+                                                Full Game:
+                                            </p>
+                                            <div class="flex justify-center">
+                                                <div id="DownloadButton" @click="hideLinksFullGame" class="flex justify-center borderBottom border-t-2 border-r-2 border-l-2 bg-blue-500 w-2/5 cursor-pointer py-1">
+                                                    <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
+                                                    <a class="text-xl text-gray-200">
+                                                        Download
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div v-show="showFullGameLinks" class="bg-blue-500 border-2 w-4/5 text-white mx-auto my-0 rounded-lg ">
+                                                <div class="flex flex-col mx-auto my-0">
+                                                    <div class="flex flex-col mx-auto my-0 w-min gap-1">
+                                                        <div class="mt-2">
+                                                            <a class="cursor-pointer">https://bowfile.com/asdaasdsdasdasdasdasdassdasd</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div v-show="mediafireLink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                            <p class="text-red-500 text-3xl mb-2">
+                                                Online fix:
+                                            </p>
+                                            <div class="flex justify-center">
+                                                <div id="DownloadButtonFix" @click="hideLinksOnlineFixGame" class="flex justify-center borderBottom border-t-2 border-r-2 border-l-2 bg-blue-500 w-2/5 cursor-pointer py-1">
+                                                    <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
+                                                    <a class="text-xl text-gray-200">
+                                                        Download
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div v-show="showOnlineFixLinks" class="bg-blue-500 border-2 w-4/5 text-white mx-auto my-0 rounded-lg ">
+                                                <div class="flex flex-col mx-auto my-0">
+                                                    <div class="flex flex-col mx-auto my-0 w-min gap-1">
+                                                        <div class="mt-2">
+                                                            <a class="cursor-pointer">https://bowfile.com/asdaasdsdasdasdasdasdassdasd</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div v-else>
+                                        <div v-show="mediafireLink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                            <p class="text-blue-300 text-3xl mb-2">
+                                                Mediafire:
+                                            </p>
+                                            <div class="flex justify-center">
+                                                <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
+                                                    <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
+                                                    <a :href="mediafireDL" class="text-xl text-gray-200">
+                                                        Download
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div v-show="MEGALink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                            <p class="text-red-300 text-3xl mb-2">
+                                                MEGA:
+                                            </p>
+                                            <div class="flex justify-center">
+                                                <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
+                                                    <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
+                                                    <a :href="megaDL" class="text-xl text-gray-200">
+                                                        Download
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div v-show="BowfileLink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                            <p class="text-purple-400 font-bold text-3xl mb-2">
+                                                Bowfile:
+                                            </p>
+                                            <div class="flex justify-center">
+                                                <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
+                                                    <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
+                                                    <a :href="bowfileDL" class="text-xl text-gray-200">
+                                                        Download
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div v-show="TorrentLink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                            <p class="text-green-300 text-3xl mb-2">
+                                                TORRENT:
+                                            </p>
+                                            <div class="flex justify-center">
+                                                <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
+                                                    <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
+                                                    <a :href="torrentDL" class="text-xl text-gray-200">
+                                                        Download
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div v-show="MEGALink" class="border-b-2 border-gray-300 pb-4 mb-4">
-                                        <p class="text-red-300 text-3xl mb-2">
-                                            MEGA:
-                                        </p>
-                                        <div class="flex justify-center">
-                                            <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
-                                                <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                <a :href="megaDL" class="text-xl text-gray-200">
-                                                    Download
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div v-show="BowfileLink" class="border-b-2 border-gray-300 pb-4 mb-4">
-                                        <p class="text-purple-400 font-bold text-3xl mb-2">
-                                            Bowfile:
-                                        </p>
-                                        <div class="flex justify-center">
-                                            <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
-                                                <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                <a :href="bowfileDL" class="text-xl text-gray-200">
-                                                    Download
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div v-show="TorrentLink" class="border-b-2 border-gray-300 pb-4 mb-4">
-                                        <p class="text-green-300 text-3xl mb-2">
-                                            TORRENT:
-                                        </p>
-                                        <div class="flex justify-center">
-                                            <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
-                                                <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                <a :href="torrentDL" class="text-xl text-gray-200">
-                                                    Download
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -399,6 +486,9 @@ export default {
     props:["name"],
     data () {
         return {
+            showOnlineFixLinks: false,
+            showFullGameLinks: false,
+            isOnline: true,
             categoriesHover: false,
             uploading: false,
             searchbar: false,
@@ -428,6 +518,17 @@ export default {
     },
 
     methods: {
+        
+        hideLinksFullGame() {
+            document.getElementById("DownloadButton").classList.toggle("borderBottom")
+            this.showFullGameLinks = !this.showFullGameLinks
+        },
+
+        hideLinksOnlineFixGame() {
+            document.getElementById("DownloadButtonFix").classList.toggle("borderBottom")
+            this.showOnlineFixLinks = !this.showOnlineFixLinks
+        },
+
         selectScreenshot(event) {
             var element = document.getElementById("firstIMG")
             var secondElement = document.getElementById("secondIMG")
@@ -437,7 +538,6 @@ export default {
                 secondElement.classList.remove("opaque")
                 element.classList.add("opaque")
             }else {
-                console.log("here")
                 element.classList.remove("opaque")
                 secondElement.classList.remove("opaque")
                 secondElement.classList.add("opaque")
@@ -492,6 +592,7 @@ export default {
         }
 
         this.gameList = Object.entries(jsonstr)
+        console.log(this.gameList)
         this.currentPage = this.gameList.slice(0,20)
         var currentgame = this.name
         var releaseDateArr = this.releaseDate
@@ -629,6 +730,10 @@ export default {
 </script>
 
 <style>
+
+.borderBottom{
+    border-bottom-width: 2px;
+}
 
 #cf7 {
   position:relative;

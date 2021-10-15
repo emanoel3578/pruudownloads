@@ -1,13 +1,13 @@
 <template lang="">
     <div>
         <div>
-            <div class="flex justify-around bg-white animate-area" id="top">
+            <div class="flex justify-around bg-gray-400" id="top">
                 <div class="flex">
                     <div>
                         <img id="pruulogo" src="img/huelogov1.png" class="max-h-28 transform -translate-y-2 rotate-45">
                     </div>
                     <div class="flex items-center">
-                        <span class="font-kanit text-xl text-black ml-2">PruuDownloads</span>
+                        <span class="font-kanit text-xl text-black ml-2 text-white">PruuDownloads</span>
                     </div>
                 </div>
 
@@ -23,25 +23,29 @@
             </div>
 
             <div class="bg-gray-700 flex justify-center font-kanit">
-                <ul class="flex list-none gap-5">
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
-                        <router-link :to="'/home'">
-                            <a>Home</a>
+                <ul class="flex list-none gap-5 items-center">
+                    <li class="text-white cursor-pointer hover:text-purple-500 p-2">
+                        <router-link :to="'/home'" class="flex items-center">
+                            <img id="homePru" src="img/huelogov1.png" class="max-h-10 invisible">
+                            <a @mouseover="showPru" @mouseleave="hidePru">Home</a>
                         </router-link>
                     </li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
-                        <router-link :to="'/pc-repack'">
-                            <a>PC Repack</a>
+                    <li class="text-white cursor-pointer hover:text-purple-500 p-2">
+                        <router-link :to="'/pc-repack'" class="flex items-center">
+                            <img id="RepackPru" src="img/huelogov1.png" class="max-h-10 invisible">
+                            <a @mouseover="showPru" @mouseleave="hidePru">PC Repack</a>
                         </router-link>
                     </li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
-                        <router-link :to="'/gamesonline'">
-                            <a>Games online</a>
+                    <li class="text-white cursor-pointer hover:text-purple-500 p-2 ">
+                        <router-link :to="'/gamesonline'" class="flex items-center">
+                            <img id="OnlinePru" src="img/huelogov1.png" class="max-h-10 invisible">
+                            <a @mouseover="showPru" @mouseleave="hidePru">Games online</a>
                         </router-link>
                     </li>
-                    <li @mouseover ="categoriesHover = true" @mouseleave ="categoriesHover = false" class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2 relative">
-                        <div class="">
-                            <a class="">Categories</a>
+                    <li @mouseover ="categoriesHover = true" @mouseleave ="categoriesHover = false" class="text-white cursor-pointer hover:text-purple-500 p-2 relative">
+                        <div class="flex items-center">
+                            <img id="CategoriesPru" src="img/huelogov1.png" class="max-h-10 invisible">
+                            <a @mouseover="showPru" @mouseleave="hidePru">Categories</a>
                         </div>
                         <div v-show="categoriesHover" class="z-10 border-2 border-black font-kanit cursor-default flex absolute text-white bg-purple-500 gap-5 rounded-lg">
                             <ul class="m-3 ">
@@ -66,14 +70,16 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
-                        <router-link :to="'/dmca'">
-                            <a>DMCA</a>
+                    <li class="text-white cursor-pointer hover:text-purple-500 p-2 ">
+                        <router-link :to="'/dmca'" class="flex items-center">
+                            <img id="DMCAPru" src="img/huelogov1.png" class="max-h-10 invisible">
+                            <a @mouseover="showPru" @mouseleave="hidePru">DMCA</a>
                         </router-link>
                     </li>
-                    <li class="bg-white rounded-full border-2 border-black cursor-pointer hover:bg-purple-500 p-2 m-2">
-                        <router-link :to="'/aboutus'">
-                            <a>About Us</a>
+                    <li class="text-white cursor-pointer hover:text-purple-500 p-2 ">
+                        <router-link :to="'/aboutus'" class="flex items-center">
+                            <img id="AboutPru" src="img/huelogov1.png" class="max-h-10 invisible">
+                            <a @mouseover="showPru" @mouseleave="hidePru">About Us</a>
                         </router-link>
                     </li>
                 </ul>
@@ -279,6 +285,17 @@ export default {
   },
 
   methods:{
+
+      showPru (event) {
+          var selectedCategorie = event.srcElement.parentElement.childNodes[0].id
+          document.getElementById(selectedCategorie).classList.add("showPru")
+      },
+
+      hidePru (event) {
+          var selectedCategorie = event.srcElement.parentElement.childNodes[0].id
+          document.getElementById(selectedCategorie).classList.remove("showPru")
+      },
+
       ChangePage (event) {
         this.clickedPage = event.srcElement.innerText
         window.location.href = "http://localhost:8080/page/" + this.clickedPage
@@ -335,6 +352,11 @@ export default {
   },
 
   created() {
+
+        this.axios.get('http://127.0.0.1:8000/api/paginate').then((response)=>{
+            console.log(response.data)
+        })
+
         setTimeout(() => {
             this.loadSideCards = false
         }, 2000);
@@ -366,12 +388,17 @@ export default {
         for (var i = 0; i < numberofPages; i++) {
             this.pageValues.push(i+1)
         }
-  }
+    }
 }
 </script>
 
 <style>
 
+.showPru {
+    visibility: visible;
+}
+
+/*
 @keyframes animatedBackground {
   from {
     background-position: 0 50%;
@@ -387,7 +414,7 @@ export default {
   background-repeat: repeat;
   animation: animatedBackground 10s linear infinite alternate;
 }
-
+*/
 
 .showMP {
     display: block;

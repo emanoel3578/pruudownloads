@@ -1,5 +1,5 @@
 from csv import reader
-from os import error
+from os import error, name
 from urllib import request
 import urllib
 from urllib.request import Request,urlopen
@@ -8,6 +8,9 @@ from bs4.element import ContentMetaAttributeValue
 import json
 import sys
 import itertools
+import requests
+import traceback
+
 
 
 #Funçaõ para pegar informções sobre o jogo
@@ -40,11 +43,19 @@ def infoGamesSteam(ProductLink,triesSteam):
                 ratings = (((page_soupGame.find("div", {"class":"summary"}).text).partition('\n')[2]).replace("\t", ""))
 
             normalTitle = page_soupGame.find("div", {"id": "appHubAppName"}).text
-            Stringinfo = imgHeader + "$$" + developer + "$$" + publisher + "$$" + ratings + "$$" + videoLink + "$$" + gamemode
+            # Stringinfo = imgHeader + "$$" + developer + "$$" + publisher + "$$" + ratings + "$$" + videoLink + "$$" + gamemode
 
-            infoSteam = []
-            infoSteam.append(normalTitle)
-            infoSteam.append(Stringinfo)
+            myobj = {
+                    'normaltitle':normalTitle,
+                    'imgheader':imgHeader,
+                    'developer':developer,
+                    'publisher':publisher,
+                    'ratings':ratings,
+                    'videolink':videoLink,
+                    'gamemode':gamemode,
+                }
+
+            infoSteam = myobj
             return infoSteam
             
         except Exception as e :
@@ -67,6 +78,7 @@ def infoGamesEpic(ProductLink,triesEpic):
             containerDev = page_soupGame.find_all("div", {"data-component":"PDPSidebarMetadataBase"})
             containerImg = page_soupGame.find_all("div", {"data-component":"PDPSidebarLogo"})
             containerGamemode = page_soupGame.find_all("div", {"data-component":"AboutMetadataLayout"})[-1]
+            normalTitle = page_soupGame.find("div", {"data-component":"PDPTitleHeader"}).span.text
             GamemodeUL = containerGamemode.find("ul")
             if GamemodeUL == None:
                 gamemode = "Singleplayer"
@@ -81,7 +93,17 @@ def infoGamesEpic(ProductLink,triesEpic):
             developer = containerDev[0].span.find_next().text
             publisher = containerDev[1].span.find_next().text
 
-            infoEpic = imgHeader + "$$" + developer + "$$" + publisher + "$$" + gamemode
+            # stringInfo = imgHeader + "$$" + developer + "$$" + publisher + "$$" + gamemode
+
+            myobj = {
+                    'normaltitle':normalTitle,
+                    'imgheader':imgHeader,
+                    'developer':developer,
+                    'publisher':publisher,
+                    'gamemode':gamemode,
+                }
+
+            infoEpic = myobj
             return infoEpic
 
         except Exception as e:
@@ -103,6 +125,7 @@ def infoGamesMicrosoft(ProductLink,triesMicrosoft):
             page_soupGame = soup(webGamepage, "html.parser")
             containerImgHeader = page_soupGame.find("div", {"class":"c-video-player"})
             containerGamemode = page_soupGame.find("div", {"class" : "module-capabilities"}).find_all("a")
+            normatTitle = page_soupGame.find("h1", {"id" : "DynamicHeading_productTitle"}).text
             convertedJson = json.loads(containerImgHeader["data-player-data"])
 
             developer = page_soupGame.find("div", {"class" : "buybox-metadata"}).text.strip()
@@ -114,12 +137,23 @@ def infoGamesMicrosoft(ProductLink,triesMicrosoft):
                     gamemode = "Online"
 
             imgHeaderMicrosoft = convertedJson["metadata"]["posterframeUrl"].replace("//", "https://")
+            # stringInfo = imgHeaderMicrosoft + "$$" + developer + "$$" + publisher + "$$" + gamemode
 
-            infoMicrosoft = imgHeaderMicrosoft + "$$" + developer + "$$" + publisher + "$$" + gamemode
+            myobj = {
+                    'normaltitle':normatTitle,
+                    'imgheader':imgHeaderMicrosoft,
+                    'developer':developer,
+                    'publisher':publisher,
+                    'gamemode':gamemode,
+                }
+
+            infoMicrosoft = myobj
+            
             return infoMicrosoft
 
-        except:
-            print("Something went wrong on Microsoft link" + ProductLink)
+        except Exception as e:
+            print("Something went wrong on Microsoft link ", ProductLink)
+            print(e)
             return False
     else:
         print("Tried three times but something didn't work on Microsoft link")
@@ -141,6 +175,10 @@ def infoGamesGOG(ProductLink,triesGOG):
                 companyGOG = genreGOG[-1].select("div:-soup-contains('Company')")[0].find_all_next("a")[1].text
                 imgHeaderGOG = page_soupGOG.find("img", {"class" : "mobile-slider__image"})["src"]
                 containerGamemode = page_soupGOG.find_all("a", {"class":"details__feature"})
+                try:
+                    normalTitle = page_soupGOG.find("h1", {"class":"productcard-basics__title"}).text
+                except:
+                    normalTitle = "Not found"
                 for item in containerGamemode:
                     if "Multi" in  item.text:
                         gamemode = "Online"
@@ -148,10 +186,23 @@ def infoGamesGOG(ProductLink,triesGOG):
                         gamemode = "Singleplayer"
                 ratingsGOG = "Nothing"
 
-                infoGOG = imgHeaderGOG + "$$" + developerGOG + "$$" + companyGOG + "$$" + ratingsGOG + "$$" + gamemode
+                # stringInfo = imgHeaderGOG + "$$" + developerGOG + "$$" + companyGOG + "$$" + ratingsGOG + "$$" + gamemode
+
+                myobj = {
+                    'normaltitle':normalTitle,
+                    'imgheader':imgHeaderGOG,
+                    'developer':developerGOG,
+                    'publisher':companyGOG,
+                    'ratings':ratingsGOG,
+                    'gamemode':gamemode,
+                }
+                
+                infoGOG = myobj
                 return infoGOG
             else:
-                return "Empty"
+                print ("Empty ", ProductLink)
+                crashedPageGOG = "Empty"
+                return crashedPageGOG
 
         except Exception as errorexec:
             print("Something went wrong on GOG link" + ProductLink)
@@ -316,7 +367,7 @@ with open('dict.json', 'r') as fp:
 
 i = 1
 linksDict = {}
-while i < 2:
+while i < 200:
     try:
         currentPageUrl = "https://www.skidrowreloaded.com/page/" + str(i) + "/"
         headers1 = {
@@ -347,6 +398,7 @@ while i < 2:
             
             containerTitleandLinks = page_soup2.find("div", {"id" : divid0})
             containerScreenshots = (page_soup2.find("div", {"id" : divid2})).find_all("img")
+            containerNameref = page_soup2.find('div', {'id': 'overall-container'})
             containerSysReq = (page_soup2.find("ul", {"class" : "bb_ul"}))
 
             sysReq = ""
@@ -366,7 +418,9 @@ while i < 2:
             screenshotsLinks = (containerScreenshots[1]["src"] + "$$" + containerScreenshots[3]["src"])
 
             ProductLink = containerTitleandLinks.a["href"]
-    
+
+            nameref = containerNameref.div.h2.text
+
             genreGame = (page_soup2.find("div", {"id" : divid0})).find("p").findNext().text.partition('\n')[-1].partition('\n')[0]
 
             descriptionGame = containerTitleandLinks.p.text
@@ -393,7 +447,6 @@ while i < 2:
                 infoDeveloper = infoGamesSteam(ProductLink,triesSteam)
                 while infoGamesSteam(ProductLink,triesSteam) == False:
                     triesSteam= triesSteam + 1
-                    print(triesSteam)
                     
                 if (infoDeveloper == False and triesSteam == 3):
                     infoDeveloper = "Empty"
@@ -413,66 +466,142 @@ while i < 2:
                 print("Not ready yet")
                 infoDeveloper = "Empty"
                 
+            linksForFullGame = ""
+            linksForSteamfix = ""
 
-            if "Online" in infoDeveloper[1].split("$$")[-1]:
-                srcString= infoDeveloper[0]
-                treatedString = srcString.replace(" ", "+")
-                my_url = "https://www.game3rb.com/?s=" + str(treatedString)
+            if infoDeveloper != "Empty":
+                if infoDeveloper['gamemode'] == "Online":
+                    nameOfGameSearch = infoDeveloper['normaltitle'].split(" ")
+                    if len(nameOfGameSearch) >= 3:
+                        for a in range(2):
+                            if a == 0:
+                                srcString = nameOfGameSearch[a] + " " + nameOfGameSearch[a + 1]
+                            else:
+                                srcString = nameOfGameSearch[0] + " " + nameOfGameSearch[a] + " " + nameOfGameSearch[a + 1]
 
-                headers = {
-                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36'
-                }
+                            treatedString = srcString.replace(" ", "+").replace("™", "").replace("®", "").replace("ö", "")
+                            my_url = "https://www.game3rb.com/?s=" + treatedString
+                            # print(my_url)
 
-                req = Request(my_url, headers=headers)
-                webpage = urlopen(req).read()
-                
-                page_soup = soup(webpage, "html.parser")
-                mainPosts = page_soup.find("div", {"class":"main-posts"})
-                try:
-                    gameLink = mainPosts.find("h3", {"class":"entry-title"}).a["href"]
-                    onlineName = mainPosts.find("h3", {"class":"entry-title"}).a.text
-                    if "OnLine" in onlineName:
-                        # Já dentro da pagina do jogo, Pegando os links do redirecionador
-                        reqCurrentGame = Request(gameLink, headers=headers)
-                        webPageCurrentGame = urlopen(reqCurrentGame).read()
+                            headers = {
+                                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36'
+                            }
 
-                        page_soupGame = soup(webPageCurrentGame, "html.parser")
-                        sourceDownloadLink = page_soupGame.find_all("a", {"id":"download-link"})
+                            req = Request(my_url, headers=headers)
+                            webpage = urlopen(req).read()
+                            
+                            page_soup = soup(webpage, "html.parser")
+                            mainPosts = page_soup.find("div", {"class":"main-posts"})
+                            try:
+                                gameLink = mainPosts.find("h3", {"class":"entry-title"}).a["href"]
+                                onlineName = mainPosts.find("h3", {"class":"entry-title"}).a.text
+                                if "OnLine" in onlineName:
+                                    # Já dentro da pagina do jogo, Pegando os links do redirecionador
+                                    reqCurrentGame = Request(gameLink, headers=headers)
+                                    webPageCurrentGame = urlopen(reqCurrentGame).read()
 
-                        fullGameLink = sourceDownloadLink[0]["href"]
-                        SteamFix = sourceDownloadLink[1]["href"]
+                                    page_soupGame = soup(webPageCurrentGame, "html.parser")
+                                    sourceDownloadLink = page_soupGame.find_all("a", {"id":"download-link"})
 
-                        # Scraping dos links para download dentro da pagina do Redirecionador
+                                    fullGameLink = sourceDownloadLink[0]["href"]
+                                    SteamFix = page_soupGame.find("a", {"class":"online"})["href"]
 
-                        # Full Game links
-                        reqFullGame = Request(fullGameLink, headers=headers)
-                        webFullGame = urlopen(reqFullGame).read()
+                                    # Scraping dos links para download dentro da pagina do Redirecionador
 
-                        page_soupFullGame = soup(webFullGame, "html.parser")
-                        fullgameDLink = page_soupFullGame.find_all("li")
+                                    # Full Game links
+                                    reqFullGame = Request(fullGameLink, headers=headers)
+                                    webFullGame = urlopen(reqFullGame).read()
 
-                        # Links para o fullgame
-                        linksForFullGame = []
-                        for item in fullgameDLink:
-                            linksForFullGame.append(item.a["href"])
+                                    page_soupFullGame = soup(webFullGame, "html.parser")
+                                    fullgameDLink = page_soupFullGame.find_all("li")
 
-                        print(linksForFullGame, end="\n")
+                                    # Links para o fullgame
+                                    linksForFullGame = []
+                                    for item in fullgameDLink:
+                                        linksForFullGame.append(item.a["href"])
 
-                        # Steam fix links
-                        reqSteamfix = Request(SteamFix, headers=headers)
-                        webSteamfix = urlopen(reqSteamfix).read()
+                                    # print("Link for full game ", infoDeveloper[0], " ", linksForFullGame, end="\n")
 
-                        page_soupSteamFix = soup(webSteamfix, "html.parser")
-                        SteamfixDLink = page_soupSteamFix.find_all("li")
+                                    # Steam fix links
+                                    reqSteamfix = Request(SteamFix, headers=headers)
+                                    webSteamfix = urlopen(reqSteamfix).read()
 
-                        # links para o steamfix
-                        linksForSteamfix = []
-                        for item in SteamfixDLink:
-                            linksForSteamfix.append(item.a["href"])
+                                    page_soupSteamFix = soup(webSteamfix, "html.parser")
+                                    SteamfixDLink = page_soupSteamFix.find_all("li")
 
-                        print(linksForSteamfix, end="\n")
-                except:
-                    print("Not found for " + infoDeveloper[0])
+                                    # links para o steamfix
+                                    linksForSteamfix = []
+                                    for item in SteamfixDLink:
+                                        linksForSteamfix.append(item.a["href"])
+                                    
+
+                                    # print("Link for Steam fix ", infoDeveloper[0], "", linksForSteamfix, end="\n")
+
+                                    if len(linksForSteamfix) > 0 and len(linksForFullGame) > 0:
+                                        break
+                            except Exception as e:
+                                print(e)
+                                print("Not found for " + infoDeveloper['normaltitle'])
+                    else:
+                        srcString= infoDeveloper['normaltitle']
+                        treatedString = srcString.replace(" ", "+").replace("™", "").replace("®", "")
+                        my_url = "https://www.game3rb.com/?s=" + treatedString
+                        # print("Short URL ", my_url)
+
+                        headers = {
+                            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Safari/537.36'
+                        }
+
+                        req = Request(my_url, headers=headers)
+                        webpage = urlopen(req).read()
+                        
+                        page_soup = soup(webpage, "html.parser")
+                        mainPosts = page_soup.find("div", {"class":"main-posts"})
+                        try:
+                            gameLink = mainPosts.find("h3", {"class":"entry-title"}).a["href"]
+                            onlineName = mainPosts.find("h3", {"class":"entry-title"}).a.text
+                            if "OnLine" in onlineName:
+                                # Já dentro da pagina do jogo, Pegando os links do redirecionador
+                                reqCurrentGame = Request(gameLink, headers=headers)
+                                webPageCurrentGame = urlopen(reqCurrentGame).read()
+
+                                page_soupGame = soup(webPageCurrentGame, "html.parser")
+                                sourceDownloadLink = page_soupGame.find_all("a", {"id":"download-link"})
+
+                                fullGameLink = sourceDownloadLink[0]["href"]
+                                SteamFix = page_soupGame.find("a", {"class":"online"})["href"]
+
+                                # Scraping dos links para download dentro da pagina do Redirecionador
+
+                                # Full Game links
+                                reqFullGame = Request(fullGameLink, headers=headers)
+                                webFullGame = urlopen(reqFullGame).read()
+
+                                page_soupFullGame = soup(webFullGame, "html.parser")
+                                fullgameDLink = page_soupFullGame.find_all("li")
+
+                                # Links para o fullgame
+                                linksForFullGame = []
+                                for item in fullgameDLink:
+                                    linksForFullGame.append(item.a["href"])
+
+                                # print("Link for full game ", infoDeveloper[0], " ", linksForFullGame, end="\n")
+
+                                # Steam fix links
+                                reqSteamfix = Request(SteamFix, headers=headers)
+                                webSteamfix = urlopen(reqSteamfix).read()
+
+                                page_soupSteamFix = soup(webSteamfix, "html.parser")
+                                SteamfixDLink = page_soupSteamFix.find_all("li")
+
+                                # links para o steamfix
+                                linksForSteamfix = []
+                                for item in SteamfixDLink:
+                                    linksForSteamfix.append(item.a["href"])
+
+                                # print("Link for Steam fix ", infoDeveloper[0], "", linksForSteamfix, end="\n")
+                        except:
+                            print("Not found for " + infoDeveloper['normaltitle'])
 
             listLinks = []
             for a in containerTitleandLinks.find_all("a", href=True):
@@ -488,33 +617,100 @@ while i < 2:
             #Getting the providers link
             providerLinks = ""
 
-
-            for item in listLinks[2:]:
-                if "zippyshare" in item:
-                    providerLinks = providerLinks + "$$" + item
-                elif "mediafire" in item:
-                    providerLinks = providerLinks + "$$" + item
-                elif "bowfile" in item:
-                    providerLinks = providerLinks + "$$" + item
-                elif "mega.nz" in item:
-                    providerLinks = providerLinks + "$$" + item
-                elif "magnet" in item:
-                    providerLinks = providerLinks + "$$" + item
-                    
+            if len(linksForFullGame) > 0 and len(linksForSteamfix) > 0:
+                for item in linksForFullGame:
+                    if "zippyshare" in item:
+                        infoDeveloper['zippyshare'] = item
+                    elif "mediafire" in item:
+                        infoDeveloper['mediafire'] = item
+                    elif "bowfile" in item:
+                        infoDeveloper['bowfile'] = item
+                    elif "mega.nz" in item:
+                        infoDeveloper['mega'] = item
+                    elif "magnet" in item:
+                        infoDeveloper['magnet'] = item
+                    else:
+                        infoDeveloper['others'] = item
                 
-            if infoDeveloper != "Empty":
-                linksDict[textcontainer] = providerLinks[2:] + "|" + sysReq[2:] + "|" + genreGame + "|" + releaseDateGame + "|" + descriptionGame + "|" + screenshotsLinks + "|" + ProductLink + "|" + infoDeveloper[1] + "|" + YTLink + "|" + currentGameSize
+                for item in linksForSteamfix:
+                    if "zippyshare" in item:
+                        infoDeveloper['zippyshareSteamfix'] = item
+                    elif "mediafire" in item:
+                        infoDeveloper['mediafireSteamfix'] = item
+                    elif "bowfile" in item:
+                        infoDeveloper['bowfileSteamfix'] = item
+                    elif "mega.nz" in item:
+                        infoDeveloper['megaSteamfix'] = item
+                    elif "magnet" in item:
+                        infoDeveloper['magnetSteamfix'] = item
+                    else:
+                        infoDeveloper['othersSteamfix'] = item
+
+                # print("Here is the links for the online games ", providerLinks[2:], end='\n\n')
+                if infoDeveloper != "Empty":
+                    # linksDict[textcontainer] = providerLinks[2:] + "|" + sysReq[2:] + "|" + genreGame + "|" + releaseDateGame + "|" + descriptionGame + "|" + screenshotsLinks + "|" + ProductLink + "|" + infoDeveloper[1] + "|" + YTLink + "|" + currentGameSize
+                    infoDeveloper['nameref'] = nameref
+                    infoDeveloper['img1'] = containerScreenshots[1]["src"]
+                    infoDeveloper['img2'] = containerScreenshots[3]["src"]
+                    infoDeveloper['pagelink'] = ProductLink
+                    infoDeveloper['genre'] = genreGame
+                    infoDeveloper['description'] = descriptionGame
+                    infoDeveloper['releasedate'] = releaseDateGame
+                    infoDeveloper['size'] = currentGameSize
+                    infoDeveloper['ytlink'] = YTLink
+                    infoDeveloper['sys_requirements'] = sysReq[2:]
+                    infoDeveloper['page'] = str(i)
+
+                    api = "http://127.0.0.1:8000/api/newGame"
+                    req = requests.post(api, data = infoDeveloper)
+
+                    print(req.text)
+
+            else:
+                if infoDeveloper != "Empty":
+                    for item in listLinks[2:]:
+                        if "zippyshare" in item:
+                            infoDeveloper['zippyshare'] = item
+                        elif "mediafire" in item:
+                            infoDeveloper['mediafire'] = item
+                        elif "bowfile" in item:
+                            infoDeveloper['bowfile'] = item
+                        elif "mega.nz" in item:
+                            infoDeveloper['mega'] = item
+                        elif "magnet" in item:
+                            infoDeveloper['magnet'] = item
+
+                
+                    # linksDict[textcontainer] = providerLinks[2:] + "|" + sysReq[2:] + "|" + genreGame + "|" + releaseDateGame + "|" + descriptionGame + "|" + screenshotsLinks + "|" + ProductLink + "|" + infoDeveloper[1] + "|" + YTLink + "|" + currentGameSize
+                    infoDeveloper['nameref'] = nameref
+                    infoDeveloper['img1'] = containerScreenshots[1]["src"]
+                    infoDeveloper['img2'] = containerScreenshots[3]["src"]
+                    infoDeveloper['pagelink'] = ProductLink
+                    infoDeveloper['genre'] = genreGame
+                    infoDeveloper['description'] = descriptionGame
+                    infoDeveloper['releasedate'] = releaseDateGame
+                    infoDeveloper['size'] = currentGameSize
+                    infoDeveloper['ytlink'] = YTLink
+                    infoDeveloper['sys_requirements'] = sysReq[2:]
+                    infoDeveloper['page'] = str(i)
+
+                    api = "http://127.0.0.1:8000/api/newGame"
+                    req = requests.post(api, data = infoDeveloper)
+
+                    print(req.text)
+
 
             # print(linksDict, end='\n\n')
         i = i + 1
         print("Page:" + str(i))
     except Exception as e:
-        print("A error has ocurred:", end=" ")
-        print(e)
+        # print("A error has ocurred:", end=" ")
+        print("A error has ocurred: ", end='')
+        print(traceback.format_exc())
 
 # sys.stdout = open("declare.js", "w")
 # jsonObjc = json.dumps(linksDict)
 # print("export var jsonstr = {}".format(jsonObjc))
 
-# with open('dict.json', 'w') as fp:
-#     json.dump(linksDict, fp)
+with open('dict.json', 'w') as fp:
+    json.dump(linksDict, fp)
