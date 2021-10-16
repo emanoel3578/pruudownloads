@@ -365,9 +365,9 @@ with open('dict.json', 'r') as fp:
 #             json.dump(normalDict, fp)
     
 
-i = 1
+i = 200
 linksDict = {}
-while i < 200:
+while i > 0:
     try:
         currentPageUrl = "https://www.skidrowreloaded.com/page/" + str(i) + "/"
         headers1 = {
@@ -701,7 +701,7 @@ while i < 200:
 
 
             # print(linksDict, end='\n\n')
-        i = i + 1
+        i = i - 1
         print("Page:" + str(i))
     except Exception as e:
         # print("A error has ocurred:", end=" ")

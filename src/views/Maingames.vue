@@ -90,13 +90,13 @@
             <div class="flex gap-6">
                 <div class="grid grid-cols-2">
 
-                    <div v-for="item in currentPage" :key="item.index" class="">
+                    <div v-for="item in apidata" :key="item.index" class="">
                         
-                        <div v-show="loadMainCards">
+                        <div v-if="LoadMainCards">
                             <div class="border border-purple-300 shadow rounded-md p-4 w-full mb-10 mx-auto">
                                 <div class="animate-pulse flex flex-col space-y-5 justify-center h-full w-full relative">
                                     <div class="mx-auto my-0 bg-purple-400 h-4/5 w-full absolute"></div>
-                                    <img :src="item[1]" class="p-5">
+                                    <img :src="item.imgheader" alt="">
                                     <div class="flex-1 space-y-4 py-1">
                                         <div class="h-4 w-full bg-purple-400 rounded mx-auto my-0"></div>
                                     </div>
@@ -104,21 +104,22 @@
                             </div>
                         </div>
 
-                        <div v-show="unLoadMainCards">
+                        <div v-else>
                             <div class="flex flex-col justify-center items-center my-7 relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-                                <img :id=" item[0].replace(/ /g,'') " src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
+                                <img :id="item.name.replace(/ /g,'')" src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
                                 <div class="border-4 border-red-600 mx-2 hover:border-blue-500">
-                                    <router-link :to="'/game/'+ item[0] + '#top' ">
-                                        <img :src="item[1]" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0 ">    
+                                    <router-link :to="'/game/'+ item.nameref + '#top' ">
+                                        <img :src="item.imgheader" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0 ">    
                                     </router-link>
                                 </div>
                                 <div class="text-center mt-2">
-                                    <router-link :to="'/game/' +  item[0]">
-                                        <a :href="'/game/'+ item[0]" class="font-kanit cursor-pointer text-white text-2xl">{{item[0]}}</a>
+                                    <router-link :to="'/game/' +  item.nameref">
+                                        <a :href="'/game/'+ item.nameref" class="font-kanit cursor-pointer text-white text-2xl">{{item.nameref}}</a>
                                     </router-link>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -261,14 +262,14 @@ export default {
       return {
         categoriesHover: false,
         loadSideCards: true,
-        loadMainCards: true,
-        unLoadMainCards: false,
+        LoadMainCards: true,
         lastPage: "",
         searchbar: false,
         searchQuery: "",
         clickedPage:"",
         gameList:[],
         currentPage:[],
+        apidata:[],
         currentGameLinks:[],
         sizeofgame: "",
         releaseDate: "",
@@ -333,11 +334,10 @@ export default {
   },
 
   updated() {
-        this.gameList = Object.entries(jsonstr)
-        var gameChecker = this.gameList.slice(0,20)
+        var gameChecker = this.apidata
         
         gameChecker.map(function (element) {
-            var onlineChecker = element[1].split("|")[7].split("$$")
+            var onlineChecker = element.gamemode
             
             if(onlineChecker[onlineChecker.length - 1] == "Online") {
                 document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
@@ -354,17 +354,14 @@ export default {
   created() {
 
         this.axios.get('http://127.0.0.1:8000/api/paginate').then((response)=>{
-            console.log(response.data)
+            this.apidata = response.data.Results.data;
+            this.LoadMainCards = false
+            console.log(response.data.Results.data)
         })
 
         setTimeout(() => {
             this.loadSideCards = false
         }, 2000);
-
-        setTimeout(() => {
-            this.loadMainCards = false
-            this.unLoadMainCards = true
-        }, 1500);
 
         this.gameList = Object.entries(jsonstr)
         this.lastPage = Math.floor(this.gameList.length / 20) + 1
