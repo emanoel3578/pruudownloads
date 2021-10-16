@@ -79,20 +79,20 @@
                 </ul>
             </div>
         </div>
-
+        
         <div class="mt-10 w-4/5 mx-auto my-0">
             <div class="flex">
-                <div class="flex flex-col w-full">
+                <div v-for="item in apidata" :key='item.index' class="flex flex-col w-full">
                     <div class="flex text-white mb-5">
                         <div class="border-2 border-black bg-gray-800 px-3">
-                            <a>{{(this.genre).replace(new RegExp(",", "g"), "/")}}</a>
+                            <a>{{(item.genre).replace('Genre: ', "")}}</a>
                         </div>
                     </div>
 
                     <div class="flex flex-col text-white">
                         <div class="flex">
                             <p class="text-3xl">Download&nbsp;</p>
-                            <p class="text-3xl">{{this.name}}</p>
+                            <p class="text-3xl">{{item.name}}</p>
                         </div>
                         <div class="flex mt-5">
                             <p>about&nbsp;</p>
@@ -101,7 +101,7 @@
                     </div>
 
                     <div class="flex justify-center">
-                        <img :src="this.devInfo[0]" class="w-3/5 max-h-auto">
+                        <img :src="item.imgheader" class="w-3/5 max-h-auto">
                     </div>
 
                     <div class="flex flex-col ">
@@ -112,45 +112,45 @@
                         <div class="text-gray-300 ">
                             <div class="flex">
                                 <p class="font-bold">Release name:&nbsp;</p>
-                                <p>{{this.name}}</p>
+                                <p>{{item.nameref}}</p>
                             </div>
                             <div class="flex mb-5">
                                 <p class="font-bold">Size:&nbsp;</p>
-                                <p>{{this.sizeofgame.slice(5)}}</p>
+                                <p>{{item.size.slice(5)}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Title:&nbsp;</p>
-                                <p>{{this.name}}</p>
+                                <p>{{item.name}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Genre:&nbsp;</p>
-                                <p>{{this.genre}}</p>
+                                <p>{{(item.genre).replace('Genre: ', "")}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Gamemode:&nbsp;</p>
-                                <p>{{this.gamemode}}</p>
+                                <p>{{item.gamemode}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Developer:&nbsp;</p>
-                                <p>{{this.devInfo[1]}}</p>
+                                <p>{{item.developer}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Publisher:&nbsp;</p>
-                                <p>{{this.devInfo[2]}}</p>
+                                <p>{{item.publisher}}</p>
                             </div>
                             <div class="flex">
                                 <p class="font-bold">Release Date:&nbsp;</p>
-                                <p>{{this.releasedDate}}</p>
+                                <p>{{item.releasedate}}</p>
                             </div>
 
                             <div class="flex text-xl text-green-500 my-5">
                                 <p>ALL Reviews:&nbsp;</p>
-                                <p>{{this.devInfo[3]}}</p>
+                                <p>{{item.ratings}}</p>
                             </div>
 
                             <div class="flex flex-col text-xl">
                                 <p class="text-yellow-500">🙋‍♂ After reviewing the game, BUY the game to support the developer 👇</p>
-                                <a :href="this.linkApi" class="text-red-500">{{this.linkApi}}</a>
+                                <a :href="item.pagelink" class="text-red-500">{{item.pagelink}}</a>
                             </div>
                         </div>
 
@@ -160,8 +160,8 @@
                             </div>
 
                             <div id="cf7" class="flex justify-center items-center">
-                                <img :src="this.screenshots[0]" id="firstIMG" class="opaque">
-                                <img :src="this.screenshots[1]" id="secondIMG">
+                                <img :src="item.img1" id="firstIMG" class="opaque">
+                                <img :src="item.img2" id="secondIMG">
                             </div>
 
                             <div class="flex justify-center gap-4 text-white text-3xl">
@@ -170,7 +170,7 @@
                             </div>
                         </div>
 
-                        <div v-if="hasTrailer" class="flex flex-col my-5">
+                        <div class="flex flex-col my-5">
                             <div class="flex justify-center mb-2">
                                 <p class="text-white text-3xl">
                                     Trailer
@@ -178,11 +178,10 @@
                             </div>
 
                             <div class="player-container flex justify-center">
-
-                                <iframe v-if="hasYTLink" class="w-full" height="345" :src="this.YTLink" ></iframe>
+                                <iframe v-if="hasYTLink" class="w-full" height="345" :src="item.ytLink" ></iframe>
                                 
                                 <video v-else controls autoplay muted loop>
-                                    <source :src="this.devInfo[4]" type="video/webm">
+                                    <source :src="item.videolink" type="video/webm">
                                 </video>
                             </div>
                         </div>
@@ -194,7 +193,7 @@
                                     About this game
                                 </p>
                                 <p class="text-white text-gray-300">
-                                    {{this.description}}
+                                    {{item.description}}
                                 </p>
                             </div>
 
@@ -202,19 +201,7 @@
                                 <p class="text-white text-3xl">System requirements</p>
                                 <div class="flex-col">
                                     <div class="flex">
-                                        <p class="text-gray-300">{{this.systemReq[0]}}</p>
-                                    </div>
-                                    <div class="flex">
-                                        <p class="text-gray-300">{{this.systemReq[1]}}</p>
-                                    </div>
-                                    <div class="flex">
-                                        <p class="text-gray-300">{{this.systemReq[2]}}</p>
-                                    </div>
-                                    <div class="flex">
-                                        <p class="text-gray-300">{{this.systemReq[3]}}</p>
-                                    </div>
-                                    <div class="flex">
-                                        <p class="text-gray-300">{{this.systemReq[5]}}</p>
+                                        <p class="text-gray-300">{{item.sys_requirements}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -409,7 +396,7 @@
                                 </div>
                             </div>
 
-                            <!--SECTION for Recommendations -->
+                            <!--SECTION for Recommendations 
                             <div>
                                 <div>
                                     <p class="text-white text-3xl">Recommendations</p>
@@ -418,7 +405,7 @@
                                     <p class="text-gray-300 text-xl">In construction</p>
                                 </div>
 
-                            </div>
+                            </div>-->
 
                             <!--SECTION for comments -->
 
@@ -479,9 +466,6 @@
 </template>
 
 <script>
-import { jsonstr } from "../../declare.js"
-// import { jsonstrUpdated } from "../../json.js"
-
 export default {
     props:["id"],
     data () {
@@ -511,7 +495,6 @@ export default {
             gamemode: "Singleplayer",
             developers:"",
             devInfo:["Empty","Empty","Empty","Empty"],
-            hasTrailer: false,
             hasYTLink: false,
             YTLink: "",
             apidata:[],
@@ -556,156 +539,13 @@ export default {
 
     created() {
         this.axios.get('http://127.0.0.1:8000/api/game/'+this.id).then((response)=>{
-            this.apidata = response.data.["Current game data"];
+            this.apidata = response.data;
             this.LoadMainCards = false
-            console.log(response.data.["Current game data"])
-        })
-
-        async function postData(url = '', fields =' ') {
-        // Default options are marked with *
-        const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            headers: {
-            'Content-Type': 'application/json',
-            'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
-            'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
-            'origin': 'x-requested-with',
-            },
-            body: fields // body data type must match "Content-Type" header
-        });
-            return response.json(); // parses JSON response into native JavaScript objects
-        }
-
-        this.gameList = Object.entries(jsonstr)
-        this.currentPage = this.gameList.slice(0,20)
-        var currentgame = this.name
-        var releaseDateArr = this.releaseDate
-        var descriptionArr = this.description
-        var linkApiArr = this.linkApi
-        var sysReqArr = this.systemReq
-        var screenshotsArr = this.screenshots
-        var genreArr = this.genre
-        var downloadLinksArr = this.currentGameLinks
-        var sizeofgame = this.sizeofgame
-        var developersArr = this.developers
-        var gameClicked = this.gameClicked
-        var YTLinkArr = this.YTLink
-        this.gameList.map(function (element) {
-            element.map(function (el) {
-                if (el == currentgame) {
-                    downloadLinksArr = element[1].split("|")[0].split("$$")
-                    sysReqArr = element[1].split("|")[1].split("$$")
-                    sizeofgame = element[1].substr(element[1].lastIndexOf('|') + 1)
-                    releaseDateArr = element[1].split("|")[3].slice(13)
-                    linkApiArr = element[1].split("|")[6]
-                    genreArr = element[1].split("|")[2].slice(6)
-                    descriptionArr = element[1].split("|")[4]
-                    screenshotsArr = element[1].split("|")[5].split("$$")
-                    developersArr = element[1].split("|")[7].split("$$")
-                    gameClicked = element[1].split("|")[9]
-                    YTLinkArr = element[1].split("|")[8]
-                }
-            })
-        })
-
-        this.developers = developersArr
-
-        if(this.developers[0] == "Empty") {
-            var searchString = 'search ' + `"${this.name}"` + '; fields id;'
-            postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games?', searchString)
-            .then(responseFromApi => {
-                var idSearchedGame = 'fields *;' + 'where game = ' + `${responseFromApi[0].id}` + ';'
-                postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
-                    .then(screenshotApi => {
-                        this.devInfo[0] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
-                    })
-                
-                this.devInfo[1] = "TBA"
-                this.devInfo[2] = "TBA"
-                this.devInfo[3] = "TBA"
-                this.devInfo[4] = "TBA"
-                this.devInfo[5] = "TBA"
-                this.hasTrailer = false
-            });
-        }else{
-            this.devInfo[0] = this.developers[0]
-            this.devInfo[1] = this.developers[1]
-            this.devInfo[2] = this.developers[2]
-            this.devInfo[3] = this.developers[3]
-            this.devInfo[4] = this.developers[4]
-            this.devInfo[5] = this.developers[5]
-            this.hasTrailer = true
-        }
-
-
-        for (var i= 0; i< this.devInfo.length; i++) {
-            if (this.devInfo[i] == "Online") {
-                this.gamemode = "Online"
-            }
-        }
-        
-        if (this.devInfo[4] == undefined) {
-            this.devInfo[4] == "Empty"
-            this.hasYTLink = true
-        }else {
-            if (!(this.devInfo[4].includes("steam"))) {
+            if (response.data.Result.videolink == null) {
                 this.hasYTLink = true
-            }else {
-                this.hasYTLink = false
             }
-        }
-
-
-        var mediafireDL = ""
-        var bowfileDL = ""
-        var megaDL = ""
-        var torrentDL = ""
-        var mediafireLink = false
-        var BowfileLink = false
-        var MEGALink = false
-        var TorrentLink = false
-        downloadLinksArr.map(function (element) {
-            //console.log(element)
-            if (element.includes("mediafire")) {
-                mediafireLink = true
-                mediafireDL = element
-            }else if (element.includes("bowfile")) {
-                BowfileLink = true
-                bowfileDL = element
-            }else if (element.includes("MEGA")) {
-                MEGALink = true
-                megaDL = element
-            }else if (element.includes("zippy")) {
-                TorrentLink = true
-                torrentDL = element
-            }
+            console.log(response.data.Result)
         })
-
-        this.mediafireDL = mediafireDL
-        this.bowfileDL = bowfileDL
-        this.megaDL = megaDL
-        this.torrentDL = torrentDL
-        this.MEGALink = MEGALink
-        this.TorrentLink = TorrentLink
-        this.BowfileLink =  BowfileLink
-        this.mediafireLink = mediafireLink
-        this.YTLink = YTLinkArr
-        this.genre = genreArr
-        this.currentGameLinks = downloadLinksArr
-        this.systemReq = sysReqArr
-        this.releasedDate = releaseDateArr
-        this.description = descriptionArr
-        this.linkApi = linkApiArr
-        this.gameClicked = parseInt(gameClicked) + 1
-        this.screenshots = screenshotsArr
-        this.sizeofgame = sizeofgame
-
-        if (this.currentGameLinks[0] == "" ) {
-            this.uploading = true
-        }
-
-        
     }
 }
 </script>

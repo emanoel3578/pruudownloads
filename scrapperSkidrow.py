@@ -23,7 +23,6 @@ def infoGamesSteam(ProductLink,triesSteam):
             page_soupGame = soup(webGamepage, "html.parser")
             containerInfoGame = page_soupGame.find_all("div", {"class":"dev_row"})
             containerHeaderimg = page_soupGame.find("div", {"id":"gameHeaderImageCtn"})
-            # sysRequired = page_soupGame.find("div", {"class" : "game_area_sys_req"}).div.ul.find_all("li")
 
             imgHeader = containerHeaderimg.img["src"]
             developer = (page_soupGame.find("div", {"id":"developers_list"}).text).partition('\n')[2]
@@ -406,7 +405,7 @@ while i > 0:
                 containerSysReq = containerSysReq.find_all("li")
                 for li in containerSysReq:
                     treatedReq = li.text.replace("|", "")
-                sysReq = sysReq + "$$" + treatedReq
+                    sysReq = sysReq + "$$" + treatedReq
             else :
                 try:
                     containerSysReq = page_soup2.find_all("div", {"class" : "game_area_sys_req_leftCol"})[-1].find_all("p")[1].text.replace('\n', "$$")
