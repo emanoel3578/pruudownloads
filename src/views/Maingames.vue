@@ -356,7 +356,6 @@ export default {
         this.axios.get('http://127.0.0.1:8000/api/paginate').then((response)=>{
             this.apidata = response.data.Results.data;
             this.LoadMainCards = false
-            console.log(response.data.Results.data)
         })
 
         setTimeout(() => {

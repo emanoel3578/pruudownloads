@@ -483,7 +483,7 @@ import { jsonstr } from "../../declare.js"
 // import { jsonstrUpdated } from "../../json.js"
 
 export default {
-    props:["name"],
+    props:["id"],
     data () {
         return {
             showOnlineFixLinks: false,
@@ -514,6 +514,7 @@ export default {
             hasTrailer: false,
             hasYTLink: false,
             YTLink: "",
+            apidata:[],
         }
     },
 
@@ -553,28 +554,13 @@ export default {
         },
     },
 
-    // mounted() {
-    //     var currentgame = this.name
-    //     var element1Changed = this.gameList.map(function (element) {
-    //         element.map(function (el) {
-    //             if (el == currentgame) {
-    //                 console.log(element[1])
-    //                 var updatedGameClicks = element[1].split("|")
-    //                 updatedGameClicks[9] = String(parseInt(updatedGameClicks[9]) + 1)
-    //                 element[1] = updatedGameClicks.join("|")
-    //             }
-    //         })
-    //         return element
-    //     })
-        
-    //     console.log(jsonstrUpdated)
-
-    //     // var newElement = JSON.stringify(element1Changed)
-    //     var jsonData = "export var jsonstrUpdated = " +  JSON.stringify(element1Changed)
-    //     this.downloadFunc(jsonData, 'json.js', 'text/plain')
-    // },
-
     created() {
+        this.axios.get('http://127.0.0.1:8000/api/game/'+this.id).then((response)=>{
+            this.apidata = response.data.["Current game data"];
+            this.LoadMainCards = false
+            console.log(response.data.["Current game data"])
+        })
+
         async function postData(url = '', fields =' ') {
         // Default options are marked with *
         const response = await fetch(url, {
@@ -592,7 +578,6 @@ export default {
         }
 
         this.gameList = Object.entries(jsonstr)
-        console.log(this.gameList)
         this.currentPage = this.gameList.slice(0,20)
         var currentgame = this.name
         var releaseDateArr = this.releaseDate
@@ -620,7 +605,6 @@ export default {
                     developersArr = element[1].split("|")[7].split("$$")
                     gameClicked = element[1].split("|")[9]
                     YTLinkArr = element[1].split("|")[8]
-                    console.log(YTLinkArr);
                 }
             })
         })
@@ -635,7 +619,6 @@ export default {
                 postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
                     .then(screenshotApi => {
                         this.devInfo[0] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
-                        console.log(screenshotApi)
                     })
                 
                 this.devInfo[1] = "TBA"
@@ -653,7 +636,6 @@ export default {
             this.devInfo[4] = this.developers[4]
             this.devInfo[5] = this.developers[5]
             this.hasTrailer = true
-            console.log((this.devInfo))
         }
 
 
@@ -723,7 +705,6 @@ export default {
             this.uploading = true
         }
 
-        console.log(this.currentGameLinks)
         
     }
 }

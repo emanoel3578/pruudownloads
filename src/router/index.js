@@ -23,7 +23,7 @@ const routes = [
     component: DMCA,
   },
   {
-    path: "/game/:name",
+    path: "/game/:id",
     name: "Game",
     component: Game,
     props: true,
