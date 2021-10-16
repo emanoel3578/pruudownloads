@@ -395,24 +395,6 @@ export default {
     visibility: visible;
 }
 
-/*
-@keyframes animatedBackground {
-  from {
-    background-position: 0 50%;
-  }
-  to {
-    background-position: 100% 50%;
-  }
-}
-.animate-area {
-  background-image: url("../../public/img/hue.png");
-  background-position: center;
-  background-size: 200px 50px;
-  background-repeat: repeat;
-  animation: animatedBackground 10s linear infinite alternate;
-}
-*/
-
 .showMP {
     display: block;
 }
