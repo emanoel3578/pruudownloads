@@ -230,24 +230,6 @@
 </template>
 
 <script>
-import { jsonstr } from "../../declare.js"
-
-async function postData(url = '', fields =' ') {
-// Default options are marked with *
-const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    headers: {
-    'Content-Type': 'application/json',
-    'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
-    'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
-    'origin': 'x-requested-with',
-    },
-    body: fields // body data type must match "Content-Type" header
-});
-    return response.json(); // parses JSON response into native JavaScript objects
-}
-
 
 export default {
     name: 'Navbar',
@@ -281,62 +263,8 @@ export default {
     },
 
     methods:{
-        ChangePage (event) {
-            var currentClassPage = document.getElementById(event.srcElement.id)
-            currentClassPage.classList.add("currentPage")
-            this.clickedPage = event.srcElement.innerText
-            this.gameList = Object.entries(jsonstr)
-            var endSlice = parseInt(this.clickedPage) * 20
-            var startSlice = endSlice - 20
-            this.currentPage = this.gameList.slice(startSlice,endSlice)
-            this.currentPage.map(function (element) {
-                var developersArr = element[1].split("|")[7].split("$$")
-                if(developersArr[0] == "Empty") {
-                    var searchString = 'search ' + `"${element[0]}"` + '; fields id;'
-                    postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games?', searchString)
-                    .then(responseFromApi => {
-                        var idSearchedGame = 'fields *;' + 'where game = ' + `${responseFromApi[0].id}` + ';'
-                        postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
-                        .then(screenshotApi => {
-                            element[1] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
-                            //console.log(screenshotApi)
-                        })
-                    });
-                }else {
-                    element[1] = developersArr[0]
-                }
-                //console.log((element[1].split("|")).length)
-            })
-
-            setTimeout(() => {
-                this.gameList = Object.entries(jsonstr)
-                var endSlice = parseInt(this.clickedPage) * 20
-                var startSlice = endSlice - 20
-                var currentPage = this.gameList.slice(startSlice,endSlice)
-                currentPage.map(function (el) {
-                    var onlineChecker = el[1].split("|")[7].split("$$")
-                    document.getElementById(el[0].replace(/ /g, "")).classList.remove("showMP")
-                    if(onlineChecker[onlineChecker.length - 1] == "Online") {
-                        try {
-                            document.getElementById(el[0].replace(/ /g, "")).classList.add("showMP")
-                        }catch(error) {
-                            console.log(error)
-                        }
-                    }
-                })
-            }, 1000);
-            //console.log(console.log(document.getElementById("Ascent")))
-        },
 
         nextPage () {
-            var gameList = Object.entries(jsonstr)
-            if (gameList.length / 20 > 5 && Math.floor(gameList.length/20) + 1 > parseInt(document.getElementById("fifthPage").innerHTML)) {
-                this.pageValues[0] = this.pageValues[0] + 5
-                this.pageValues[1] = this.pageValues[1] + 5
-                this.pageValues[2] = this.pageValues[2] + 5
-                this.pageValues[3] = this.pageValues[3] + 5
-                this.pageValues[4] = this.pageValues[4] + 5
-            }
         },
 
         previousPage () {
@@ -362,118 +290,20 @@ export default {
     },
 
     created() {
-        
-        this.axios.get('http://127.0.0.1:8000/api/paginate?page='+this.numberPage).then((response)=>{
+        this.axios.get('http://127.0.0.1:8000/api/paginate?page=' + this.numberPage).then((response)=>{
             this.apidata = response.data.Results.data;
             this.LoadMainCards = false
-        })
-
-        setTimeout(() => {
-            this.loadSideCards = false
-        }, 2000);
-
-        console.log("Called created")
-        this.gameList = Object.entries(jsonstr)
-        this.lastPage = Math.floor(this.gameList.length / 20) + 1
-        var endSlice = parseInt(this.numberPage) * 20
-        var startSlice = endSlice - 20
-        this.currentPage = this.gameList.slice(startSlice,endSlice)
-        if(this.currentPage.length <= 0){
-            window.location.href = "http://localhost:8080/home/"
-        }
-
-        this.currentPage.map(function (element) {
-            var developersArr = element[1].split("|")[7].split("$$")
-            if(developersArr[0] == "Empty") {
-                var searchString = 'search ' + `"${element[0]}"` + '; fields id;'
-                postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games?', searchString)
-                .then(responseFromApi => {
-                    var idSearchedGame = 'fields *;' + 'where game = ' + `${responseFromApi[0].id}` + ';'
-                    postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/covers?',  idSearchedGame)
-                    .then(screenshotApi => {
-                        element[1] = screenshotApi[0].url.replace("t_thumb", "t_cover_big").replace("//", "https:/")
-                        console.log(screenshotApi)
-                    })
-                });
-            }else {
-                element[1] = developersArr[0]
+            this.numberofPages = response.data.Results.last_page
+            for (var i = 0; i < this.numberofPages; i++) {
+                this.pageValues.push(i+1)
             }
-            //console.log((element[1].split("|")).length)
-        })
-
-        var numberofPages =  Math.ceil(this.gameList.length / 20)
-
-        for (var i = 0; i < numberofPages; i++) {
-            this.pageValues.push(i+1)
-        }
-
-        if (!this.pageValues.includes(parseInt(this.numberPage))) {
-            window.location.href = "http://localhost:8080/home"
-        }
-    },
-
-
-    mounted() {
-
-        if (parseInt(this.numberPage) > 5) {
-            var numberOfLoops = Math.floor(parseInt(this.numberPage) / 5)
+        }).then(()=>{
+            var firstPage = this.$refs.firstpage.innerText
+            var secondPage = this.$refs.secondpage.innerText
+            var thirdPage = this.$refs.thirdpage.innerText
+            var forthPage = this.$refs.forthpage.innerText
+            var fifthPage = this.$refs.fifthpage.innerText
             
-            let i = 0
-            while (i < numberOfLoops) {
-                this.pageValues[0] = this.pageValues[0] + 5
-                this.pageValues[1] = this.pageValues[1] + 5
-                this.pageValues[2] = this.pageValues[2] + 5
-                this.pageValues[3] = this.pageValues[3] + 5
-                this.pageValues[4] = this.pageValues[4] + 5
-                i++
-            }
-        }else {
-            console.log("Here 2")
-        }
-
-        var firstPage = document.getElementById("firstPage").innerHTML
-        var secondPage = document.getElementById("secondPage").innerHTML
-        var thirdPage = document.getElementById("thirdPage").innerHTML
-        var forthPage = document.getElementById("forthPage").innerHTML
-        var fifthPage = document.getElementById("fifthPage").innerHTML
-
-        if (this.numberPage == firstPage) {
-            document.getElementById("firstPage").classList.toggle("currentPage")
-        }
-        if (this.numberPage == secondPage) {
-            document.getElementById("secondPage").classList.toggle("currentPage")
-        }
-        if (this.numberPage == thirdPage) {
-            document.getElementById("thirdPage").classList.toggle("currentPage")
-        }
-        if (this.numberPage == forthPage) {
-            document.getElementById("forthPage").classList.toggle("currentPage")
-        }
-        if (this.numberPage == fifthPage) {
-            document.getElementById("fifthPage").classList.toggle("currentPage")
-        }
-    },
-
-    updated() {
-        this.$nextTick(function() {
-            var gameChecker = this.apidata
-        
-            gameChecker.map(function (element) {
-                var onlineChecker = element.gamemode
-                
-                if(onlineChecker == "Online") {
-                    document.getElementById(element.name.replace(/ /g, "")).classList.add("showMP")
-                    console.log(element.name.replace(/ /g, ""))
-                }   
-            })
-
-
-            var firstPage = document.getElementById("firstPage").innerHTML
-            var secondPage = document.getElementById("secondPage").innerHTML
-            var thirdPage = document.getElementById("thirdPage").innerHTML
-            var forthPage = document.getElementById("forthPage").innerHTML
-            var fifthPage = document.getElementById("fifthPage").innerHTML
-
             if (this.numberPage == firstPage) {
                 document.getElementById("firstPage").classList.toggle("currentPage")
             }else {
@@ -499,6 +329,24 @@ export default {
             }else{
                 document.getElementById("fifthPage").classList.remove("currentPage")
             }
+        })
+
+        setTimeout(() => {
+            this.loadSideCards = false
+        }, 2000);
+    },
+
+    updated() {
+        this.$nextTick(function() {
+            var gameChecker = this.apidata
+        
+            gameChecker.map(function (element) {
+                var onlineChecker = element.gamemode
+                
+                if(onlineChecker == "Online") {
+                    document.getElementById(element.name.replace(/ /g, "")).classList.add("showMP")
+                }   
+            })
             
         })
     },

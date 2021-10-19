@@ -216,7 +216,7 @@
             </div>
 
             <div class="flex justify-center mb-2 text-lg text-white">
-                <button @click="previousPage" class="mx-3 cursor-pointer"> &#60;&#60; </button>
+                <button class="mx-3 cursor-pointer"> &#60;&#60; </button>
                 <a id="firstPage"  @click="ChangePage" value="firstpage" class="otherPages currentPage" ref="firstpage">{{this.pageValues[0]}}</a>
                 <a id="secondPage" @click="ChangePage" value="secondpage" class="otherPages" ref="secondpage">{{this.pageValues[1]}}</a>
                 <a id="thirdPage" @click="ChangePage" value="thirdpage" class="otherPages" ref="thirdpage">{{this.pageValues[2]}}</a>
@@ -237,8 +237,6 @@
 </template>
 
 <script>
-import { jsonstr } from "../../declare.js"
-
 export default {
   name: 'Navbar',
   data () {
@@ -287,24 +285,7 @@ export default {
       },
 
       nextPage () {
-          var gameList = Object.entries(jsonstr)
-            if (gameList.length / 20 > 5 && Math.floor(gameList.length/20) + 1 > parseInt(document.getElementById("fifthPage").innerHTML)) {
-                this.pageValues[0] = this.pageValues[0] + 5
-                this.pageValues[1] = this.pageValues[1] + 5
-                this.pageValues[2] = this.pageValues[2] + 5
-                this.pageValues[3] = this.pageValues[3] + 5
-                this.pageValues[4] = this.pageValues[4] + 5
-            }
-      },
-
-      previousPage () {
-          if(this.pageValues[0] > 1) {
-                this.pageValues[0] = this.pageValues[0] - 5
-                this.pageValues[1] = this.pageValues[1] - 5
-                this.pageValues[2] = this.pageValues[2] - 5
-                this.pageValues[3] = this.pageValues[3] - 5
-                this.pageValues[4] = this.pageValues[4] - 5
-            }
+          window.location.href = "http://localhost:8080/page/2"
       },
 
       sendSearch () {
@@ -338,9 +319,6 @@ export default {
             for (var i = 0; i < this.numberofPages; i++) {
                 this.pageValues.push(i+1)
             }
-        }).then(()=> {
-
-            
         })
 
         setTimeout(() => {
