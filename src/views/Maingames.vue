@@ -224,7 +224,7 @@
                 <a id="fifthPage" @click="ChangePage" value="fifthpage" class="otherPages" ref="fifthpage">{{this.pageValues[4]}}</a>
                 
                 <span value="fifthpage" class="mx-3" ref="fifthpage">...</span>
-                <button  @click="ChangePage" id="lastPage" class="mx-3 cursor-pointer">{{this.lastPage}}</button>
+                <button  @click="ChangePage" id="lastPage" class="mx-3 cursor-pointer">{{this.numberofPages}}</button>
                 <button @click="nextPage" class="mx-3 cursor-pointer"> &#62;&#62; </button>
             </div>
         </div>
@@ -238,23 +238,6 @@
 
 <script>
 import { jsonstr } from "../../declare.js"
-
-async function postData(url = '', fields =' ') {
-// Default options are marked with *
-const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    headers: {
-    'Content-Type': 'application/json',
-    'Client-ID': 'x791m08fo4a05ewa5m869cm2ihvzw8',
-    'Authorization': 'Bearer xbi3q6up891wjbshw15438e88kpb8s',
-    'origin': 'x-requested-with',
-    },
-    body: fields // body data type must match "Content-Type" header
-});
-    return response.json(); // parses JSON response into native JavaScript objects
-}
-
 
 export default {
   name: 'Navbar',
@@ -281,7 +264,8 @@ export default {
         developers:"",
         devInfo:["Empty","Empty","Empty","Empty"],
         hasTrailer: false,
-        pageValues: []
+        pageValues: [],
+        numberofPages: null,
       }
   },
 
@@ -343,12 +327,6 @@ export default {
                 document.getElementById(element.name.replace(/ /g, "")).classList.add("showMP")
             }   
         })
-
-        if(document.getElementById("firstPage").innerHTML == "1") {
-            document.getElementById("firstPage").classList.toggle("currentPage")
-        }else {
-            document.getElementById("firstPage").classList.remove("currentPage")
-        }
   },
 
   created() {
@@ -356,34 +334,19 @@ export default {
         this.axios.get('http://127.0.0.1:8000/api/paginate').then((response)=>{
             this.apidata = response.data.Results.data;
             this.LoadMainCards = false
+            this.numberofPages = response.data.Results.last_page
+            for (var i = 0; i < this.numberofPages; i++) {
+                this.pageValues.push(i+1)
+            }
+        }).then(()=> {
+
+            
         })
 
         setTimeout(() => {
             this.loadSideCards = false
         }, 2000);
-
-        this.gameList = Object.entries(jsonstr)
-        this.lastPage = Math.floor(this.gameList.length / 20) + 1
-        this.currentPage = this.gameList.slice(0,20)
-        var developersArr = this.developers
-        this.developers = developersArr
-        this.currentPage.map(function (element) {
-            var developersArr = element[1].split("|")[7].split("$$")
-            if(developersArr[0] == "Empty") {
-                postData('https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/screenshots?')
-                .then(responseFromApi => {
-                    element[1] = responseFromApi[0].url.replace("t_thumb", "t_screenshot_med_2x").replace("//", "https:/")
-                });
-            }else {
-                element[1] = developersArr[0]
-            }
-        })
-
-        var numberofPages =  Math.ceil(this.gameList.length / 20)
-
-        for (var i = 0; i < numberofPages; i++) {
-            this.pageValues.push(i+1)
-        }
+        
     }
 }
 </script>
