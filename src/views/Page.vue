@@ -101,7 +101,7 @@
                             <div class="flex flex-col justify-center items-center my-7 relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                                 <img :id="item.name.replace(/ /g,'')" src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
                                 <div class="border-4 border-red-600 mx-2 hover:border-blue-500">
-                                    <router-link :to="'/game/'+ item.id + '#top' ">
+                                    <router-link :to="'/game/'+ item.id">
                                         <img :src="item.imgheader" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0 ">    
                                     </router-link>
                                 </div>
@@ -414,24 +414,6 @@ export default {
 
 
     mounted() {
-        //console.log(document.getElementById("Ascent"))
-        var gameList = Object.entries(jsonstr)
-        var endSlice = parseInt(this.numberPage) * 20
-        var startSlice = endSlice - 20
-        var gameChecker = gameList.slice(startSlice,endSlice)
-        //console.log(gameChecker)
-        gameChecker.map(function (element) {
-            var onlineChecker = element[1].split("|")[7].split("$$")
-            //console.log(document.getElementById(element[0].replace(/ /g, "")))
-            if(onlineChecker[onlineChecker.length - 1] == "Online") {
-                try {
-                    document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP") 
-                }catch(error) {
-                    console.log(error)
-                }
-            }
-        })
-
 
         if (parseInt(this.numberPage) > 5) {
             var numberOfLoops = Math.floor(parseInt(this.numberPage) / 5)
@@ -474,6 +456,18 @@ export default {
 
     updated() {
         this.$nextTick(function() {
+            var gameChecker = this.apidata
+        
+            gameChecker.map(function (element) {
+                var onlineChecker = element.gamemode
+                
+                if(onlineChecker == "Online") {
+                    document.getElementById(element.name.replace(/ /g, "")).classList.add("showMP")
+                    console.log(element.name.replace(/ /g, ""))
+                }   
+            })
+
+
             var firstPage = document.getElementById("firstPage").innerHTML
             var secondPage = document.getElementById("secondPage").innerHTML
             var thirdPage = document.getElementById("thirdPage").innerHTML

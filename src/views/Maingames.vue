@@ -108,13 +108,13 @@
                             <div class="flex flex-col justify-center items-center my-7 relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
                                 <img :id="item.name.replace(/ /g,'')" src="/img/coop.png" class="absolute left-0 -top-5 transform -rotate-45 hidden">
                                 <div class="border-4 border-red-600 mx-2 hover:border-blue-500">
-                                    <router-link :to="'/game/'+ item.nameref + '#top' ">
+                                    <router-link :to="'/game/'+ item.id">
                                         <img :src="item.imgheader" class="max-h-40 min-w-full cursor-pointer mx-auto mx-0 ">    
                                     </router-link>
                                 </div>
                                 <div class="text-center mt-2">
-                                    <router-link :to="'/game/' +  item.nameref">
-                                        <a :href="'/game/'+ item.nameref" class="font-kanit cursor-pointer text-white text-2xl">{{item.nameref}}</a>
+                                    <router-link :to="'/game/' +  item.id">
+                                        <a :href="'/game/'+ item.id" class="font-kanit cursor-pointer text-white text-2xl">{{item.nameref}}</a>
                                     </router-link>
                                 </div>
                             </div>
@@ -339,9 +339,9 @@ export default {
         gameChecker.map(function (element) {
             var onlineChecker = element.gamemode
             
-            if(onlineChecker[onlineChecker.length - 1] == "Online") {
-                document.getElementById(element[0].replace(/ /g, "")).classList.add("showMP")
-            }
+            if(onlineChecker == "Online") {
+                document.getElementById(element.name.replace(/ /g, "")).classList.add("showMP")
+            }   
         })
 
         if(document.getElementById("firstPage").innerHTML == "1") {

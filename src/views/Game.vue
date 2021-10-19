@@ -178,7 +178,7 @@
                             </div>
 
                             <div class="player-container flex justify-center">
-                                <iframe v-if="hasYTLink" class="w-full" height="345" :src="item.ytLink" ></iframe>
+                                <iframe v-if="hasYTLink" class="w-full" height="345" :src="item.ytlink" ></iframe>
                                 
                                 <video v-else controls autoplay muted loop>
                                     <source :src="item.videolink" type="video/webm">
@@ -200,8 +200,25 @@
                             <div class="flex flex-col my-2">
                                 <p class="text-white text-3xl">System requirements</p>
                                 <div class="flex-col">
+                                <!--
                                     <div class="flex">
                                         <p class="text-gray-300">{{item.sys_requirements}}</p>
+                                    </div>
+                                -->
+                                    <div class="flex">
+                                        <p class="text-gray-300">{{this.systemReq[0]}}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p class="text-gray-300">{{this.systemReq[1]}}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p class="text-gray-300">{{this.systemReq[2]}}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p class="text-gray-300">{{this.systemReq[3]}}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p class="text-gray-300">{{this.systemReq[5]}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +257,7 @@
                             <!-- Section for DOWNLOAD LINKS -->
                             <div class="flex flex-col my-5">
                                 <div class="mb-3">
-                                    <p class="text-white text-3xl">Download Game</p>
+                                    <p class="text-white text-3xl">Download</p>
                                 </div>
 
                                 <div class="flex flex-col text-center justify-center">
@@ -265,27 +282,31 @@
                                                 </div>
                                             </div>
 
-                                            <div v-show="showFullGameLinks" class="bg-blue-500 border-2 w-4/5 text-white mx-auto my-0 rounded-lg ">
+                                            <div v-show="showFullGameLinks" v-for='item in linksGames' :key='item.index' class="bg-blue-500 border-2 w-4/5 text-white mx-auto my-0 rounded-lg ">
                                                 <div class="flex flex-col mx-auto my-0">
                                                     <div class="flex flex-col mx-auto my-0 w-min gap-1">
                                                         <div class="mt-2">
-                                                            <a class="cursor-pointer">https://bowfile.com/asdaasdsdasdasdasdasdassdasd</a>
+                                                            <a :href='item.zippyshare' v-show="item.zippyshare" class="cursor-pointer">{{item.zippyshare}}</a>
                                                         </div>
 
                                                         <div>
-                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                            <a :href='item.mega' v-show="item.mega" class="cursor-pointer">{{item.mega}}</a>
                                                         </div>
 
                                                         <div>
-                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                            <a :href='item.bowfile' v-show="item.bowfile" class="cursor-pointer">{{item.bowfile}}</a>
                                                         </div>
 
                                                         <div>
-                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                            <a :href='item.mediafire' v-show="item.mediafire" class="cursor-pointer">{{item.mediafire}}</a>
                                                         </div>
 
                                                         <div>
-                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                            <a :href='item.magnet' v-show="item.magnet" class="cursor-pointer">{{item.magnet}}</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a :href='item.others' v-show="item.others" class="cursor-pointer">{{item.others}}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -305,27 +326,31 @@
                                                 </div>
                                             </div>
 
-                                            <div v-show="showOnlineFixLinks" class="bg-blue-500 border-2 w-4/5 text-white mx-auto my-0 rounded-lg ">
+                                            <div v-show="showOnlineFixLinks" v-for='item in linksGames' :key='item.index' class="bg-blue-500 border-2 w-4/5 text-white mx-auto my-0 rounded-lg ">
                                                 <div class="flex flex-col mx-auto my-0">
                                                     <div class="flex flex-col mx-auto my-0 w-min gap-1">
                                                         <div class="mt-2">
-                                                            <a class="cursor-pointer">https://bowfile.com/asdaasdsdasdasdasdasdassdasd</a>
+                                                            <a :href='item.zippyshareSteamfix' v-show="item.zippyshareSteamfix" class="cursor-pointer">{{item.zippyshareSteamfix}}</a>
                                                         </div>
 
                                                         <div>
-                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                            <a :href='item.megaSteamfix' v-show="item.megaSteamfix" class="cursor-pointer">{{item.megaSteamfix}}</a>
                                                         </div>
 
                                                         <div>
-                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                            <a :href='item.bowfileSteamfix' v-show="item.bowfileSteamfix" class="cursor-pointer">{{item.bowfileSteamfix}}</a>
                                                         </div>
 
                                                         <div>
-                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                            <a :href='item.magnetSteamfix' v-show="item.magnetSteamfix" class="cursor-pointer">{{item.magnetSteamfix}}</a>
                                                         </div>
 
                                                         <div>
-                                                            <a class="cursor-pointer">https://bowfile.com/1LuA</a>
+                                                            <a :href='item.mediafireSteamfix' v-show="item.mediafireSteamfix" class="cursor-pointer">{{item.mediafireSteamfix}}</a>
+                                                        </div>
+
+                                                        <div>
+                                                            <a :href='item.othersSteamfix' v-show="item.othersSteamfix" class="cursor-pointer">{{item.othersSteamfix}}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -335,57 +360,71 @@
                                         </div>
                                     </div>
 
-                                    <div v-else>
-                                        <div v-show="mediafireLink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                    <div v-else v-for='item in linksGames' :key='item.index'>
+                                        <div v-show="item.mediafire" class="border-b-2 border-gray-300 pb-4 mb-4">
                                             <p class="text-blue-300 text-3xl mb-2">
                                                 Mediafire:
                                             </p>
                                             <div class="flex justify-center">
                                                 <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
                                                     <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                    <a :href="mediafireDL" class="text-xl text-gray-200">
+                                                    <a :href="item.mediafire" class="text-xl text-gray-200">
                                                         Download
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div v-show="MEGALink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                        <div v-show="item.mega" class="border-b-2 border-gray-300 pb-4 mb-4">
                                             <p class="text-red-300 text-3xl mb-2">
                                                 MEGA:
                                             </p>
                                             <div class="flex justify-center">
                                                 <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
                                                     <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                    <a :href="megaDL" class="text-xl text-gray-200">
+                                                    <a :href="item.mega" class="text-xl text-gray-200">
                                                         Download
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div v-show="BowfileLink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                        <div v-show="item.bowfile" class="border-b-2 border-gray-300 pb-4 mb-4">
                                             <p class="text-purple-400 font-bold text-3xl mb-2">
                                                 Bowfile:
                                             </p>
                                             <div class="flex justify-center">
                                                 <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
                                                     <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                    <a :href="bowfileDL" class="text-xl text-gray-200">
+                                                    <a :href="item.bowfile" class="text-xl text-gray-200">
                                                         Download
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div v-show="TorrentLink" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                        <div v-show="item.zippyshare" class="border-b-2 border-gray-300 pb-4 mb-4">
+                                            <p class="text-red-600 text-3xl mb-2">
+                                                Zippyshare:
+                                            </p>
+                                            <div class="flex justify-center">
+                                                <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
+                                                    <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
+                                                    <a :href="item.zippyshare" class="text-xl text-gray-200">
+                                                        Download
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div v-show="item.magnet" class="border-b-2 border-gray-300 pb-4 mb-4">
                                             <p class="text-green-300 text-3xl mb-2">
                                                 TORRENT:
                                             </p>
                                             <div class="flex justify-center">
                                                 <div class="flex justify-center border-2 bg-blue-500 w-2/5 cursor-pointer py-1">
                                                     <img src="../../public/img/downloadbutton.png" class="border-r-2 border-gray-300 pr-4 mr-4">
-                                                    <a :href="torrentDL" class="text-xl text-gray-200">
+                                                    <a :href="item.magnet" class="text-xl text-gray-200">
                                                         Download
                                                     </a>
                                                 </div>
@@ -472,15 +511,15 @@ export default {
         return {
             showOnlineFixLinks: false,
             showFullGameLinks: false,
-            isOnline: true,
+            isOnline: false,
             categoriesHover: false,
             uploading: false,
             searchbar: false,
             searchQuery: "",
-            TorrentLink: true,
-            mediafireLink: false,
-            MEGALink: false,
-            BowLink: false,
+            torrentLink: true,
+            mediafireLink: true,
+            MEGALink: true,
+            BowLink: true,
             gameClicked: "",
             gameList:[],
             currentPage:[],
@@ -498,6 +537,7 @@ export default {
             hasYTLink: false,
             YTLink: "",
             apidata:[],
+            linksGames:[],
         }
     },
 
@@ -528,13 +568,6 @@ export default {
             }
         },
 
-        downloadFunc: function(content, fileName, contentType) {
-            var a = document.createElement("a");
-            var file = new Blob([content], {type: contentType});
-            a.href = URL.createObjectURL(file);
-            a.download = fileName;
-            a.click();
-        },
     },
 
     created() {
@@ -544,7 +577,13 @@ export default {
             if (response.data.Result.videolink == null) {
                 this.hasYTLink = true
             }
-            console.log(response.data.Result)
+            if (response.data.Result.gamemode == "Online") {
+                this.isOnline = true
+            }
+            this.linksGames = response.data.Result.linksgame
+            console.log(this.linksGames)
+            this.systemReq = response.data.Result.sys_requirements.split("$$")
+            // console.log(response.data.Result)
         })
     }
 }
